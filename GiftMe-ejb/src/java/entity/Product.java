@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 
 /**
@@ -20,6 +22,10 @@ import javax.persistence.OneToOne;
  * @author Farhan Angullia
  */
 @Entity
+
+@NamedQueries({
+    @NamedQuery(name = "selectAllProducts", query = "SELECT p FROM Product p")
+})
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,17 +35,17 @@ public class Product implements Serializable {
 
     @Column(nullable = false)
     private Integer quantityOnHand;
-    
-        @Column(nullable = false)
+
+    @Column(nullable = false)
     private String productName;
-        
-        @Column(nullable = false)
-        private String description;
-        
-        @Column(nullable = false)
-        private String category;
-        
-            @Column(precision = 11, scale = 2)
+
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private String category;
+
+    @Column(precision = 11, scale = 2)
     private BigDecimal price;
 
     @Column(unique = true, nullable = false)
@@ -47,7 +53,7 @@ public class Product implements Serializable {
 
     @OneToOne
     private LineProduct lineProduct;
-    
+
     @ManyToOne
     private Shop shop;
 
@@ -65,9 +71,6 @@ public class Product implements Serializable {
         this.lineProduct = lineProduct;
         this.shop = shop;
     }
-
-
-    
 
     public Long getProductId() {
         return productId;

@@ -5,7 +5,7 @@
  */
 package jsf.managedbean;
 
-import ejb.stateless.stateless.ProductControllerLocal;
+import ejb.session.stateless.ProductControllerLocal;
 import entity.Product;
 import java.util.List;
 import javax.annotation.PostConstruct;

@@ -3,19 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.stateless.stateless;
-
-import entity.Product;
-import java.util.List;
-import javax.ejb.Local;
+package util.exception;
 
 /**
  *
  * @author Farhan Angullia
  */
-@Local
-public interface ProductControllerLocal {
+public class ProductNotFoundException extends Exception {
 
-    public List<Product> retrieveAllProducts();
+    public ProductNotFoundException() {
+    }
+
+    public ProductNotFoundException(String message) {
+        super(message);
+    }
+    
+    
     
 }
