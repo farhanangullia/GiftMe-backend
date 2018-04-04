@@ -60,15 +60,14 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(Long productId, Integer quantityOnHand, String productName, String description, String category, BigDecimal price, String skuCode, LineProduct lineProduct, Shop shop) {
-        this.productId = productId;
+    public Product(Integer quantityOnHand, String productName, String description, String category, BigDecimal price, String skuCode,Shop shop) {
+
         this.quantityOnHand = quantityOnHand;
         this.productName = productName;
         this.description = description;
         this.category = category;
         this.price = price;
         this.skuCode = skuCode;
-        this.lineProduct = lineProduct;
         this.shop = shop;
     }
 

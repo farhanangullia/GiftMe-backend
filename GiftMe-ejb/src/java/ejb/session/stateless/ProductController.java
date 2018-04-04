@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.exception.ProductInsufficientQuantityOnHandException;
 import util.exception.ProductNotFoundException;
 
 /**
@@ -31,7 +32,7 @@ public class ProductController implements ProductControllerLocal {
     }
 
     @Override
-    public Product retrieveProduct(Long id) throws ProductNotFoundException {
+    public Product retrieveProductById(Long id) throws ProductNotFoundException {
 
         Product product = em.find(Product.class, id);
 
@@ -57,7 +58,7 @@ public class ProductController implements ProductControllerLocal {
         
          if(product.getProductId()!= null)
         {
-            Product productToUpdate = retrieveProduct(product.getProductId());           
+            Product productToUpdate = retrieveProductById(product.getProductId());           
             productToUpdate.setCategory(product.getCategory());
             productToUpdate.setDescription(product.getDescription());
             productToUpdate.setProductName(product.getProductName());
@@ -78,7 +79,7 @@ public class ProductController implements ProductControllerLocal {
     {
         if(id != null)
         {
-            Product productToDelete = retrieveProduct(id);
+            Product productToDelete = retrieveProductById(id);
             em.remove(productToDelete);
         }
         else
@@ -86,5 +87,32 @@ public class ProductController implements ProductControllerLocal {
             throw new ProductNotFoundException("ID not provided for product to be deleted");
         }
     }
+    
+    
+     @Override
+    public void debitQuantityOnHand(Long productId, Integer quantityToDebit) throws ProductNotFoundException, ProductInsufficientQuantityOnHandException
+    {
+        Product productEntity = retrieveProductById(productId);
+        
+        if(productEntity.getQuantityOnHand() >= quantityToDebit)
+        {
+            productEntity.setQuantityOnHand(productEntity.getQuantityOnHand() - quantityToDebit);
+        }
+        else
+        {
+            throw new ProductInsufficientQuantityOnHandException("Product " + productEntity.getSkuCode() + " quantity on hand is " + productEntity.getQuantityOnHand() + " versus quantity to debit of " + quantityToDebit);
+        }
+    }
+    
+    
+    
+    @Override
+    public void creditQuantityOnHand(Long productId, Integer quantityToCredit) throws ProductNotFoundException
+    {
+        Product productEntity = retrieveProductById(productId);
+        productEntity.setQuantityOnHand(productEntity.getQuantityOnHand() + quantityToCredit);
+    }
+    
+    
 
 }

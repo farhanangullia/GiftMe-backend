@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -32,26 +33,31 @@ public class Customer implements Serializable {
     @Column(length = 50, unique = true, nullable = false)
     private String email;
 
-    @Column(length = 15, unique = true, nullable = false)
-    private String password;
-
     @Column(length = 8, unique = true, nullable = false)
     private String mobileNumber;
+
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
+    private String password;
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
+    private String salt;
 
     @OneToMany(mappedBy = "customer")
     private List<Transaction> transactions;
 
     public Customer() {
+        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
     }
 
-    public Customer(Long customerId, String firstName, String lastName, String email, String password, String mobileNumber, List<Transaction> transactions) {
-        this.customerId = customerId;
+    public Customer(String firstName, String lastName, String email, String password, String mobileNumber) {
+
+        this();
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
+        this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
         this.mobileNumber = mobileNumber;
-        this.transactions = transactions;
+
     }
 
     public Long getCustomerId() {
@@ -130,20 +136,6 @@ public class Customer implements Serializable {
     }
 
     /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
      * @return the mobileNumber
      */
     public String getMobileNumber() {
@@ -169,6 +161,41 @@ public class Customer implements Serializable {
      */
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        if(password != null)
+        {
+            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
+        }
+        else
+        {
+            this.password = null;
+        }
+    }
+
+    /**
+     * @return the salt
+     */
+    public String getSalt() {
+        return salt;
+    }
+
+    /**
+     * @param salt the salt to set
+     */
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
 }
