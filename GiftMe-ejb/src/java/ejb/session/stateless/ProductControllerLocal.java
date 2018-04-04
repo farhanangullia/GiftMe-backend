@@ -31,6 +31,8 @@ public interface ProductControllerLocal {
     public void creditQuantityOnHand(Long productId, Integer quantityToCredit) throws ProductNotFoundException;
 
     public void debitQuantityOnHand(Long productId, Integer quantityToDebit) throws ProductNotFoundException, ProductInsufficientQuantityOnHandException;
+
+    public List<Product> retrieveAllProductsByShopId(Long id);
     
     
     

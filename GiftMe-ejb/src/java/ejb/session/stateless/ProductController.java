@@ -30,6 +30,15 @@ public class ProductController implements ProductControllerLocal {
         Query query = em.createNamedQuery("selectAllProducts");
         return query.getResultList();
     }
+    
+    @Override
+    public List<Product> retrieveAllProductsByShopId(Long id) {
+
+         Query query = em.createQuery("SELECT p FROM Product p WHERE p.shop.shopId = :inShopId ORDER BY p.productName ASC");
+           query.setParameter("inShopId", id);
+        return query.getResultList();
+    }
+    
 
     @Override
     public Product retrieveProductById(Long id) throws ProductNotFoundException {

@@ -15,6 +15,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import util.enumeration.ShopType;
@@ -24,6 +26,9 @@ import util.enumeration.ShopType;
  * @author Farhan Angullia
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "selectAllShops", query = "SELECT s FROM Shop s")
+})
 public class Shop implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,12 +58,12 @@ public class Shop implements Serializable {
     public Shop() {
     }
 
-    public Shop(Long shopId, String shopName, String location, ShopType shopType, Address address) {
-        this.shopId = shopId;
+    public Shop(String shopName, String location, ShopType shopType) {
+       
         this.shopName = shopName;
         this.location = location;
         this.shopType = shopType;
-        this.address = address;
+     
     }
     
     
