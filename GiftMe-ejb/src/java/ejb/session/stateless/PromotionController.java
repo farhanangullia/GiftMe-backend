@@ -36,7 +36,7 @@ public class PromotionController implements PromotionControllerLocal {
        @Override
     public Promotion retrievePromotionByPromoCode(String promoCode) throws PromotionNotFoundException
     {
-        Query query = em.createQuery("SELECT p FROM Promotion p WHERE p.promoCode :inPromoCode");
+        Query query = em.createQuery("SELECT p FROM Promotion p WHERE p.promoCode = :inPromoCode");
         query.setParameter("inPromoCode", promoCode);
         
         try
