@@ -28,101 +28,107 @@ public class CustomerController implements CustomerControllerLocal {
     @PersistenceContext(unitName = "GiftMe-ejbPU")
     private EntityManager em;
 
-
-  @Override
-    public Customer createNewCustomer(Customer newCustomer) throws CreateCustomerException
-    {
+    @Override
+    public Long createNewCustomer(Customer newCustomer) throws CreateCustomerException {
         try {
-        em.persist(newCustomer);
-        em.flush();
-        
-        return newCustomer;
-        }
-         catch(PersistenceException ex)
-        {
-            if(ex.getCause() != null && 
-                    ex.getCause().getCause() != null &&
-                    ex.getCause().getCause().getClass().getSimpleName().equals("MySQLIntegrityConstraintViolationException"))
-            {
+            System.out.println("Creating customer");
+            //  newCustomer.setSalt(CryptographicHelper.getInstance().generateRandomString(32));
+            System.out.println("Password before setting is : " + newCustomer.getPassword());
+            //   newCustomer.setPassword(newCustomer.getPassword());
+          newCustomer = encryptCustomerPassword(newCustomer);
+            em.persist(newCustomer);
+            em.flush();
+
+            return newCustomer.getCustomerId();
+        } catch (PersistenceException ex) {
+            if (ex.getCause() != null
+                    && ex.getCause().getCause() != null
+                    && ex.getCause().getCause().getClass().getSimpleName().equals("MySQLIntegrityConstraintViolationException")) {
                 throw new CreateCustomerException("Customer with same email already exist");
-            }
-            else
-            {
+            } else {
                 throw new CreateCustomerException("An unexpected error has occurred: " + ex.getMessage());
             }
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             throw new CreateCustomerException("An unexpected error has occurred: " + ex.getMessage());
         }
-        
+
     }
-    
-    
-       @Override
-    public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException
-    {
+
+    @Override
+    public Customer encryptCustomerPassword(Customer customer) {
+
+        customer.setSalt(CryptographicHelper.getInstance().generateRandomString(32));
+        //this.salt = CryptographicHelper.getInstance().generateRandomString(32);
+
+        customer.setPassword(CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(customer.getPassword() + customer.getSalt())));
+        em.merge(customer);
+
+        return customer;
+    }
+
+  /*  @Override
+    public Long createCustomerFromBackend(Customer newCustomer) throws CreateCustomerException {
+        try {
+            System.out.println("Creating customer from backend");
+            em.persist(newCustomer);
+            em.flush();
+
+            return newCustomer.getCustomerId();
+        } catch (PersistenceException ex) {
+            if (ex.getCause() != null
+                    && ex.getCause().getCause() != null
+                    && ex.getCause().getCause().getClass().getSimpleName().equals("MySQLIntegrityConstraintViolationException")) {
+                throw new CreateCustomerException("Customer with same email already exist");
+            } else {
+                throw new CreateCustomerException("An unexpected error has occurred: " + ex.getMessage());
+            }
+        } catch (Exception ex) {
+            throw new CreateCustomerException("An unexpected error has occurred: " + ex.getMessage());
+        }
+
+    }
+*/
+    @Override
+    public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException {
         Query query = em.createQuery("SELECT c FROM Customer c WHERE c.email = :inEmail");
         query.setParameter("inEmail", email);
-        
-        try
-        {
-            return (Customer)query.getSingleResult();
-        }
-        catch(NoResultException | NonUniqueResultException ex)
-        {
+
+        try {
+            return (Customer) query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
             throw new CustomerNotFoundException("Customer email " + email + " does not exist!");
         }
     }
-    
+
     @Override
-    public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException
-    {
-        try
-        {
+    public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException {
+        try {
             Customer customer = retrieveCustomerByEmail(email);
             String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + customer.getSalt()));
-            
-            if(customer.getPassword().equals(passwordHash))
-            {
+
+            if (customer.getPassword().equals(passwordHash)) {
                 return customer;
-            }
-            else
-            {
+            } else {
                 throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
             }
-        }
-        catch(CustomerNotFoundException ex)
-        {
+        } catch (CustomerNotFoundException ex) {
             throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
         }
     }
-    
-    
-    
-    
-     @Override
-    public void updateCustomer(Customer customer) throws CustomerNotFoundException
-    {
-        if(customer.getCustomerId() != null)
-        {
+
+    @Override
+    public void updateCustomer(Customer customer) throws CustomerNotFoundException {
+        if (customer.getCustomerId() != null) {
             Customer customerToUpdate = retrieveCustomerByEmail(customer.getEmail());
-            if(customerToUpdate.getEmail().equals(customer.getEmail()))
-            {
+            if (customerToUpdate.getEmail().equals(customer.getEmail())) {
                 customerToUpdate.setFirstName(customer.getFirstName());
                 customerToUpdate.setLastName(customer.getLastName());
                 customerToUpdate.setMobileNumber(customer.getMobileNumber());
                 customerToUpdate.setEmail(customer.getEmail());
             }
-        }
-        else
-        {
+        } else {
             throw new CustomerNotFoundException("Customer email not provided for customer to be updated");
         }
     }
-    
-    
-  
-    
-    
+
 }

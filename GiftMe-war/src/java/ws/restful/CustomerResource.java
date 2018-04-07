@@ -85,7 +85,7 @@ public class CustomerResource {
             {
                 CreateCustomerReq createCustomerReq = jaxbCreateCustomerReq.getValue();
                 
-                Long id = customerControllerLocal.createNewCustomer(createCustomerReq.getCustomer()).getCustomerId();
+                  Long id = customerControllerLocal.createNewCustomer(createCustomerReq.getCustomer());
                 CreateCustomerRsp createCustomerRsp = new CreateCustomerRsp(id);
                 
                 return Response.status(Response.Status.OK).entity(createCustomerRsp).build();
@@ -110,6 +110,10 @@ public class CustomerResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
+    
+    
+    
+    
     
     
     

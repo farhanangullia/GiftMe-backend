@@ -18,12 +18,16 @@ import util.exception.InvalidLoginCredentialException;
 @Local
 public interface CustomerControllerLocal {
 
-    public Customer createNewCustomer(Customer newCustomer) throws CreateCustomerException;
+    public Long createNewCustomer(Customer newCustomer) throws CreateCustomerException;
 
     public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException;
 
     public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException;
 
     public void updateCustomer(Customer customer) throws CustomerNotFoundException;
+
+    public Long createCustomerFromBackend(Customer newCustomer) throws CreateCustomerException;
+
+    public Customer encryptCustomerPassword(Customer customer);
     
 }

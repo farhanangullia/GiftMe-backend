@@ -46,7 +46,7 @@ public class DataInitSessionBean {
     private PromotionControllerLocal promotionControllerLocal;
 
     
-    @PostConstruct
+   @PostConstruct
   public void postConstruct() {
         try {
             customerControllerLocal.retrieveCustomerByEmail("giftmeadmin@gmail.com");

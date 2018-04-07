@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,11 +42,12 @@ public class Customer implements Serializable {
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Transaction> transactions;
-
+    /*  @OneToMany(mappedBy = "customer")
+    private List<Transaction> transactions = null;
+     */
     public Customer() {
-        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
+        //  this.salt = CryptographicHelper.getInstance().generateRandomString(32);
+        //  transactions = new ArrayList<>();
     }
 
     public Customer(String firstName, String lastName, String email, String password, String mobileNumber) {
@@ -55,7 +57,9 @@ public class Customer implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
+        this.password = password;
+        //CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
+
         this.mobileNumber = mobileNumber;
 
     }
@@ -152,17 +156,19 @@ public class Customer implements Serializable {
     /**
      * @return the transactions
      */
+    /*
     public List<Transaction> getTransactions() {
         return transactions;
     }
-
+     */
     /**
      * @param transactions the transactions to set
      */
-    public void setTransactions(List<Transaction> transactions) {
+    /*   public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
 
+     */
     /**
      * @return the password
      */
@@ -173,17 +179,21 @@ public class Customer implements Serializable {
     /**
      * @param password the password to set
      */
-    public void setPassword(String password) {
-        if(password != null)
-        {
+    public void setEncryptedPassword(String password) {
+        if (password != null) {
             this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
-        }
-        else
-        {
+        } else {
             this.password = null;
         }
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /* public void setPassword(String password) {
+        this.password = password;
+    }*/
     /**
      * @return the salt
      */
