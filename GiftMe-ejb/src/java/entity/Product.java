@@ -50,6 +50,9 @@ public class Product implements Serializable {
 
     @Column(unique = true, nullable = false)
     private String skuCode;
+    
+    @Column(unique = true, nullable = false)
+    private String imgPath;
 
     @OneToOne
     private LineProduct lineProduct;
@@ -60,7 +63,7 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(Integer quantityOnHand, String productName, String description, String category, BigDecimal price, String skuCode,Shop shop) {
+    public Product(Integer quantityOnHand, String productName, String description, String category, BigDecimal price, String skuCode, String imgPath, Shop shop) {
 
         this.quantityOnHand = quantityOnHand;
         this.productName = productName;
@@ -68,6 +71,7 @@ public class Product implements Serializable {
         this.category = category;
         this.price = price;
         this.skuCode = skuCode;
+        this.imgPath = imgPath;
         this.shop = shop;
     }
 
@@ -214,6 +218,20 @@ public class Product implements Serializable {
      */
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    /**
+     * @return the imgPath
+     */
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    /**
+     * @param imgPath the imgPath to set
+     */
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
 }

@@ -65,6 +65,7 @@ public class DataInitSessionBean {
             product.setPrice(new BigDecimal("20"));
             product.setQuantityOnHand(50);
             product.setSkuCode("PROD005");
+            product.setImgPath("../assets/img/products/PROD005.png");
 
             Shop shop1 = shopControllerLocal.createShop(new Shop("Kent Ridge Flora", "South West", ShopType.PREMIUM));
             product.setShop(shop1);
@@ -87,7 +88,7 @@ public class DataInitSessionBean {
              */
             Shop shop = shopControllerLocal.createShop(new Shop("PlushRUs Store", "South West", ShopType.NORMAL));
             customerControllerLocal.createNewCustomer(new Customer("admin", "admin", "giftmeadmin@gmail.com", "password", "82222034"));
-            Product product2 = productControllerLocal.createProduct(new Product(40, "Teddy Bear", "Soft and cute teddy bear", "Plushies", new BigDecimal("6"), "PROD006", shop));
+            Product product2 = productControllerLocal.createProduct(new Product(40, "Teddy Bear", "Soft and cute teddy bear", "Plushies", new BigDecimal("6"), "PROD006", "../assets/img/products/PROD006.png", shop));
          /*   List<Product> products2 = new ArrayList<>();
             products2.add(product2);
             shop.setProducts(products2);
