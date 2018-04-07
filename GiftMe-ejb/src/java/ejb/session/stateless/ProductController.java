@@ -54,10 +54,12 @@ public class ProductController implements ProductControllerLocal {
     }
 
     @Override
-    public void createProduct(Product product) {
+    public Product createProduct(Product product) {
 
         em.persist(product);
         em.flush();
+        
+        return product;
 
     }
     

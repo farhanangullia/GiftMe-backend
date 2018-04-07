@@ -20,7 +20,7 @@ public interface ProductControllerLocal {
 
     public List<Product> retrieveAllProducts();
 
-    public void createProduct(Product product);
+    public Product createProduct(Product product);
 
     public void updateProduct(Product product) throws ProductNotFoundException;
 

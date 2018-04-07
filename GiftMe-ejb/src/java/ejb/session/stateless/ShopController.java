@@ -32,7 +32,7 @@ public class ShopController implements ShopControllerLocal {
     @Override
     public List<Shop> retrieveAllShops() {
 
-        Query query = em.createNamedQuery("retrieveAllShops");
+        Query query = em.createNamedQuery("selectAllShops");
         return query.getResultList();
     }
 
