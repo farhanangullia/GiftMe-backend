@@ -5,19 +5,27 @@
  */
 package entity;
 
+
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author Farhan Angullia
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "selectAllPromotions", query = "SELECT p FROM Promotion p")
+})
 public class Promotion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,24 +36,24 @@ public class Promotion implements Serializable {
     @Column(length = 6, unique = true, nullable = false)
     private String promoCode;
 
-    @Column(nullable = false)
-    private Integer discount;
+     @Column(precision = 11, scale = 2)
+    private BigDecimal discount;
 
     @Column(nullable = false)
     private Boolean enabled;
 
-    @OneToOne
-    private Transaction transaction;
-
+    @OneToMany(mappedBy = "promotion")
+    private List<Transaction> transactions;
+    
     public Promotion() {
     }
 
-    public Promotion(Long promotionId, String promoCode, Integer discount, Boolean enabled, Transaction transaction) {
-        this.promotionId = promotionId;
+    public Promotion(String promoCode, BigDecimal discount, Boolean enabled) {
+
         this.promoCode = promoCode;
         this.discount = discount;
         this.enabled = enabled;
-        this.transaction = transaction;
+
     }
     
     
@@ -100,14 +108,14 @@ public class Promotion implements Serializable {
     /**
      * @return the discount
      */
-    public Integer getDiscount() {
+    public BigDecimal getDiscount() {
         return discount;
     }
 
     /**
      * @param discount the discount to set
      */
-    public void setDiscount(Integer discount) {
+    public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
 
@@ -125,18 +133,19 @@ public class Promotion implements Serializable {
         this.enabled = enabled;
     }
 
+
     /**
-     * @return the transaction
+     * @return the transactions
      */
-    public Transaction getTransaction() {
-        return transaction;
+    public List<Transaction> getTransactions() {
+        return transactions;
     }
 
     /**
-     * @param transaction the transaction to set
+     * @param transactions the transactions to set
      */
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
 }

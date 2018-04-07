@@ -51,6 +51,9 @@ public class Transaction implements Serializable {
 
     @ManyToOne
     private Customer customer;
+    
+    @ManyToOne
+    private Promotion promotion;
 
     @OneToOne
     private Cart cart;
@@ -217,6 +220,20 @@ public class Transaction implements Serializable {
      */
     public void setDelivery(Delivery delivery) {
         this.delivery = delivery;
+    }
+
+    /**
+     * @return the promotion
+     */
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    /**
+     * @param promotion the promotion to set
+     */
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
     }
 
 }
