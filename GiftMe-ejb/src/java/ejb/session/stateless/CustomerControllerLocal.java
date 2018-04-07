@@ -26,7 +26,7 @@ public interface CustomerControllerLocal {
 
     public void updateCustomer(Customer customer) throws CustomerNotFoundException;
 
-    public Long createCustomerFromBackend(Customer newCustomer) throws CreateCustomerException;
+   // public Long createCustomerFromBackend(Customer newCustomer) throws CreateCustomerException;
 
     public Customer encryptCustomerPassword(Customer customer);
     
