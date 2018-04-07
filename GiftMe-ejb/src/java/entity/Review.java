@@ -13,12 +13,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Farhan Angullia
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "selectAllReviews", query = "SELECT r FROM Review r")
+})
 public class Review implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,17 +37,21 @@ public class Review implements Serializable {
     @Column(nullable = false)
     private String comment;
 
+      @Column(nullable = false)
+    private String customerName;
+      
     @ManyToOne
     private Shop shop;
 
     public Review() {
     }
 
-    public Review(Long reviewId, Integer rating, String comment, Shop shop) {
-        this.reviewId = reviewId;
+    public Review( Integer rating, String comment, Shop shop, String customerName) {
+ 
         this.rating = rating;
         this.comment = comment;
         this.shop = shop;
+        this.customerName = customerName;
     }
     
     
@@ -120,6 +129,20 @@ public class Review implements Serializable {
      */
     public void setShop(Shop shop) {
         this.shop = shop;
+    }
+
+    /**
+     * @return the customerName
+     */
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    /**
+     * @param customerName the customerName to set
+     */
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
   

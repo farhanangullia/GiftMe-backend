@@ -11,7 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.exception.CreateCustomerException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 import util.security.CryptographicHelper;
@@ -28,12 +30,32 @@ public class CustomerController implements CustomerControllerLocal {
 
 
   @Override
-    public Customer createNewCustomer(Customer newCustomer)
+    public Customer createNewCustomer(Customer newCustomer) throws CreateCustomerException
     {
+        try {
         em.persist(newCustomer);
         em.flush();
         
         return newCustomer;
+        }
+         catch(PersistenceException ex)
+        {
+            if(ex.getCause() != null && 
+                    ex.getCause().getCause() != null &&
+                    ex.getCause().getCause().getClass().getSimpleName().equals("MySQLIntegrityConstraintViolationException"))
+            {
+                throw new CreateCustomerException("Customer with same email already exist");
+            }
+            else
+            {
+                throw new CreateCustomerException("An unexpected error has occurred: " + ex.getMessage());
+            }
+        }
+        catch(Exception ex)
+        {
+            throw new CreateCustomerException("An unexpected error has occurred: " + ex.getMessage());
+        }
+        
     }
     
     

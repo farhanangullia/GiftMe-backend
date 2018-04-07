@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Customer;
 import javax.ejb.Local;
+import util.exception.CreateCustomerException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 
@@ -17,7 +18,7 @@ import util.exception.InvalidLoginCredentialException;
 @Local
 public interface CustomerControllerLocal {
 
-    public Customer createNewCustomer(Customer newCustomer);
+    public Customer createNewCustomer(Customer newCustomer) throws CreateCustomerException;
 
     public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException;
 
