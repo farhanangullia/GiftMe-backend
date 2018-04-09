@@ -13,6 +13,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -25,10 +26,13 @@ import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.JAXBElement;
 import util.exception.CreateCustomerException;
 import util.exception.InvalidLoginCredentialException;
+import util.exception.UpdateCustomerException;
 import ws.restful.datamodel.CreateCustomerReq;
 import ws.restful.datamodel.CreateCustomerRsp;
 import ws.restful.datamodel.ErrorRsp;
 import ws.restful.datamodel.GetCustomerRsp;
+import ws.restful.datamodel.UpdateCustomerPasswordReq;
+import ws.restful.datamodel.UpdateCustomerReq;
 
 /**
  * REST Web Service
@@ -37,12 +41,12 @@ import ws.restful.datamodel.GetCustomerRsp;
  */
 @Path("Customer")
 public class CustomerResource {
-
+    
     @Context
     private UriInfo context;
-
+    
     private final CustomerControllerLocal customerControllerLocal = lookupCustomerControllerLocal();
-
+    
     ;
 
     /**
@@ -50,7 +54,7 @@ public class CustomerResource {
      */
     public CustomerResource() {
     }
-
+    
     @Path("getCustomer")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
@@ -60,66 +64,103 @@ public class CustomerResource {
         try {
             Customer customer = customerControllerLocal.customerLogin(email, password);
             System.out.println("********** CustomerResource.getCustomer(): Customer " + customer.getEmail() + " login remotely via web service");
-
+            
             return Response.status(Status.OK).entity(new GetCustomerRsp(customerControllerLocal.retrieveCustomerByEmail(email))).build();
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-
+            
             return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
         } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-
+            
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
     
-    
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createCustomer(JAXBElement<CreateCustomerReq> jaxbCreateCustomerReq)
-    {
-        if((jaxbCreateCustomerReq != null) && (jaxbCreateCustomerReq.getValue() != null))
-        {
-            try
-            {
+    public Response createCustomer(JAXBElement<CreateCustomerReq> jaxbCreateCustomerReq) {
+        if ((jaxbCreateCustomerReq != null) && (jaxbCreateCustomerReq.getValue() != null)) {
+            try {
                 CreateCustomerReq createCustomerReq = jaxbCreateCustomerReq.getValue();
-                
-                  Long id = customerControllerLocal.createNewCustomer(createCustomerReq.getCustomer());
+                //createCustomerReq.getCustomer().setTransactions(null);
+                Long id = customerControllerLocal.createNewCustomer(createCustomerReq.getCustomer());
                 CreateCustomerRsp createCustomerRsp = new CreateCustomerRsp(id);
                 
                 return Response.status(Response.Status.OK).entity(createCustomerRsp).build();
-            }
-            catch(CreateCustomerException ex)
-            {
+            } catch (CreateCustomerException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
+                
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
-            }
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
+                
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
             }
-        }
-        else
-        {
+        } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid create customer request");
             
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
     
+    @Path("updateCustomer")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCustomer(JAXBElement<UpdateCustomerReq> jaxbUpdateCustomerReq) {
+        if ((jaxbUpdateCustomerReq != null) && (jaxbUpdateCustomerReq.getValue() != null)) {
+            try {
+                UpdateCustomerReq updateCustomerReq = jaxbUpdateCustomerReq.getValue();
+                
+                customerControllerLocal.updateCustomer(updateCustomerReq.getCustomer());
+                
+                return Response.status(Response.Status.OK).build();
+            } catch (UpdateCustomerException ex) {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+                
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            } catch (Exception ex) {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+                
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+        } else {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid update customer request");
+            
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
     
+    @Path("updateCustomerPassword")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCustomerPassword(JAXBElement<UpdateCustomerPasswordReq> jaxbUpdateCustomerPasswordReq) {
+        if ((jaxbUpdateCustomerPasswordReq != null) && (jaxbUpdateCustomerPasswordReq.getValue() != null)) {
+            try {
+                UpdateCustomerPasswordReq updateCustomerPasswordReq = jaxbUpdateCustomerPasswordReq.getValue();
+                
+                customerControllerLocal.updateCustomerPassword(updateCustomerPasswordReq.getCustomer());
+                
+                return Response.status(Response.Status.OK).build();
+            } catch (UpdateCustomerException ex) {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+                
+                return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+            } catch (Exception ex) {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+                
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+        } else {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid update customer request");
+            
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
     
-    
-    
-    
-    
-    
-    
-
     private CustomerControllerLocal lookupCustomerControllerLocal() {
         try {
             javax.naming.Context c = new InitialContext();
@@ -129,5 +170,5 @@ public class CustomerResource {
             throw new RuntimeException(ne);
         }
     }
-
+    
 }

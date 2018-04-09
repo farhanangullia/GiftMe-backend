@@ -46,11 +46,10 @@ public class Review implements Serializable {
     public Review() {
     }
 
-    public Review( Integer rating, String comment, Shop shop, String customerName) {
+    public Review( Integer rating, String comment, String customerName) {
  
         this.rating = rating;
         this.comment = comment;
-        this.shop = shop;
         this.customerName = customerName;
     }
     

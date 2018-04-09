@@ -38,24 +38,24 @@ public class Delivery implements Serializable {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 
+    @Column(unique = true)
+    private String deliveryCode;
+
     @OneToOne
     private Transaction transaction;
-    
+
     @OneToOne
     private Promotion promotion;
 
     public Delivery() {
     }
 
-    public Delivery(Long deliveryId, Date scheduledTime, DeliveryStatus status, Transaction transaction, Promotion promotion) {
-        this.deliveryId = deliveryId;
+    public Delivery(Date scheduledTime, DeliveryStatus status, String deliveryCode) {
+
         this.scheduledTime = scheduledTime;
         this.status = status;
-        this.transaction = transaction;
-        this.promotion = promotion;
+        this.deliveryCode = deliveryCode;
     }
-    
-    
 
     public Long getDeliveryId() {
         return deliveryId;
@@ -144,6 +144,20 @@ public class Delivery implements Serializable {
      */
     public void setPromotion(Promotion promotion) {
         this.promotion = promotion;
+    }
+
+    /**
+     * @return the deliveryCode
+     */
+    public String getDeliveryCode() {
+        return deliveryCode;
+    }
+
+    /**
+     * @param deliveryCode the deliveryCode to set
+     */
+    public void setDeliveryCode(String deliveryCode) {
+        this.deliveryCode = deliveryCode;
     }
 
 }

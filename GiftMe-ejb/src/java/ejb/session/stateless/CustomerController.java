@@ -16,6 +16,7 @@ import javax.persistence.Query;
 import util.exception.CreateCustomerException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
+import util.exception.UpdateCustomerException;
 import util.security.CryptographicHelper;
 
 /**
@@ -44,7 +45,7 @@ public class CustomerController implements CustomerControllerLocal {
             if (ex.getCause() != null
                     && ex.getCause().getCause() != null
                     && ex.getCause().getCause().getClass().getSimpleName().equals("MySQLIntegrityConstraintViolationException")) {
-                throw new CreateCustomerException("Customer with same email already exist");
+                throw new CreateCustomerException("Customer with same email or mobile number already exist");
             } else {
                 throw new CreateCustomerException("An unexpected error has occurred: " + ex.getMessage());
             }
@@ -117,18 +118,48 @@ public class CustomerController implements CustomerControllerLocal {
     }
 
     @Override
-    public void updateCustomer(Customer customer) throws CustomerNotFoundException {
+    public void updateCustomer(Customer customer) throws CustomerNotFoundException, UpdateCustomerException {
         if (customer.getCustomerId() != null) {
-            Customer customerToUpdate = retrieveCustomerByEmail(customer.getEmail());
+            Customer customerToUpdate = retrieveCustomerByEmail(customer.getEmail());  //if error then change to ID
             if (customerToUpdate.getEmail().equals(customer.getEmail())) {
                 customerToUpdate.setFirstName(customer.getFirstName());
                 customerToUpdate.setLastName(customer.getLastName());
-                customerToUpdate.setMobileNumber(customer.getMobileNumber());
-                customerToUpdate.setEmail(customer.getEmail());
+                customerToUpdate.setPassword(customer.getPassword());
             }
+            else
+            {
+                throw new UpdateCustomerException("Email of customer does not match the email given");
+            }
+            
         } else {
             throw new CustomerNotFoundException("Customer email not provided for customer to be updated");
         }
     }
 
+
+    
+     @Override
+    public void updateCustomerPassword(Customer customer) throws CustomerNotFoundException, UpdateCustomerException {
+        if (customer.getCustomerId() != null) {
+            Customer customerToUpdate = retrieveCustomerByEmail(customer.getEmail());  //if error then change to ID
+            if (customerToUpdate.getEmail().equals(customer.getEmail())) {
+           
+                customerToUpdate.setEncryptedPassword(customer.getPassword());
+            }
+            else
+            {
+                throw new UpdateCustomerException("Email of customer does not match the email given");
+            }
+            
+        } else {
+            throw new CustomerNotFoundException("Customer email not provided for customer to be updated");
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
 }

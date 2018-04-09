@@ -23,6 +23,23 @@ public class ReviewController implements ReviewControllerLocal {
     @PersistenceContext(unitName = "GiftMe-ejbPU")
     private EntityManager em;
 
+     @Override
+    public Review createReview(Review review) {
+
+        em.persist(review);
+        em.flush();
+        
+        return review;
+
+    }
+    
+    @Override
+    public void updateReview(Review review) {
+        em.merge(review);
+        
+    }
+    
+    
     @Override
     public List<Review> retrieveAllReviews() {
 

@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.ProductInsufficientQuantityOnHandException;
 import util.exception.ProductNotFoundException;
+import util.exception.ShopNotFoundException;
 
 /**
  *
@@ -32,11 +33,19 @@ public class ProductController implements ProductControllerLocal {
     }
     
     @Override
-    public List<Product> retrieveAllProductsByShopId(Long id) {
+    public List<Product> retrieveAllProductsByShopId(Long id) throws ShopNotFoundException {
 
+        try {
+        
          Query query = em.createQuery("SELECT p FROM Product p WHERE p.shop.shopId = :inShopId ORDER BY p.productName ASC");
            query.setParameter("inShopId", id);
         return query.getResultList();
+        
+        }
+        catch(Exception e){
+        throw new ShopNotFoundException("Shop " + id + " does not exist");
+        }
+        
     }
     
 

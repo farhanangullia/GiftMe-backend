@@ -9,6 +9,7 @@ import entity.Review;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.ReviewNotFoundException;
+import util.exception.ShopNotFoundException;
 
 /**
  *
@@ -19,8 +20,12 @@ public interface ReviewControllerLocal {
 
     public List<Review> retrieveAllReviews();
 
-    public List<Review> retrieveAllReviewsByShopId(Long id);
+    public List<Review> retrieveAllReviewsByShopId(Long id) throws ShopNotFoundException;
 
     public Review retrieveReviewById(Long id) throws ReviewNotFoundException;
+
+    public Review createReview(Review review);
+
+    public void updateReview(Review review);
     
 }

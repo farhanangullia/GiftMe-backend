@@ -42,9 +42,9 @@ public class Customer implements Serializable {
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt;
 
-    /*  @OneToMany(mappedBy = "customer")
-    private List<Transaction> transactions = null;
-     */
+  /*  @OneToMany(mappedBy = "customer")
+    private List<Transaction> transactions;
+    */
     public Customer() {
         //  this.salt = CryptographicHelper.getInstance().generateRandomString(32);
         //  transactions = new ArrayList<>();
@@ -156,19 +156,20 @@ public class Customer implements Serializable {
     /**
      * @return the transactions
      */
-    /*
+  /*
     public List<Transaction> getTransactions() {
         return transactions;
     }
-     */
+    */
     /**
      * @param transactions the transactions to set
      */
-    /*   public void setTransactions(List<Transaction> transactions) {
+    /*
+     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
-
-     */
+*/
+     
     /**
      * @return the password
      */

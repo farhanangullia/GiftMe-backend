@@ -7,6 +7,7 @@ package entity;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,10 +48,10 @@ public class Shop implements Serializable {
     private ShopType shopType;
 
     @OneToMany(mappedBy = "shop")
-    private List<Product> products;
+    private List<Product> products= new ArrayList<Product>();
     
     @OneToMany(mappedBy = "shop")
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<Review>();
     
     @OneToOne
     private Address address;

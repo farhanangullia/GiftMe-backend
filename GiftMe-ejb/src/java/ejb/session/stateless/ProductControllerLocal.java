@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.ProductInsufficientQuantityOnHandException;
 import util.exception.ProductNotFoundException;
+import util.exception.ShopNotFoundException;
 
 /**
  *
@@ -32,7 +33,7 @@ public interface ProductControllerLocal {
 
     public void debitQuantityOnHand(Long productId, Integer quantityToDebit) throws ProductNotFoundException, ProductInsufficientQuantityOnHandException;
 
-    public List<Product> retrieveAllProductsByShopId(Long id);
+    public List<Product> retrieveAllProductsByShopId(Long id) throws ShopNotFoundException;
     
     
     

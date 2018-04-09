@@ -5,7 +5,7 @@
  */
 package ws.restful;
 
-import ejb.session.stateless.ShopControllerLocal;
+import ejb.session.stateless.ReviewControllerLocal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -19,40 +19,37 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import util.exception.ShopNotFoundException;
 import ws.restful.datamodel.ErrorRsp;
-import ws.restful.datamodel.RetrieveAllShopsRsp;
-import ws.restful.datamodel.RetrieveShopRsp;
+import ws.restful.datamodel.RetrieveAllReviewsByShopRsp;
+import ws.restful.datamodel.RetrieveAllReviewsRsp;
 
 /**
  * REST Web Service
  *
  * @author Farhan Angullia
  */
-@Path("Shop")
-public class ShopResource {
+@Path("Review")
+public class ReviewResource {
 
     @Context
     private UriInfo context;
-    
-        private final ShopControllerLocal shopControllerLocal = lookupShopControllerLocal();
+
+    private final ReviewControllerLocal reviewControllerLocal = lookupReviewControllerLocal();
 
     /**
-     * Creates a new instance of ShopResource
+     * Creates a new instance of ReviewResource
      */
-    public ShopResource() {
+    public ReviewResource() {
     }
 
-    
-    @Path("retrieveAllShops")
+    @Path("retrieveAllReviews")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllShops() {
+    public Response retrieveAllReviews() {
         try {
-            RetrieveAllShopsRsp retrieveAllShopsRsp = new RetrieveAllShopsRsp(shopControllerLocal.retrieveAllShops());
+            RetrieveAllReviewsRsp retrieveAllReviewsRsp = new RetrieveAllReviewsRsp(reviewControllerLocal.retrieveAllReviews());
 
-            return Response.status(Response.Status.OK).entity(retrieveAllShopsRsp).build();
+            return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
         } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
@@ -60,44 +57,32 @@ public class ShopResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
-    
-    
-    
-    @Path("retrieveShop/{shopId}")
+
+    @Path("retrieveAllReviewsByShop/{shopId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveShop(@PathParam("shopId") Long shopId) {
+    public Response retrieveAllReviewsByShop(@PathParam("shopId") Long shopId) {
         try {
+            RetrieveAllReviewsByShopRsp retrieveAllReviewsRsp = new RetrieveAllReviewsByShopRsp(reviewControllerLocal.retrieveAllReviewsByShopId(shopId));
 
-            RetrieveShopRsp retrieveShopRsp = new RetrieveShopRsp(shopControllerLocal.retrieveShopById(shopId));
-
-            return Response.status(Response.Status.OK).entity(retrieveShopRsp).build();
-
-        } catch (ShopNotFoundException ex) {
-            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-
-            return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+            return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
         } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
-            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            System.out.println("ERROR: " + ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
-    
-    
 
-    
-    private ShopControllerLocal lookupShopControllerLocal() {
+    private ReviewControllerLocal lookupReviewControllerLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (ShopControllerLocal) c.lookup("java:global/GiftMe/GiftMe-ejb/ShopController!ejb.session.stateless.ShopControllerLocal");
+            return (ReviewControllerLocal) c.lookup("java:global/GiftMe/GiftMe-ejb/ReviewController!ejb.session.stateless.ReviewControllerLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
-    
+
 }

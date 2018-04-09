@@ -6,7 +6,6 @@
 package ws.restful;
 
 import ejb.session.stateless.ProductControllerLocal;
-import static entity.Product_.productId;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -22,7 +21,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import util.exception.ProductNotFoundException;
+import util.exception.ShopNotFoundException;
 import ws.restful.datamodel.ErrorRsp;
+import ws.restful.datamodel.RetrieveAllProductsByShopRsp;
 import ws.restful.datamodel.RetrieveAllProductsRsp;
 import ws.restful.datamodel.RetrieveProductRsp;
 
@@ -74,6 +75,28 @@ public class ProductResource {
             return Response.status(Response.Status.OK).entity(retrieveProductRsp).build();
 
         } catch (ProductNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+            return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+        } catch (Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
+    @Path("retrieveAllProductsByShop/{shopId}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllProductsByShop(@PathParam("shopId") Long shopId) {
+        try {
+
+            RetrieveAllProductsByShopRsp retrieveAllProductsByShopRsp = new RetrieveAllProductsByShopRsp(productControllerLocal.retrieveAllProductsByShopId(shopId));
+
+            return Response.status(Response.Status.OK).entity(retrieveAllProductsByShopRsp).build();
+
+        } catch (ShopNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();

@@ -10,6 +10,7 @@ import javax.ejb.Local;
 import util.exception.CreateCustomerException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
+import util.exception.UpdateCustomerException;
 
 /**
  *
@@ -24,10 +25,12 @@ public interface CustomerControllerLocal {
 
     public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException;
 
-    public void updateCustomer(Customer customer) throws CustomerNotFoundException;
+    public void updateCustomer(Customer customer) throws CustomerNotFoundException, UpdateCustomerException;
 
    // public Long createCustomerFromBackend(Customer newCustomer) throws CreateCustomerException;
 
     public Customer encryptCustomerPassword(Customer customer);
+
+    public void updateCustomerPassword(Customer customer) throws CustomerNotFoundException, UpdateCustomerException;
     
 }
