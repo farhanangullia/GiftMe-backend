@@ -39,6 +39,7 @@ public class CustomerController implements CustomerControllerLocal {
           newCustomer = encryptCustomerPassword(newCustomer);
             em.persist(newCustomer);
             em.flush();
+            em.refresh(newCustomer);
 
             return newCustomer.getCustomerId();
         } catch (PersistenceException ex) {
@@ -62,7 +63,7 @@ public class CustomerController implements CustomerControllerLocal {
         //this.salt = CryptographicHelper.getInstance().generateRandomString(32);
 
         customer.setPassword(CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(customer.getPassword() + customer.getSalt())));
-        em.merge(customer);
+        
 
         return customer;
     }

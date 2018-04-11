@@ -65,7 +65,11 @@ public class CustomerResource {
             Customer customer = customerControllerLocal.customerLogin(email, password);
             System.out.println("********** CustomerResource.getCustomer(): Customer " + customer.getEmail() + " login remotely via web service");
             
-            return Response.status(Status.OK).entity(new GetCustomerRsp(customerControllerLocal.retrieveCustomerByEmail(email))).build();
+            customer.setPassword(null);       //for security purposes on client side
+            customer.setSalt(null);
+           
+            
+            return Response.status(Status.OK).entity(new GetCustomerRsp(customer)).build();
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             
@@ -81,12 +85,21 @@ public class CustomerResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createCustomer(JAXBElement<CreateCustomerReq> jaxbCreateCustomerReq) {
+        
+        System.err.println("*********** HERE 1");
+        
         if ((jaxbCreateCustomerReq != null) && (jaxbCreateCustomerReq.getValue() != null)) {
             try {
+                
+                System.err.println("*********** HERE 2");
+                
                 CreateCustomerReq createCustomerReq = jaxbCreateCustomerReq.getValue();
                 //createCustomerReq.getCustomer().setTransactions(null);
                 Long id = customerControllerLocal.createNewCustomer(createCustomerReq.getCustomer());
+                System.err.println("********  id " + id);
                 CreateCustomerRsp createCustomerRsp = new CreateCustomerRsp(id);
+                
+                System.err.println("*********** HERE 3");
                 
                 return Response.status(Response.Status.OK).entity(createCustomerRsp).build();
             } catch (CreateCustomerException ex) {

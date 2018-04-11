@@ -6,6 +6,10 @@
 package ws.restful;
 
 import ejb.session.stateless.ShopControllerLocal;
+import entity.Product;
+import entity.Review;
+import entity.Shop;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -50,7 +54,22 @@ public class ShopResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllShops() {
         try {
-            RetrieveAllShopsRsp retrieveAllShopsRsp = new RetrieveAllShopsRsp(shopControllerLocal.retrieveAllShops());
+            List<Shop> shops = shopControllerLocal.retrieveAllShops();
+            
+            for(Shop shop:shops)
+            {
+                for(Product product:shop.getProducts())
+                {
+                    product.setShop(null);
+                }
+                for(Review review:shop.getReviews())
+                {
+                    review.setShop(null);
+                }
+            }
+            
+         
+            RetrieveAllShopsRsp retrieveAllShopsRsp = new RetrieveAllShopsRsp(shops);
 
             return Response.status(Response.Status.OK).entity(retrieveAllShopsRsp).build();
         } catch (Exception ex) {
@@ -71,7 +90,23 @@ public class ShopResource {
     public Response retrieveShop(@PathParam("shopId") Long shopId) {
         try {
 
-            RetrieveShopRsp retrieveShopRsp = new RetrieveShopRsp(shopControllerLocal.retrieveShopById(shopId));
+            
+            
+            Shop shop = shopControllerLocal.retrieveShopById(shopId);
+                            //to fix internal server unmarshalling error
+            
+                for(Product product:shop.getProducts())
+                {
+                    product.setShop(null);
+                }
+                for(Review review:shop.getReviews())
+                {
+                   review.setShop(null);
+                }
+                            
+
+            
+            RetrieveShopRsp retrieveShopRsp = new RetrieveShopRsp(shop);
 
             return Response.status(Response.Status.OK).entity(retrieveShopRsp).build();
 

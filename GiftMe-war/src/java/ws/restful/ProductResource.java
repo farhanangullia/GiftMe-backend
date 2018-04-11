@@ -6,6 +6,8 @@
 package ws.restful;
 
 import ejb.session.stateless.ProductControllerLocal;
+import entity.Product;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -52,7 +54,15 @@ public class ProductResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllProducts() {
         try {
-            RetrieveAllProductsRsp retrieveAllProductsRsp = new RetrieveAllProductsRsp(productControllerLocal.retrieveAllProducts());
+            List<Product> products = productControllerLocal.retrieveAllProducts();
+            
+            for(Product product:products)
+            {
+                product.getShop().getProducts().clear();
+                  product.getShop().getReviews().clear();
+            }
+                
+            RetrieveAllProductsRsp retrieveAllProductsRsp = new RetrieveAllProductsRsp(products);
 
             return Response.status(Response.Status.OK).entity(retrieveAllProductsRsp).build();
         } catch (Exception ex) {
@@ -69,8 +79,13 @@ public class ProductResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveProduct(@PathParam("productId") Long productId) {
         try {
+            
+            
+            Product product = productControllerLocal.retrieveProductById(productId);
+         product.setShop(null);                     //to fix internal server unmarshalling error
+            
 
-            RetrieveProductRsp retrieveProductRsp = new RetrieveProductRsp(productControllerLocal.retrieveProductById(productId));
+            RetrieveProductRsp retrieveProductRsp = new RetrieveProductRsp(product);
 
             return Response.status(Response.Status.OK).entity(retrieveProductRsp).build();
 
@@ -92,7 +107,16 @@ public class ProductResource {
     public Response retrieveAllProductsByShop(@PathParam("shopId") Long shopId) {
         try {
 
-            RetrieveAllProductsByShopRsp retrieveAllProductsByShopRsp = new RetrieveAllProductsByShopRsp(productControllerLocal.retrieveAllProductsByShopId(shopId));
+            List<Product> products = productControllerLocal.retrieveAllProductsByShopId(shopId);
+            
+            for(Product product:products)
+            {
+                product.getShop().getProducts().clear();
+                product.getShop().getReviews().clear();
+            }
+            
+            
+            RetrieveAllProductsByShopRsp retrieveAllProductsByShopRsp = new RetrieveAllProductsByShopRsp(products);
 
             return Response.status(Response.Status.OK).entity(retrieveAllProductsByShopRsp).build();
 

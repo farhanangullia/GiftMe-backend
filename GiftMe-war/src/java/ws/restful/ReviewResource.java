@@ -6,6 +6,8 @@
 package ws.restful;
 
 import ejb.session.stateless.ReviewControllerLocal;
+import entity.Review;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -47,7 +49,20 @@ public class ReviewResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllReviews() {
         try {
-            RetrieveAllReviewsRsp retrieveAllReviewsRsp = new RetrieveAllReviewsRsp(reviewControllerLocal.retrieveAllReviews());
+            
+            
+              List<Review> reviews = reviewControllerLocal.retrieveAllReviews();
+            
+            for(Review review:reviews)
+            {
+                review.getShop().getReviews().clear();
+                  review.getShop().getProducts().clear();
+          
+            }
+               
+            
+            
+            RetrieveAllReviewsRsp retrieveAllReviewsRsp = new RetrieveAllReviewsRsp(reviews);
 
             return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
         } catch (Exception ex) {
@@ -64,7 +79,20 @@ public class ReviewResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllReviewsByShop(@PathParam("shopId") Long shopId) {
         try {
-            RetrieveAllReviewsByShopRsp retrieveAllReviewsRsp = new RetrieveAllReviewsByShopRsp(reviewControllerLocal.retrieveAllReviewsByShopId(shopId));
+            
+         
+               
+              List<Review> reviews = reviewControllerLocal.retrieveAllReviewsByShopId(shopId);
+            
+            for(Review review:reviews)
+            {
+                review.getShop().getReviews().clear();
+                review.getShop().getProducts().clear();
+          
+            }
+            
+            
+            RetrieveAllReviewsByShopRsp retrieveAllReviewsRsp = new RetrieveAllReviewsByShopRsp(reviews);
 
             return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
         } catch (Exception ex) {
