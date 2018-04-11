@@ -38,7 +38,7 @@ public class Delivery implements Serializable {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 6)
     private String deliveryCode;
 
     @OneToOne

@@ -6,15 +6,18 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+
+
+
 
 /**
  *
@@ -40,7 +43,7 @@ public class Review implements Serializable {
       @Column(nullable = false)
     private String customerName;
       
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Shop shop;
 
     public Review() {
@@ -119,6 +122,7 @@ public class Review implements Serializable {
     /**
      * @return the shop
      */
+
     public Shop getShop() {
         return shop;
     }

@@ -124,7 +124,7 @@ public class CustomerController implements CustomerControllerLocal {
             if (customerToUpdate.getEmail().equals(customer.getEmail())) {
                 customerToUpdate.setFirstName(customer.getFirstName());
                 customerToUpdate.setLastName(customer.getLastName());
-                customerToUpdate.setPassword(customer.getPassword());
+                customerToUpdate.setMobileNumber(customer.getMobileNumber());
             }
             else
             {
