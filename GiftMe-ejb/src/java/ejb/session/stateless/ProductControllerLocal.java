@@ -34,6 +34,8 @@ public interface ProductControllerLocal {
     public void debitQuantityOnHand(Long productId, Integer quantityToDebit) throws ProductNotFoundException, ProductInsufficientQuantityOnHandException;
 
     public List<Product> retrieveAllProductsByShopId(Long id) throws ShopNotFoundException;
+
+    public Product retrieveProductBySkuCode(String skuCode) throws ProductNotFoundException;
     
     
     

@@ -35,6 +35,7 @@ public class ApplicationConfig extends Application {
         resources.add(ws.restful.ReviewResource.class);
         resources.add(ws.restful.ShopResource.class);
         resources.add(ws.restful.TimeResource.class);
+        resources.add(ws.restful.TransactionResource.class);
     }
     
 }

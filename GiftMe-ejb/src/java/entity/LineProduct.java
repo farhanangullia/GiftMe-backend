@@ -37,17 +37,14 @@ public class LineProduct implements Serializable {
     @ManyToOne
     private Cart cart;
    */ 
-    @OneToOne
-    private Product product;
-
+ 
     public LineProduct() {
     }
 
-    public LineProduct(Long lineProductId, BigDecimal subTotal, Product product) {
+    public LineProduct(Long lineProductId, BigDecimal subTotal) {
         this.lineProductId = lineProductId;
         this.subTotal = subTotal;
-      //  this.cart = cart;
-        this.product = product;
+
     }
     
     
@@ -103,18 +100,5 @@ public class LineProduct implements Serializable {
 
   
 
-    /**
-     * @return the product
-     */
-    public Product getProduct() {
-        return product;
-    }
 
-    /**
-     * @param product the product to set
-     */
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-    
 }

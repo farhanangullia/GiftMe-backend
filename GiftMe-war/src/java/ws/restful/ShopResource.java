@@ -97,6 +97,7 @@ public class ShopResource {
             
                 for(Product product:shop.getProducts())
                 {
+                   
                     product.setShop(null);
                 }
               /*  for(Review review:shop.getReviews())

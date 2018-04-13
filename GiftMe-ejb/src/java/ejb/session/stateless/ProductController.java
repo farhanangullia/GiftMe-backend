@@ -9,6 +9,8 @@ import entity.Product;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.ProductInsufficientQuantityOnHandException;
@@ -135,4 +137,26 @@ public class ProductController implements ProductControllerLocal {
     
     
 
+    @Override
+    public Product retrieveProductBySkuCode(String skuCode) throws ProductNotFoundException
+    {
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.skuCode = :inSkuCode");
+        query.setParameter("inSkuCode", skuCode);
+        
+        try
+        {
+            return (Product)query.getSingleResult();
+        }
+        catch(NoResultException | NonUniqueResultException ex)
+        {
+            throw new ProductNotFoundException("Sku Code " + skuCode + " does not exist!");
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
 }

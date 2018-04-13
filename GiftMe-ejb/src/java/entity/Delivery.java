@@ -33,27 +33,26 @@ public class Delivery implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date scheduledTime;
-
+/*
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
-
+*/
     @Column(unique = true, length = 6)
     private String deliveryCode;
 
     @OneToOne
     private Transaction transaction;
 
-    @OneToOne
-    private Promotion promotion;
+
 
     public Delivery() {
     }
 
-    public Delivery(Date scheduledTime, DeliveryStatus status, String deliveryCode) {
+    public Delivery(Date scheduledTime, String deliveryCode) {
 
         this.scheduledTime = scheduledTime;
-        this.status = status;
+        //this.status = status;
         this.deliveryCode = deliveryCode;
     }
 
@@ -104,19 +103,7 @@ public class Delivery implements Serializable {
         this.scheduledTime = scheduledTime;
     }
 
-    /**
-     * @return the status
-     */
-    public DeliveryStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(DeliveryStatus status) {
-        this.status = status;
-    }
+ 
 
     /**
      * @return the transaction
@@ -132,19 +119,6 @@ public class Delivery implements Serializable {
         this.transaction = transaction;
     }
 
-    /**
-     * @return the promotion
-     */
-    public Promotion getPromotion() {
-        return promotion;
-    }
-
-    /**
-     * @param promotion the promotion to set
-     */
-    public void setPromotion(Promotion promotion) {
-        this.promotion = promotion;
-    }
 
     /**
      * @return the deliveryCode

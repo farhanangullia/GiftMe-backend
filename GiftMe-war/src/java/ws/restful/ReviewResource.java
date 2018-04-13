@@ -58,13 +58,13 @@ public class ReviewResource {
         try {
 
             List<Review> reviews = reviewControllerLocal.retrieveAllReviews();
-/*
+
             for (Review review : reviews) {
                 review.getShop().getReviews().clear();
                 review.getShop().getProducts().clear();
 
             }
-*/
+
             RetrieveAllReviewsRsp retrieveAllReviewsRsp = new RetrieveAllReviewsRsp(reviews);
 
             return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
@@ -86,13 +86,14 @@ System.out.println("HERE shop rev");
             List<Review> reviews = reviewControllerLocal.retrieveAllReviewsByShopId(shopId);
 
       System.out.println("HERE shop rev 2");
-         /*   for (Review review : reviews) {
+           for (Review review : reviews) {
                 review.getShop().getReviews().clear();
                 review.getShop().getProducts().clear();
+                
 
             }
-*/
-            RetrieveAllReviewsByShopRsp retrieveAllReviewsRsp = new RetrieveAllReviewsByShopRsp(reviews);
+           
+           RetrieveAllReviewsByShopRsp retrieveAllReviewsRsp = new RetrieveAllReviewsByShopRsp(reviews);
 
             return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
         } catch (Exception ex) {
@@ -150,9 +151,9 @@ System.out.println("HERE shop rev");
         {
             
             Review review = reviewControllerLocal.retrieveReviewById(reviewId);
-        //    review.getShop().getProducts().clear();
-          //  review.getShop().getReviews().clear();
-            
+           review.getShop().getProducts().clear();
+            review.getShop().getReviews().clear();
+           
             return Response.status(Status.OK).entity(new RetrieveReviewRsp(review)).build();
         }
        

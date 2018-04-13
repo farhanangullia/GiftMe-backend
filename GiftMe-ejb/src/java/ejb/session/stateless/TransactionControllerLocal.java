@@ -6,8 +6,13 @@
 package ejb.session.stateless;
 
 import entity.Transaction;
+import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreateNewTransactionException;
+import util.exception.CustomerNotFoundException;
+import util.exception.PromotionNotFoundException;
+import util.exception.TransactionNotFoundException;
+import ws.restful.datamodel.RemoteCheckoutLineItem;
 
 /**
  *
@@ -17,5 +22,15 @@ import util.exception.CreateNewTransactionException;
 public interface TransactionControllerLocal {
 
     public Transaction createNewTransaction(Transaction newTransaction) throws CreateNewTransactionException;
+
+    public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException;
+
+    public Transaction retrieveTransactionByTransactionId(Long transactionId) throws TransactionNotFoundException;
+
+
+
+    public List<Transaction> retrieveAllTransactions();
+
+    public List<Transaction> retrieveTransactionsByCustomerEmail(String email);
     
 }

@@ -82,8 +82,10 @@ public class ProductResource {
             
             
             Product product = productControllerLocal.retrieveProductById(productId);
-         product.setShop(null);                     //to fix internal server unmarshalling error
-            
+      //  product.setShop(null);                     //to fix internal server unmarshalling error
+            product.getShop().getProducts().clear();
+            product.getShop().getReviews().clear();
+                  
 
             RetrieveProductRsp retrieveProductRsp = new RetrieveProductRsp(product);
 

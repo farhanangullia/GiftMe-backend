@@ -14,10 +14,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -29,6 +32,9 @@ import util.enumeration.TransactionType;
  * @author Farhan Angullia
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "selectAllTransactionsByCustomerEmail", query = "SELECT t FROM Transaction t WHERE t.customer.email = :inCustomerEmail")
+})
 public class Transaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,7 +66,8 @@ public class Transaction implements Serializable {
         @OneToOne
     private Delivery delivery;
 
-    
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Promotion promotion;
     
     
     
@@ -254,6 +261,20 @@ public class Transaction implements Serializable {
      */
     public void setDelivery(Delivery delivery) {
         this.delivery = delivery;
+    }
+
+    /**
+     * @return the promotion
+     */
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    /**
+     * @param promotion the promotion to set
+     */
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
     }
 
 

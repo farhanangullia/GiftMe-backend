@@ -115,7 +115,7 @@ public class DataInitSessionBean {
 
             promotionControllerLocal.createPromotion(new Promotion("5OFF", new BigDecimal("5"), true));
             Review reviewTest = new Review(5, "Testing review", "Admin","Good value");
-            //reviewTest.setShop(shop);
+            reviewTest.setShop(shop);
             em.persist(reviewTest);
 
             shop.getReviews().add(reviewTest);

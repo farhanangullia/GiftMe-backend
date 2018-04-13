@@ -54,8 +54,6 @@ public class Product implements Serializable {
     @Column(unique = true, nullable = false)
     private String imgPath;
 
-    @OneToOne
-    private LineProduct lineProduct;
 
     @ManyToOne
     private Shop shop;
@@ -136,20 +134,7 @@ public class Product implements Serializable {
         this.skuCode = skuCode;
     }
 
-    /**
-     * @return the lineProduct
-     */
-    public LineProduct getLineProduct() {
-        return lineProduct;
-    }
-
-    /**
-     * @param lineProduct the lineProduct to set
-     */
-    public void setLineProduct(LineProduct lineProduct) {
-        this.lineProduct = lineProduct;
-    }
-
+ 
     /**
      * @return the shop
      */

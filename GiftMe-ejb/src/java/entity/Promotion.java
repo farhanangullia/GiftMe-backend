@@ -8,6 +8,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,15 +42,17 @@ public class Promotion implements Serializable {
 
     @Column(nullable = false)
     private Boolean enabled;
-/*
-    @OneToMany(mappedBy = "promotion")
+
+    /* @OneToMany(mappedBy = "promotion")
     private List<Transaction> transactions;
- */   
+    */
     public Promotion() {
+       // transactions = new ArrayList<Transaction>();
     }
 
     public Promotion(String promoCode, BigDecimal discount, Boolean enabled) {
 
+        this();
         this.promoCode = promoCode;
         this.discount = discount;
         this.enabled = enabled;
@@ -133,6 +136,20 @@ public class Promotion implements Serializable {
         this.enabled = enabled;
     }
 
+    /**
+     * @return the transactions
+     */
+  /*  public List<Transaction> getTransactions() {
+        return transactions;
+    }
+*/
+    /**
+     * @param transactions the transactions to set
+     */
+  /*  public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+*/
 
     /**
      * @return the transactions

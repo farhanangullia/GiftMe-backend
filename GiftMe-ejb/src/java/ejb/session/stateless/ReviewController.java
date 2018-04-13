@@ -57,7 +57,7 @@ public class ReviewController implements ReviewControllerLocal {
             
  ;
          Shop shop = shopControllerLocal.retrieveShopById(shopId);
-       //  review.setShop(shop);
+         review.setShop(shop);
 
         em.persist(review);
         
@@ -102,18 +102,18 @@ public class ReviewController implements ReviewControllerLocal {
     @Override
     public List<Review> retrieveAllReviewsByShopId(Long id) throws ShopNotFoundException {
 
-     //   Query query = em.createQuery("SELECT r FROM Review r WHERE r.shop.shopId = :inShopId");
-       // query.setParameter("inShopId", id);
-        List<Review> reviews;
+       Query query = em.createQuery("SELECT r FROM Review r WHERE r.shop.shopId = :inShopId");
+       query.setParameter("inShopId", id);
+       /* List<Review> reviews;
        try{
        Shop shop = shopControllerLocal.retrieveShopById(id);
       reviews = shop.getReviews();
        }
        catch(Exception e){
            throw new ShopNotFoundException(e.getMessage());
-       }
-       return reviews;
-       // return query.getResultList();
+       }*/
+    //   return reviews;
+        return query.getResultList();
     }
     
      @Override
