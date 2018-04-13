@@ -6,11 +6,14 @@
 package ejb.session.stateless;
 
 import entity.Review;
+import entity.Shop;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.exception.CreateReviewException;
 import util.exception.ReviewNotFoundException;
 
 /**
@@ -22,16 +25,64 @@ public class ReviewController implements ReviewControllerLocal {
 
     @PersistenceContext(unitName = "GiftMe-ejbPU")
     private EntityManager em;
+    
+    @EJB
+    private ShopControllerLocal shopControllerLocal;
 
      @Override
-    public Review createReview(Review review) {
+    public Review createReview(Review review) throws CreateReviewException {
 
+        
+        try {
         em.persist(review);
         em.flush();
+        
+        }
+        catch(Exception ex) {
+        throw new CreateReviewException(ex.getMessage());
+        }
         
         return review;
 
     }
+    
+    
+    
+    @Override
+    public Review createShopReview(Review review,Long shopId) throws CreateReviewException {
+
+        
+        try {
+            
+ ;
+         Shop shop = shopControllerLocal.retrieveShopById(shopId);
+       //  review.setShop(shop);
+
+        em.persist(review);
+        
+        shop.getReviews().add(review);
+        
+        em.merge(shop);
+
+        em.flush();
+        
+        }
+        catch(Exception ex) {
+        throw new CreateReviewException(ex.getMessage());
+        }
+        
+        return review;
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     @Override
     public void updateReview(Review review) {

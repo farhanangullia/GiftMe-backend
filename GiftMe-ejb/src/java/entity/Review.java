@@ -42,10 +42,10 @@ public class Review implements Serializable {
 
       @Column(nullable = false)
     private String customerName;
-      
+  /*    
     @ManyToOne(fetch = FetchType.EAGER)
     private Shop shop;
-
+*/
     public Review() {
     }
 
@@ -122,18 +122,20 @@ public class Review implements Serializable {
     /**
      * @return the shop
      */
-
+/*
     public Shop getShop() {
         return shop;
     }
-
+*/
     /**
      * @param shop the shop to set
      */
+    
+    /*
     public void setShop(Shop shop) {
         this.shop = shop;
     }
-
+*/
     /**
      * @return the customerName
      */

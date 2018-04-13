@@ -50,7 +50,7 @@ public class Shop implements Serializable {
     @OneToMany(mappedBy = "shop")
     private List<Product> products= new ArrayList<Product>();
     
-    @OneToMany(mappedBy = "shop")
+    @OneToMany
     private List<Review> reviews = new ArrayList<Review>();
     
     @OneToOne

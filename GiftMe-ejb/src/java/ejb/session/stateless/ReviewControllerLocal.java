@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.Review;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.CreateReviewException;
 import util.exception.ReviewNotFoundException;
 import util.exception.ShopNotFoundException;
 
@@ -24,8 +25,12 @@ public interface ReviewControllerLocal {
 
     public Review retrieveReviewById(Long id) throws ReviewNotFoundException;
 
-    public Review createReview(Review review);
+    public Review createReview(Review review) throws CreateReviewException;
 
     public void updateReview(Review review);
+
+  
+
+    public Review createShopReview(Review review, Long shopid) throws CreateReviewException;
     
 }

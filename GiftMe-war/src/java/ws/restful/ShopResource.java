@@ -62,10 +62,10 @@ public class ShopResource {
                 {
                     product.setShop(null);
                 }
-                for(Review review:shop.getReviews())
+             /*   for(Review review:shop.getReviews())
                 {
                     review.setShop(null);
-                }
+                }*/
             }
             
          
@@ -99,10 +99,10 @@ public class ShopResource {
                 {
                     product.setShop(null);
                 }
-                for(Review review:shop.getReviews())
+              /*  for(Review review:shop.getReviews())
                 {
                    review.setShop(null);
-                }
+                }*/
                             
 
             
