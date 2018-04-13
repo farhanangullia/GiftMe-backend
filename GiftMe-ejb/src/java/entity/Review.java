@@ -39,21 +39,26 @@ public class Review implements Serializable {
 
     @Column(nullable = false)
     private String comment;
+    
+    @Column(nullable = false)
+    private String title;
+
 
       @Column(nullable = false)
     private String customerName;
-  /*    
+    
     @ManyToOne(fetch = FetchType.EAGER)
     private Shop shop;
-*/
+
     public Review() {
     }
 
-    public Review( Integer rating, String comment, String customerName) {
+    public Review( Integer rating, String comment, String customerName, String title) {
  
         this.rating = rating;
         this.comment = comment;
         this.customerName = customerName;
+        this.title = title;
     }
     
     
@@ -122,20 +127,20 @@ public class Review implements Serializable {
     /**
      * @return the shop
      */
-/*
+
     public Shop getShop() {
         return shop;
     }
-*/
+
     /**
      * @param shop the shop to set
      */
     
-    /*
+    
     public void setShop(Shop shop) {
         this.shop = shop;
     }
-*/
+
     /**
      * @return the customerName
      */
@@ -148,6 +153,20 @@ public class Review implements Serializable {
      */
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        this.title = title;
     }
 
   

@@ -34,17 +34,17 @@ public class Cart implements Serializable {
     @OneToOne
     private Transaction transaction;
     
-    @OneToMany(mappedBy = "cart")
+  /*  @OneToMany(mappedBy = "cart")
     private List<LineProduct> lineProducts;
-
+*/
     public Cart() {
     }
 
-    public Cart(Long cartId, BigDecimal price, Transaction transaction, List<LineProduct> lineProducts) {
+    public Cart(Long cartId, BigDecimal price, Transaction transaction) {
         this.cartId = cartId;
         this.price = price;
         this.transaction = transaction;
-        this.lineProducts = lineProducts;
+      //  this.lineProducts = lineProducts;
     }
     
     

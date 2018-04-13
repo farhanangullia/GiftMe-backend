@@ -97,14 +97,16 @@ public class DataInitSessionBean {
             product.setSkuCode("PROD005");
             product.setImgPath("../assets/img/products/PROD005.png");
 
-            Shop shop1 = shopControllerLocal.createShop(new Shop("Kent Ridge Flora", "South West", ShopType.PREMIUM));
+            Shop shop1 = shopControllerLocal.createShop(new Shop("Kent Ridge Flora", "South West"));
+            
             product.setShop(shop1);
             em.persist(product);
             em.flush();
             shop1.getProducts().add(product);
             em.merge(shop1);
 
-            Shop shop = shopControllerLocal.createShop(new Shop("PlushRUs Store", "South West", ShopType.NORMAL));
+            Shop shop = shopControllerLocal.createShop(new Shop("PlushRUs Store", "South West"));
+            
             customerControllerLocal.createNewCustomer(new Customer("admin", "admin", "mail.giftme@gmail.com", "password", "82222034"));
             Product product2 = productControllerLocal.createProduct(new Product(40, "Teddy Bear", "Soft and cute teddy bear", "Plushies", new BigDecimal("6"), "PROD006", "../assets/img/products/PROD006.png", shop));
 
@@ -112,7 +114,7 @@ public class DataInitSessionBean {
             em.merge(shop);
 
             promotionControllerLocal.createPromotion(new Promotion("5OFF", new BigDecimal("5"), true));
-            Review reviewTest = new Review(5, "Testing review", "Admin");
+            Review reviewTest = new Review(5, "Testing review", "Admin","Good value");
             //reviewTest.setShop(shop);
             em.persist(reviewTest);
 

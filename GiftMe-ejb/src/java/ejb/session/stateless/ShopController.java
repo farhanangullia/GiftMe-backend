@@ -70,7 +70,7 @@ public class ShopController implements ShopControllerLocal {
             Shop shopToUpdate = retrieveShopById(shop.getShopId());           
             shopToUpdate.setLocation(shop.getLocation());
             shopToUpdate.setShopName(shop.getShopName());
-            shopToUpdate.setShopType(shop.getShopType());
+         //   shopToUpdate.setShopType(shop.getShopType());
  
         }
         else

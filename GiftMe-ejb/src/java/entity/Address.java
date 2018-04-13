@@ -34,21 +34,19 @@ public class Address implements Serializable {
     @Column
     private String unitNum;
     
-    @OneToOne
-    private Shop shop;
-    
+
     @OneToOne
     private Delivery delivery;
 
     public Address() {
     }
 
-    public Address(Long addressId, Integer postalCode, String streetName, String unitNum, Shop shop, Delivery delivery) {
+    public Address(Long addressId, Integer postalCode, String streetName, String unitNum, Delivery delivery) {
         this.addressId = addressId;
         this.postalCode = postalCode;
         this.streetName = streetName;
         this.unitNum = unitNum;
-        this.shop = shop;
+
         this.delivery = delivery;
     }
     
@@ -128,20 +126,6 @@ public class Address implements Serializable {
      */
     public void setUnitNum(String unitNum) {
         this.unitNum = unitNum;
-    }
-
-    /**
-     * @return the shop
-     */
-    public Shop getShop() {
-        return shop;
-    }
-
-    /**
-     * @param shop the shop to set
-     */
-    public void setShop(Shop shop) {
-        this.shop = shop;
     }
 
     /**

@@ -42,33 +42,40 @@ public class Shop implements Serializable {
 
     @Column(nullable = false)
     private String location;
+
     
-    @Column(nullable = false)
+ /*   @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ShopType shopType;
-
+*/
     @OneToMany(mappedBy = "shop")
     private List<Product> products= new ArrayList<Product>();
     
-    @OneToMany
+    @OneToMany(mappedBy = "shop")
     private List<Review> reviews = new ArrayList<Review>();
-    
+  /*  
     @OneToOne
     private Address address;
-
+*/
     public Shop() {
     }
 
-    public Shop(String shopName, String location, ShopType shopType) {
+    /* public Shop(String shopName, String location, ShopType shopType) {
        
         this.shopName = shopName;
         this.location = location;
         this.shopType = shopType;
      
+    }*/
+    
+    
+    public Shop(String shopName, String location) {
+       
+        this.shopName = shopName;
+        this.location = location;
+
+     
     }
-    
-    
-    
 
     public Long getShopId() {
         return shopId;
@@ -134,32 +141,20 @@ public class Shop implements Serializable {
     /**
      * @return the shopType
      */
-    public ShopType getShopType() {
+  /*  public ShopType getShopType() {
         return shopType;
     }
-
+*/
     /**
      * @param shopType the shopType to set
      */
-    public void setShopType(ShopType shopType) {
+/*    public void setShopType(ShopType shopType) {
         this.shopType = shopType;
     }
+*/
 
 
 
-    /**
-     * @return the address
-     */
-    public Address getAddress() {
-        return address;
-    }
-
-    /**
-     * @param address the address to set
-     */
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
     /**
      * @return the products
