@@ -82,9 +82,10 @@ public class ReviewResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllReviewsByShop(@PathParam("shopId") Long shopId) {
         try {
-
+System.out.println("HERE shop rev");
             List<Review> reviews = reviewControllerLocal.retrieveAllReviewsByShopId(shopId);
 
+      System.out.println("HERE shop rev 2");
          /*   for (Review review : reviews) {
                 review.getShop().getReviews().clear();
                 review.getShop().getProducts().clear();

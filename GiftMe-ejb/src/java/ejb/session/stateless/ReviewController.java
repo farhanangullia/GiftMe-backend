@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.CreateReviewException;
 import util.exception.ReviewNotFoundException;
+import util.exception.ShopNotFoundException;
 
 /**
  *
@@ -99,11 +100,20 @@ public class ReviewController implements ReviewControllerLocal {
     }
 
     @Override
-    public List<Review> retrieveAllReviewsByShopId(Long id) {
+    public List<Review> retrieveAllReviewsByShopId(Long id) throws ShopNotFoundException {
 
-        Query query = em.createQuery("SELECT r FROM Review r WHERE r.shop.shopId = :inShopId");
-        query.setParameter("inShopId", id);
-        return query.getResultList();
+     //   Query query = em.createQuery("SELECT r FROM Review r WHERE r.shop.shopId = :inShopId");
+       // query.setParameter("inShopId", id);
+        List<Review> reviews;
+       try{
+       Shop shop = shopControllerLocal.retrieveShopById(id);
+      reviews = shop.getReviews();
+       }
+       catch(Exception e){
+           throw new ShopNotFoundException(e.getMessage());
+       }
+       return reviews;
+       // return query.getResultList();
     }
     
      @Override

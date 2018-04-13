@@ -7,7 +7,9 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,7 +35,37 @@ public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
+    
+    
+     private Integer totalLineItem;    
+    private Integer totalQuantity;
+    @Column(precision = 11, scale = 2)
+    private BigDecimal totalAmount;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date transactionDateTime;    
+    @OneToMany
+    private List<TransactionLineItem> transactionLineItems;
+    @ManyToOne
+    private Customer customer;
+    
+    
+        @Column(precision = 11, scale = 2)
+    private BigDecimal discount;
+    
+  /*      @Column
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType;
+*/
+    
+        @OneToOne
+    private Delivery delivery;
 
+    
+    
+    
+    
+    
+/*
     @Column(length = 16, nullable = false)
     private Integer creditCardNumber;
 
@@ -57,26 +90,26 @@ public class Transaction implements Serializable {
 
     @OneToOne
     private Cart cart;
-    
-    @OneToOne
-    private Delivery delivery;
+    */
 
     public Transaction() {
+        
+        transactionLineItems = new ArrayList<>();
     }
 
-    public Transaction(Long transactionId, Integer creditCardNumber, Integer cvcNumber, BigDecimal totalAmount, Date transactionDateTime, TransactionType transactionType, Customer customer, Cart cart, Delivery delivery) {
-        this.transactionId = transactionId;
-        this.creditCardNumber = creditCardNumber;
-        this.cvcNumber = cvcNumber;
+    public Transaction(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date transactionDateTime, List<TransactionLineItem> transactionLineItems, Customer customer, BigDecimal discount) {
+        this.totalLineItem = totalLineItem;
+        this.totalQuantity = totalQuantity;
         this.totalAmount = totalAmount;
         this.transactionDateTime = transactionDateTime;
-        this.transactionType = transactionType;
+        this.transactionLineItems = transactionLineItems;
         this.customer = customer;
-        this.cart = cart;
-        this.delivery = delivery;
+        this.discount = discount;
     }
-       
 
+
+    
+    
     public Long getTransactionId() {
         return transactionId;
     }
@@ -111,31 +144,31 @@ public class Transaction implements Serializable {
     }
 
     /**
-     * @return the creditCardNumber
+     * @return the totalLineItem
      */
-    public Integer getCreditCardNumber() {
-        return creditCardNumber;
+    public Integer getTotalLineItem() {
+        return totalLineItem;
     }
 
     /**
-     * @param creditCardNumber the creditCardNumber to set
+     * @param totalLineItem the totalLineItem to set
      */
-    public void setCreditCardNumber(Integer creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
+    public void setTotalLineItem(Integer totalLineItem) {
+        this.totalLineItem = totalLineItem;
     }
 
     /**
-     * @return the cvcNumber
+     * @return the totalQuantity
      */
-    public Integer getCvcNumber() {
-        return cvcNumber;
+    public Integer getTotalQuantity() {
+        return totalQuantity;
     }
 
     /**
-     * @param cvcNumber the cvcNumber to set
+     * @param totalQuantity the totalQuantity to set
      */
-    public void setCvcNumber(Integer cvcNumber) {
-        this.cvcNumber = cvcNumber;
+    public void setTotalQuantity(Integer totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 
     /**
@@ -167,17 +200,17 @@ public class Transaction implements Serializable {
     }
 
     /**
-     * @return the transactionType
+     * @return the transactionLineItems
      */
-    public TransactionType getTransactionType() {
-        return transactionType;
+    public List<TransactionLineItem> getTransactionLineItems() {
+        return transactionLineItems;
     }
 
     /**
-     * @param transactionType the transactionType to set
+     * @param transactionLineItems the transactionLineItems to set
      */
-    public void setTransactionType(TransactionType transactionType) {
-        this.transactionType = transactionType;
+    public void setTransactionLineItems(List<TransactionLineItem> transactionLineItems) {
+        this.transactionLineItems = transactionLineItems;
     }
 
     /**
@@ -195,18 +228,19 @@ public class Transaction implements Serializable {
     }
 
     /**
-     * @return the cart
+     * @return the discount
      */
-    public Cart getCart() {
-        return cart;
+    public BigDecimal getDiscount() {
+        return discount;
     }
 
     /**
-     * @param cart the cart to set
+     * @param discount the discount to set
      */
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
     }
+
 
     /**
      * @return the delivery
@@ -222,18 +256,5 @@ public class Transaction implements Serializable {
         this.delivery = delivery;
     }
 
-    /**
-     * @return the promotion
-     */
-    public Promotion getPromotion() {
-        return promotion;
-    }
-
-    /**
-     * @param promotion the promotion to set
-     */
-    public void setPromotion(Promotion promotion) {
-        this.promotion = promotion;
-    }
 
 }
