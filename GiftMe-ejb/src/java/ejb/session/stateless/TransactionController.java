@@ -5,12 +5,14 @@
  */
 package ejb.session.stateless;
 
+import com.google.maps.errors.ApiException;
 import entity.Customer;
 import entity.Delivery;
 import entity.Product;
 import entity.Promotion;
 import entity.Transaction;
 import entity.TransactionLineItem;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.common.DeliveryDistanceTimeCalculator;
 import util.common.RandomGenerator;
 import util.exception.CreateDeliveryException;
 import util.exception.CreateNewTransactionException;
@@ -105,7 +108,7 @@ public class TransactionController implements TransactionControllerLocal {
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
-    public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException
+    public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException, ApiException, InterruptedException, IOException
     {
         
   
@@ -133,7 +136,7 @@ public class TransactionController implements TransactionControllerLocal {
                 BigDecimal totalAmount = new BigDecimal("0.00");
                 BigDecimal deliveryFee = new BigDecimal("0.00");
                          String deliveryCode;
-                         Integer minutesToArrival = 0;
+                
                          
 
                 for(RemoteCheckoutLineItem remoteCheckoutLineItem:remoteCheckoutLineItems)
@@ -151,12 +154,24 @@ public class TransactionController implements TransactionControllerLocal {
                 if(totalAmount.compareTo(new BigDecimal("40")) == -1)
                     deliveryFee = new BigDecimal("10");
                     
+                
+                //CALCULATE ARRIVAL TIME AND DISTANCE BASED ON GOOGLE API
+               String arrivalTime = DeliveryDistanceTimeCalculator.getArrivalTime(shopAddress, customerAddress);
+               Long dist = DeliveryDistanceTimeCalculator.getDriveDist(shopAddress, customerAddress);
+               String distanceAway = dist.toString().concat(" Metres");
+               
+               List<String> exactAddresses = DeliveryDistanceTimeCalculator.getExactAddresses(shopAddress, customerAddress);
+               String fromAddress = exactAddresses.get(0);
+               String toAddress = exactAddresses.get(1);
+                
+                
+                
            
                 deliveryCode = RandomGenerator.RandomDeliveryCode();
                     System.out.println("CODE IS "+ deliveryCode);
-                    minutesToArrival = 30;
-                Delivery delivery = deliveryControllerLocal.createDelivery(new Delivery( RandomGenerator.RandomDeliveryCode() ,"PROCESSING", customerAddress, minutesToArrival));
-                
+                  
+                Delivery delivery = deliveryControllerLocal.createDelivery(new Delivery( RandomGenerator.RandomDeliveryCode() ,"PROCESSING", toAddress , arrivalTime, distanceAway, fromAddress));
+                totalAmount = totalAmount.add(deliveryFee); //Total amount = Total Amt + Delivery Fee
 
                 if(promoCode==null)
                 { //without promo discount
@@ -181,6 +196,10 @@ public class TransactionController implements TransactionControllerLocal {
             catch(ProductNotFoundException ex)
             {
                 throw new CreateNewTransactionException("Unable to create new transaction remotely as product does not exist: " + ex.getMessage());
+            }
+             catch(ApiException | InterruptedException | IOException exc)
+            {
+                throw new InterruptedException("Unable to create new transaction remotely as exception occured in google api: " + exc.getMessage());
             }
             catch(NoSuchAlgorithmException | CreateDeliveryException e)
             {

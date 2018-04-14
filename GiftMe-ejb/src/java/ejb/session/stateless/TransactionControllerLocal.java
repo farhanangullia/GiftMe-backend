@@ -5,7 +5,9 @@
  */
 package ejb.session.stateless;
 
+import com.google.maps.errors.ApiException;
 import entity.Transaction;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.ejb.Local;
@@ -32,7 +34,7 @@ public interface TransactionControllerLocal {
     public List<Transaction> retrieveAllTransactions();
 
     public List<Transaction> retrieveTransactionsByCustomerEmail(String email);
-
-    public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException;
+    
+public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException, ApiException, InterruptedException, IOException;
     
 }

@@ -25,6 +25,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.common.DeliveryDistanceTimeCalculator;
 import util.common.RandomGenerator;
 import util.email.EmailManager;
 import util.enumeration.ShopType;
@@ -87,7 +88,14 @@ public class DataInitSessionBean {
 
     public void initializeData() {
         try {
-
+            
+          long dist = DeliveryDistanceTimeCalculator.getDriveDist("kent ridge hall", "clementi mall");
+          int distance = (int)dist;
+          
+          String arrivalTime = DeliveryDistanceTimeCalculator.getArrivalTime("Tuas", "701 changi coast road");
+        
+System.out.println("DIST IS " + distance);
+System.out.println("TIME IS " + arrivalTime);
             Product product = new Product();
             product.setProductName("Roses");
             product.setCategory("Flowers");

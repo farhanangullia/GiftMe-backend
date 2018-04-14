@@ -33,42 +33,46 @@ public class Delivery implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date scheduledTime;
-/*
+    /*
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
-*/
-    
+     */
+
     @Column
     private String deliveryStatus;
-    
+
+    @Column
+    private String shopAddress;
+
     @Column
     private String customerAddress;
-    
-    @Column
-    private Integer minutesToArrival;
-    
 
-    
+    @Column
+    private String timeToArrival;
+
+    @Column
+    private String distanceAway;
+
     @Column(unique = true, length = 8)
     private String deliveryCode;
 
     @OneToOne
     private Transaction transaction;
 
-
-
     public Delivery() {
     }
 
-    public Delivery(String deliveryCode, String deliveryStatus, String customerAddress, Integer minutesToArrival) {
+    public Delivery(String deliveryCode, String deliveryStatus, String customerAddress, String timeToArrival, String distanceAway, String shopAddress) {
 
-       // this.scheduledTime = scheduledTime;
+        // this.scheduledTime = scheduledTime;
         //this.status = status;
         this.deliveryStatus = deliveryStatus;
         this.deliveryCode = deliveryCode;
         this.customerAddress = customerAddress;
-        this.minutesToArrival = minutesToArrival;
+        this.timeToArrival = timeToArrival;
+        this.distanceAway = distanceAway;
+        this.shopAddress = shopAddress;
     }
 
     public Long getDeliveryId() {
@@ -118,8 +122,6 @@ public class Delivery implements Serializable {
         this.scheduledTime = scheduledTime;
     }
 
- 
-
     /**
      * @return the transaction
      */
@@ -133,7 +135,6 @@ public class Delivery implements Serializable {
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
     }
-
 
     /**
      * @return the deliveryCode
@@ -178,17 +179,45 @@ public class Delivery implements Serializable {
     }
 
     /**
-     * @return the minutesToArrival
+     * @return the timeToArrival
      */
-    public Integer getMinutesToArrival() {
-        return minutesToArrival;
+    public String getTimeToArrival() {
+        return timeToArrival;
     }
 
     /**
-     * @param minutesToArrival the minutesToArrival to set
+     * @param timeToArrival the timeToArrival to set
      */
-    public void setMinutesToArrival(Integer minutesToArrival) {
-        this.minutesToArrival = minutesToArrival;
+    public void setTimeToArrival(String timeToArrival) {
+        this.timeToArrival = timeToArrival;
+    }
+
+    /**
+     * @return the distanceAway
+     */
+    public String getDistanceAway() {
+        return distanceAway;
+    }
+
+    /**
+     * @param distanceAway the distanceAway to set
+     */
+    public void setDistanceAway(String distanceAway) {
+        this.distanceAway = distanceAway;
+    }
+
+    /**
+     * @return the shopAddress
+     */
+    public String getShopAddress() {
+        return shopAddress;
+    }
+
+    /**
+     * @param shopAddress the shopAddress to set
+     */
+    public void setShopAddress(String shopAddress) {
+        this.shopAddress = shopAddress;
     }
 
 }
