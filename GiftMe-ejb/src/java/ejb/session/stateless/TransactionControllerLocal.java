@@ -14,6 +14,7 @@ import javax.ejb.Local;
 import util.exception.CreateDeliveryException;
 import util.exception.CreateNewTransactionException;
 import util.exception.CustomerNotFoundException;
+import util.exception.DeliveryNotFoundException;
 import util.exception.PromotionNotFoundException;
 import util.exception.TransactionNotFoundException;
 import ws.restful.datamodel.RemoteCheckoutLineItem;
@@ -35,6 +36,8 @@ public interface TransactionControllerLocal {
 
     public List<Transaction> retrieveTransactionsByCustomerEmail(String email);
     
-public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException, ApiException, InterruptedException, IOException;
+public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException, InterruptedException,ApiException, IOException;
+
+    public Transaction retrieveTransactionByDeliveryCode(String deliveryCode) throws DeliveryNotFoundException;
     
 }

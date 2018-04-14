@@ -25,6 +25,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.common.DeliveryDistanceTimeCalculator;
@@ -32,6 +34,7 @@ import util.common.RandomGenerator;
 import util.exception.CreateDeliveryException;
 import util.exception.CreateNewTransactionException;
 import util.exception.CustomerNotFoundException;
+import util.exception.DeliveryNotFoundException;
 import util.exception.ProductInsufficientQuantityOnHandException;
 import util.exception.ProductNotFoundException;
 import util.exception.PromotionNotFoundException;
@@ -108,7 +111,7 @@ public class TransactionController implements TransactionControllerLocal {
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
-    public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException, ApiException, InterruptedException, IOException
+    public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException
     {
         
   
@@ -156,21 +159,28 @@ public class TransactionController implements TransactionControllerLocal {
                     
                 
                 //CALCULATE ARRIVAL TIME AND DISTANCE BASED ON GOOGLE API
-               String arrivalTime = DeliveryDistanceTimeCalculator.getArrivalTime(shopAddress, customerAddress);
-               Long dist = DeliveryDistanceTimeCalculator.getDriveDist(shopAddress, customerAddress);
-               String distanceAway = dist.toString().concat(" Metres");
+  
+        //  DeliveryDistanceTimeCalculator.getArrivalTime(shopAddress, customerAddress);
+       //Long dist = 0L;
+          //  DeliveryDistanceTimeCalculator.getDriveDist(shopAddress, customerAddress);
+         //      String distanceAway = dist.toString().concat(" Metres");
                
-               List<String> exactAddresses = DeliveryDistanceTimeCalculator.getExactAddresses(shopAddress, customerAddress);
+              List<String> exactAddresses = DeliveryDistanceTimeCalculator.getExactAddresses(shopAddress, customerAddress);
                String fromAddress = exactAddresses.get(0);
                String toAddress = exactAddresses.get(1);
                 
                 
-                
+                  String arrivalTime = DeliveryDistanceTimeCalculator.getArrivalTime(shopAddress, customerAddress);
+                  System.out.println("ARRIVAL TIME" + arrivalTime);
+                  Long dist = DeliveryDistanceTimeCalculator.getDriveDist(shopAddress, customerAddress);
+                  String distanceAway = dist.toString().concat(" Metres");
+                  
            
                 deliveryCode = RandomGenerator.RandomDeliveryCode();
+                
                     System.out.println("CODE IS "+ deliveryCode);
                   
-                Delivery delivery = deliveryControllerLocal.createDelivery(new Delivery( RandomGenerator.RandomDeliveryCode() ,"PROCESSING", toAddress , arrivalTime, distanceAway, fromAddress));
+                Delivery delivery = deliveryControllerLocal.createDelivery(new Delivery( deliveryCode ,"PROCESSING", toAddress , arrivalTime, distanceAway, fromAddress));
                 totalAmount = totalAmount.add(deliveryFee); //Total amount = Total Amt + Delivery Fee
 
                 if(promoCode==null)
@@ -182,36 +192,36 @@ public class TransactionController implements TransactionControllerLocal {
                    
                    return transaction;
                 }
-                   else
-                {
-                    Transaction transaction = createNewTransaction(new Transaction(totalLineItem, totalQuantity, totalAmount.subtract(promotion.getDiscount()), new Date(), transactionLineItems, customer, promotion.getDiscount(), deliveryFee,delivery));
+                
+                
+                  Transaction transaction = createNewTransaction(new Transaction(totalLineItem, totalQuantity, totalAmount.subtract(promotion.getDiscount()), new Date(), transactionLineItems, customer, promotion.getDiscount(), deliveryFee,delivery));
                     
                        delivery.setTransaction(transaction);
                    em.merge(delivery);
-                   
-                   return transaction;
+                    return transaction;
+                  
                     
-                }
+                
                           }
-            catch(ProductNotFoundException ex)
+            catch(ProductNotFoundException | CustomerNotFoundException ex)
             {
                 throw new CreateNewTransactionException("Unable to create new transaction remotely as product does not exist: " + ex.getMessage());
             }
-             catch(ApiException | InterruptedException | IOException exc)
+             catch( Exception exc)
             {
-                throw new InterruptedException("Unable to create new transaction remotely as exception occured in google api: " + exc.getMessage());
+               throw new CreateNewTransactionException("Nothing to checkout dsdremotely!");
+               // throw new InterruptedException("Unable to create new transaction remotely as exception occured in google api: " + exc.getMessage());
             }
-            catch(NoSuchAlgorithmException | CreateDeliveryException e)
-            {
-                throw new CreateNewTransactionException("Unable to create new transaction remotely as no such algorithm or create delivery exception " + e.getMessage());
-            }
+           
         }
         else
         {
             throw new CreateNewTransactionException("Nothing to checkout remotely!");
+            
         }
-    }
-    
+   }
+   
+
     
     
     
@@ -265,6 +275,30 @@ public class TransactionController implements TransactionControllerLocal {
         
         return transactions;
     }
+    
+    
+     @Override
+    public Transaction retrieveTransactionByDeliveryCode(String deliveryCode) throws DeliveryNotFoundException
+    {
+       Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.delivery.deliveryCode = :inDeliveryCode");
+        query.setParameter("inDeliveryCode", deliveryCode);
+        
+        try
+        {
+            return (Transaction)query.getSingleResult();
+        }
+        catch(NoResultException | NonUniqueResultException ex)
+        {
+            throw new DeliveryNotFoundException("Transaction with delivery code: " + deliveryCode + " does not exist!");
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
     
     
     

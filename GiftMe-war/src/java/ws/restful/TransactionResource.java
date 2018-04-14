@@ -37,6 +37,7 @@ import ws.restful.datamodel.ErrorRsp;
 import ws.restful.datamodel.RemoteCheckoutReq;
 import ws.restful.datamodel.RemoteCheckoutRsp;
 import ws.restful.datamodel.RetrieveAllTransactionsByEmailRsp;
+import ws.restful.datamodel.RetrieveTransactionByDeliveryCodeRsp;
 import ws.restful.datamodel.RetrieveTransactionRsp;
 
 /**
@@ -81,9 +82,12 @@ public class TransactionResource {
                 }
 
                 System.out.println(email);
+                
 
-                Transaction transaction = transactionControllerLocal.createNewTransactionFromRemoteCheckoutRequest(promoCode, remoteCheckoutReq.getRemoteCheckoutLineItems(), email, customerAddress, shopAddress);
-
+               // Transaction transaction = transactionControllerLocal.createNewTransactionFromRemoteCheckoutRequest(promoCode, remoteCheckoutReq.getRemoteCheckoutLineItems(), email, customerAddress, shopAddress);
+Transaction transaction = transactionControllerLocal.createNewTransactionFromRemoteCheckoutRequest(promoCode, remoteCheckoutReq.getRemoteCheckoutLineItems(), email, customerAddress, shopAddress);
+         //      Transaction newTransaction = new Transaction();
+          //     Transaction transaction = transactionControllerLocal.createNewTransaction(newTransaction);
                 transaction.getDelivery().setTransaction(null);
 
                 /* for(TransactionLineItem transactionLineItem: transaction.getDelivery().getTransaction().getTransactionLineItems()){
@@ -111,14 +115,11 @@ public class TransactionResource {
                 RemoteCheckoutRsp remoteCheckoutRsp = new RemoteCheckoutRsp(transaction);
 
                 return Response.status(Response.Status.OK).entity(remoteCheckoutRsp).build();
-            } catch (PromotionNotFoundException | CustomerNotFoundException | CreateNewTransactionException | NoSuchAlgorithmException | CreateDeliveryException ex) {
+            } catch (  Exception ex) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
             }
             
-            catch (InterruptedException | IOException exc) {
-                return Response.status(Response.Status.BAD_REQUEST).entity(exc.getMessage()).build();
-            }
-
+         
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid remote checkout request").build();
         }
@@ -189,6 +190,50 @@ public class TransactionResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+    
+    @Path("retrieveTransactionByDeliveryCode")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveTransactionByDeliveryCode(@QueryParam("deliveryCode") String deliveryCode) {
+        try {
+
+           // List<Transaction> transactions = transactionControllerLocal.retrieveTransactionsByCustomerEmail(email);
+
+           
+           
+           Transaction transaction = transactionControllerLocal.retrieveTransactionByDeliveryCode(deliveryCode);
+            transaction.getDelivery().setTransaction(null);
+
+            for (TransactionLineItem transactionLineItem : transaction.getTransactionLineItems()) {
+                transactionLineItem.getProduct().getShop().getProducts().clear();
+                transactionLineItem.getProduct().getShop().getReviews().clear();
+
+            }
+            transaction.getCustomer().setMobileNumber(null);
+            transaction.getCustomer().setPassword(null);
+            transaction.getCustomer().setSalt(null);
+
+            RetrieveTransactionByDeliveryCodeRsp retrieveTransactionByDeliveryCodeRsp = new RetrieveTransactionByDeliveryCodeRsp(transaction);
+           
+           
+           
+     
+            return Response.status(Response.Status.OK).entity(retrieveTransactionByDeliveryCodeRsp).build();
+
+        } catch (Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
+    
+    
+    
+    
+    
+    
 
     private TransactionControllerLocal lookupTransactionControllerLocal() {
         try {

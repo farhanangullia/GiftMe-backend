@@ -86,7 +86,7 @@ public class DeliveryDistanceTimeCalculator {
                 .language("en-US")
                 .await();
 
-        List<String> addresses = new ArrayList<String>();
+        List<String> addresses = new ArrayList<>();
            addresses.add(result.originAddresses[0]);
         addresses.add(result.destinationAddresses[0]);
         addresses.add(result.originAddresses[0]);
