@@ -6,8 +6,10 @@
 package ejb.session.stateless;
 
 import entity.Transaction;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.CreateDeliveryException;
 import util.exception.CreateNewTransactionException;
 import util.exception.CustomerNotFoundException;
 import util.exception.PromotionNotFoundException;
@@ -23,8 +25,6 @@ public interface TransactionControllerLocal {
 
     public Transaction createNewTransaction(Transaction newTransaction) throws CreateNewTransactionException;
 
-    public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException;
-
     public Transaction retrieveTransactionByTransactionId(Long transactionId) throws TransactionNotFoundException;
 
 
@@ -32,5 +32,7 @@ public interface TransactionControllerLocal {
     public List<Transaction> retrieveAllTransactions();
 
     public List<Transaction> retrieveTransactionsByCustomerEmail(String email);
+
+    public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException;
     
 }

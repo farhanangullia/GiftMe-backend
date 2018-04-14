@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType(name = "remoteCheckoutReq", propOrder = {
-    "promoCode","email",
+    "promoCode","email", "customerAddress", "shopAddress",
   
     "remoteCheckoutLineItems"
 })
@@ -27,6 +27,8 @@ public class RemoteCheckoutReq {
     
     private String promoCode;
     private String email;
+    private String customerAddress;
+    private String shopAddress;
       private List<RemoteCheckoutLineItem> remoteCheckoutLineItems;
 
 
@@ -34,9 +36,11 @@ public class RemoteCheckoutReq {
              this.remoteCheckoutLineItems = new ArrayList<>();
     }
 
-    public RemoteCheckoutReq(String promoCode, String email, List<RemoteCheckoutLineItem> remoteCheckoutLineItems) {
+    public RemoteCheckoutReq(String promoCode, String email, String customerAddress, String shopAddress, List<RemoteCheckoutLineItem> remoteCheckoutLineItems) {
         this.promoCode = promoCode;
         this.email = email;
+        this.customerAddress = customerAddress;
+        this.shopAddress = shopAddress;
         this.remoteCheckoutLineItems = remoteCheckoutLineItems;
     }
 
@@ -85,6 +89,34 @@ public class RemoteCheckoutReq {
 
     public void setRemoteCheckoutLineItems(List<RemoteCheckoutLineItem> remoteCheckoutLineItems) {
         this.remoteCheckoutLineItems = remoteCheckoutLineItems;
+    }
+
+    /**
+     * @return the customerAddress
+     */
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+
+    /**
+     * @param customerAddress the customerAddress to set
+     */
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
+    }
+
+    /**
+     * @return the shopAddress
+     */
+    public String getShopAddress() {
+        return shopAddress;
+    }
+
+    /**
+     * @param shopAddress the shopAddress to set
+     */
+    public void setShopAddress(String shopAddress) {
+        this.shopAddress = shopAddress;
     }
 
 

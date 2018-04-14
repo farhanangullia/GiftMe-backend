@@ -54,6 +54,9 @@ public class Transaction implements Serializable {
     @ManyToOne
     private Customer customer;
     
+        @Column(precision = 11, scale = 2)
+    private BigDecimal deliveryFee;
+    
     
         @Column(precision = 11, scale = 2)
     private BigDecimal discount;
@@ -62,6 +65,8 @@ public class Transaction implements Serializable {
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 */
+        
+     
     
         @OneToOne
     private Delivery delivery;
@@ -104,7 +109,7 @@ public class Transaction implements Serializable {
         transactionLineItems = new ArrayList<>();
     }
 
-    public Transaction(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date transactionDateTime, List<TransactionLineItem> transactionLineItems, Customer customer, BigDecimal discount) {
+    public Transaction(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date transactionDateTime, List<TransactionLineItem> transactionLineItems, Customer customer, BigDecimal discount, BigDecimal deliveryFee, Delivery delivery) {
         this.totalLineItem = totalLineItem;
         this.totalQuantity = totalQuantity;
         this.totalAmount = totalAmount;
@@ -112,6 +117,8 @@ public class Transaction implements Serializable {
         this.transactionLineItems = transactionLineItems;
         this.customer = customer;
         this.discount = discount;
+        this.deliveryFee = deliveryFee;
+        this.delivery = delivery;
     }
 
 
@@ -275,6 +282,20 @@ public class Transaction implements Serializable {
      */
     public void setPromotion(Promotion promotion) {
         this.promotion = promotion;
+    }
+
+    /**
+     * @return the deliveryFee
+     */
+    public BigDecimal getDeliveryFee() {
+        return deliveryFee;
+    }
+
+    /**
+     * @param deliveryFee the deliveryFee to set
+     */
+    public void setDeliveryFee(BigDecimal deliveryFee) {
+        this.deliveryFee = deliveryFee;
     }
 
 

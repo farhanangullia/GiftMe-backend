@@ -38,7 +38,19 @@ public class Delivery implements Serializable {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 */
-    @Column(unique = true, length = 6)
+    
+    @Column
+    private String deliveryStatus;
+    
+    @Column
+    private String customerAddress;
+    
+    @Column
+    private Integer minutesToArrival;
+    
+
+    
+    @Column(unique = true, length = 8)
     private String deliveryCode;
 
     @OneToOne
@@ -49,11 +61,14 @@ public class Delivery implements Serializable {
     public Delivery() {
     }
 
-    public Delivery(Date scheduledTime, String deliveryCode) {
+    public Delivery(String deliveryCode, String deliveryStatus, String customerAddress, Integer minutesToArrival) {
 
-        this.scheduledTime = scheduledTime;
+       // this.scheduledTime = scheduledTime;
         //this.status = status;
+        this.deliveryStatus = deliveryStatus;
         this.deliveryCode = deliveryCode;
+        this.customerAddress = customerAddress;
+        this.minutesToArrival = minutesToArrival;
     }
 
     public Long getDeliveryId() {
@@ -132,6 +147,48 @@ public class Delivery implements Serializable {
      */
     public void setDeliveryCode(String deliveryCode) {
         this.deliveryCode = deliveryCode;
+    }
+
+    /**
+     * @return the deliveryStatus
+     */
+    public String getDeliveryStatus() {
+        return deliveryStatus;
+    }
+
+    /**
+     * @param deliveryStatus the deliveryStatus to set
+     */
+    public void setDeliveryStatus(String deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
+
+    /**
+     * @return the customerAddress
+     */
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+
+    /**
+     * @param customerAddress the customerAddress to set
+     */
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
+    }
+
+    /**
+     * @return the minutesToArrival
+     */
+    public Integer getMinutesToArrival() {
+        return minutesToArrival;
+    }
+
+    /**
+     * @param minutesToArrival the minutesToArrival to set
+     */
+    public void setMinutesToArrival(Integer minutesToArrival) {
+        this.minutesToArrival = minutesToArrival;
     }
 
 }

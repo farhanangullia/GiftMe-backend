@@ -6,11 +6,13 @@
 package ejb.session.stateless;
 
 import entity.Customer;
+import entity.Delivery;
 import entity.Product;
 import entity.Promotion;
 import entity.Transaction;
 import entity.TransactionLineItem;
 import java.math.BigDecimal;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +25,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.common.RandomGenerator;
+import util.exception.CreateDeliveryException;
 import util.exception.CreateNewTransactionException;
 import util.exception.CustomerNotFoundException;
 import util.exception.ProductInsufficientQuantityOnHandException;
@@ -52,6 +56,10 @@ public class TransactionController implements TransactionControllerLocal {
     
     @EJB
     private PromotionControllerLocal promotionControllerLocal;
+    
+    @EJB
+    private DeliveryControllerLocal deliveryControllerLocal;
+    
 
     public TransactionController() {
     }
@@ -97,7 +105,7 @@ public class TransactionController implements TransactionControllerLocal {
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
-    public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException
+    public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException
     {
         
   
@@ -114,6 +122,8 @@ public class TransactionController implements TransactionControllerLocal {
                    promotion = promotionControllerLocal.retrievePromotionByPromoCode(promoCode);
                 
                
+               
+               
                 System.out.println("trans controller email is " + email);
                     Customer customer =  customerControllerLocal.retrieveCustomerByEmail(email);
                 System.out.println("trans controller customer email is " + customer.getEmail());
@@ -121,6 +131,10 @@ public class TransactionController implements TransactionControllerLocal {
                 Integer totalLineItem = 0;    
                 Integer totalQuantity = 0;    
                 BigDecimal totalAmount = new BigDecimal("0.00");
+                BigDecimal deliveryFee = new BigDecimal("0.00");
+                         String deliveryCode;
+                         Integer minutesToArrival = 0;
+                         
 
                 for(RemoteCheckoutLineItem remoteCheckoutLineItem:remoteCheckoutLineItems)
                 {
@@ -133,15 +147,44 @@ public class TransactionController implements TransactionControllerLocal {
                     totalQuantity += remoteCheckoutLineItem.getQuantity();
                     totalAmount = totalAmount.add(subTotal);
                 }
+                
+                if(totalAmount.compareTo(new BigDecimal("40")) == -1)
+                    deliveryFee = new BigDecimal("10");
+                    
+           
+                deliveryCode = RandomGenerator.RandomDeliveryCode();
+                    System.out.println("CODE IS "+ deliveryCode);
+                    minutesToArrival = 30;
+                Delivery delivery = deliveryControllerLocal.createDelivery(new Delivery( RandomGenerator.RandomDeliveryCode() ,"PROCESSING", customerAddress, minutesToArrival));
+                
 
                 if(promoCode==null)
-                return createNewTransaction(new Transaction(totalLineItem, totalQuantity, totalAmount, new Date(), transactionLineItems, customer, new BigDecimal("0")));
-                else
-                    return createNewTransaction(new Transaction(totalLineItem, totalQuantity, totalAmount.subtract(promotion.getDiscount()), new Date(), transactionLineItems, customer, promotion.getDiscount()));
-            }
+                { //without promo discount
+                   Transaction transaction = createNewTransaction(new Transaction(totalLineItem, totalQuantity, totalAmount, new Date(), transactionLineItems, customer, new BigDecimal("0"), deliveryFee,delivery));
+                   
+                   delivery.setTransaction(transaction);
+                   em.merge(delivery);
+                   
+                   return transaction;
+                }
+                   else
+                {
+                    Transaction transaction = createNewTransaction(new Transaction(totalLineItem, totalQuantity, totalAmount.subtract(promotion.getDiscount()), new Date(), transactionLineItems, customer, promotion.getDiscount(), deliveryFee,delivery));
+                    
+                       delivery.setTransaction(transaction);
+                   em.merge(delivery);
+                   
+                   return transaction;
+                    
+                }
+                          }
             catch(ProductNotFoundException ex)
             {
                 throw new CreateNewTransactionException("Unable to create new transaction remotely as product does not exist: " + ex.getMessage());
+            }
+            catch(NoSuchAlgorithmException | CreateDeliveryException e)
+            {
+                throw new CreateNewTransactionException("Unable to create new transaction remotely as no such algorithm or create delivery exception " + e.getMessage());
             }
         }
         else

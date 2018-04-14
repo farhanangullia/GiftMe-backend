@@ -8,6 +8,7 @@ package ws.restful;
 import ejb.session.stateless.TransactionControllerLocal;
 import entity.Transaction;
 import entity.TransactionLineItem;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.JAXBElement;
+import util.exception.CreateDeliveryException;
 import util.exception.CreateNewTransactionException;
 import util.exception.CustomerNotFoundException;
 import util.exception.PromotionNotFoundException;
@@ -68,6 +70,8 @@ public class TransactionResource {
                 RemoteCheckoutReq remoteCheckoutReq = jaxbRemoteCheckoutReq.getValue();   
                 
                 String promoCode = remoteCheckoutReq.getPromoCode();
+                String customerAddress = remoteCheckoutReq.getCustomerAddress();
+                String shopAddress = remoteCheckoutReq.getShopAddress();
                 System.out.println("PROMO ID" + promoCode);
                 String email = remoteCheckoutReq.getEmail();
                 
@@ -80,9 +84,17 @@ public class TransactionResource {
       
                 System.out.println(email);
               
-                Transaction transaction = transactionControllerLocal.createNewTransactionFromRemoteCheckoutRequest(promoCode, remoteCheckoutReq.getRemoteCheckoutLineItems(), email);
-      
+                Transaction transaction = transactionControllerLocal.createNewTransactionFromRemoteCheckoutRequest(promoCode, remoteCheckoutReq.getRemoteCheckoutLineItems(), email, customerAddress, shopAddress);
+    
+             transaction.getDelivery().setTransaction(null);
+            
                 
+               /* for(TransactionLineItem transactionLineItem: transaction.getDelivery().getTransaction().getTransactionLineItems()){
+           transactionLineItem.getProduct().getShop().getProducts().clear();
+                    transactionLineItem.getProduct().getShop().getReviews().clear();
+                   
+                        }
+                        */
                 
                 for(TransactionLineItem transactionLineItem:transaction.getTransactionLineItems()){
                     transactionLineItem.getProduct().getShop().getProducts().clear();
@@ -106,7 +118,7 @@ public class TransactionResource {
                 
                 return Response.status(Response.Status.OK).entity(remoteCheckoutRsp).build();
             }
-            catch(PromotionNotFoundException | CustomerNotFoundException | CreateNewTransactionException ex) 
+            catch(PromotionNotFoundException | CustomerNotFoundException | CreateNewTransactionException | NoSuchAlgorithmException | CreateDeliveryException ex) 
             {
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
             }
@@ -129,7 +141,8 @@ public class TransactionResource {
             
             
             Transaction transaction = transactionControllerLocal.retrieveTransactionByTransactionId(transactionId);
-                 
+                     transaction.getDelivery().setTransaction(null);
+            
       
           for(TransactionLineItem transactionLineItem:transaction.getTransactionLineItems()){
                     transactionLineItem.getProduct().getShop().getProducts().clear();
@@ -169,16 +182,14 @@ public class TransactionResource {
    
        
        for(Transaction transaction: transactions)
-       {
+       {    transaction.getDelivery().setTransaction(null);
+            
             for(TransactionLineItem transactionLineItem:transaction.getTransactionLineItems()){
                     transactionLineItem.getProduct().getShop().getProducts().clear();
                     transactionLineItem.getProduct().getShop().getReviews().clear();
                     
           }
-           transaction.getCustomer().setMobileNumber(null);
-               transaction.getCustomer().setPassword(null);
-               transaction.getCustomer().setSalt(null);
-
+       
            transaction.setCustomer(null); //neater so json wont display customer object
        }
        
