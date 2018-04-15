@@ -57,9 +57,9 @@ public class DataInitSessionBean {
     @PostConstruct
     public void postConstruct() {
         try {
-
+   //  sendEmail();
             customerControllerLocal.retrieveCustomerByEmail("mail.giftme@gmail.com");
-            sendEmail();
+        
 
         } catch (CustomerNotFoundException ex) {
             initializeData();
@@ -69,23 +69,7 @@ public class DataInitSessionBean {
 
     }
 
-    public void sendEmail() {
-
-        //    String encryptedPassword 
-        EmailManager emailManager = new EmailManager("e0032247", "<MY PASSWORD>");    //replace e0032247 with ur SOC unix acc and <MY PASSWORD> with ur UNIX acc password
-        Boolean result = emailManager.email("mail.giftme@gmail.com", "<EMAIL TO>"); //replace <EMAIL TO> with the email of the receipient
-
-        if (result) {
-            // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Email sent successfully", null));
-            System.out.println("Email sent successfully");
-        } else {
-
-            System.out.println("An error has occured while sending email");
-
-            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while sending email", null));
-        }
-    }
-
+  
     public void initializeData() {
         try {
             
@@ -105,7 +89,7 @@ System.out.println("TIME IS " + arrivalTime);
             product.setSkuCode("PROD005");
             product.setImgPath("../assets/img/products/PROD005.png");
 
-            Shop shop1 = shopControllerLocal.createShop(new Shop("Kent Ridge Flora", "South West"));
+            Shop shop1 = shopControllerLocal.createShop(new Shop("Kent Ridge Flora", "Kent Ridge MRT", "South West"));
             
             product.setShop(shop1);
             em.persist(product);
@@ -113,7 +97,7 @@ System.out.println("TIME IS " + arrivalTime);
             shop1.getProducts().add(product);
             em.merge(shop1);
 
-            Shop shop = shopControllerLocal.createShop(new Shop("PlushRUs Store", "South West"));
+            Shop shop = shopControllerLocal.createShop(new Shop("PlushRUs Store", "Star Vista Mall", "South West"));
             
             customerControllerLocal.createNewCustomer(new Customer("admin", "admin", "mail.giftme@gmail.com", "password", "82222034"));
             Product product2 = productControllerLocal.createProduct(new Product(40, "Teddy Bear", "Soft and cute teddy bear", "Plushies", new BigDecimal("6"), "PROD006", "../assets/img/products/PROD006.png", shop));

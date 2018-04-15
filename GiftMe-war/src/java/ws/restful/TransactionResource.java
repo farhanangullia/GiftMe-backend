@@ -116,6 +116,7 @@ Transaction transaction = transactionControllerLocal.createNewTransactionFromRem
 
                 return Response.status(Response.Status.OK).entity(remoteCheckoutRsp).build();
             } catch (  Exception ex) {
+                System.out.println(ex.getMessage());
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
             }
             

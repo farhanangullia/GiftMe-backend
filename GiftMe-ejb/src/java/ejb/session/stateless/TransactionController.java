@@ -31,6 +31,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.common.DeliveryDistanceTimeCalculator;
 import util.common.RandomGenerator;
+import util.email.EmailManager;
 import util.exception.CreateDeliveryException;
 import util.exception.CreateNewTransactionException;
 import util.exception.CustomerNotFoundException;
@@ -190,6 +191,8 @@ public class TransactionController implements TransactionControllerLocal {
                    delivery.setTransaction(transaction);
                    em.merge(delivery);
                    
+                      sendDeliveryEmail(delivery);
+                   
                    return transaction;
                 }
                 
@@ -198,6 +201,9 @@ public class TransactionController implements TransactionControllerLocal {
                     
                        delivery.setTransaction(transaction);
                    em.merge(delivery);
+                  
+                  sendDeliveryEmail(delivery);
+                   
                     return transaction;
                   
                     
@@ -208,7 +214,7 @@ public class TransactionController implements TransactionControllerLocal {
                 throw new CreateNewTransactionException("Unable to create new transaction remotely as product does not exist: " + ex.getMessage());
             }
              catch( Exception exc)
-            {
+            {System.out.println(exc.getMessage());
                throw new CreateNewTransactionException("Nothing to checkout dsdremotely!");
                // throw new InterruptedException("Unable to create new transaction remotely as exception occured in google api: " + exc.getMessage());
             }
@@ -296,7 +302,24 @@ public class TransactionController implements TransactionControllerLocal {
     
     
     
-    
+     public void sendDeliveryEmail(Delivery delivery) {
+
+        //    String encryptedPassword 
+        System.out.println("HERE");
+       String receipientEmail = delivery.getTransaction().getCustomer().getEmail();
+        EmailManager emailManager = new EmailManager("e0032247", "MY PASSWORD");    //replace e0032247 with ur SOC unix acc and <MY PASSWORD> with ur UNIX acc password
+        Boolean result = emailManager.emailDelivery("mail.giftme@gmail.com", receipientEmail, delivery); //replace <EMAIL TO> with the email of the receipient
+
+        if (result) {
+            // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Email sent successfully", null));
+            System.out.println("Email sent successfully");
+        } else {
+
+            System.out.println("An error has occured while sending email");
+
+            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while sending email", null));
+        }
+    }
     
     
     

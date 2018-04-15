@@ -67,6 +67,7 @@ public class CustomerResource {
             
             customer.setPassword(null);       //for security purposes on client side
             customer.setSalt(null);
+            
            
             
             return Response.status(Status.OK).entity(new GetCustomerRsp(customer)).build();

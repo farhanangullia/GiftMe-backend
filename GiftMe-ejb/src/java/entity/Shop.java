@@ -43,6 +43,8 @@ public class Shop implements Serializable {
     @Column(nullable = false)
     private String location;
 
+    @Column(nullable = false)
+    private String area;
     
  /*   @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -69,10 +71,11 @@ public class Shop implements Serializable {
     }*/
     
     
-    public Shop(String shopName, String location) {
+    public Shop(String shopName, String location, String area) {
        
         this.shopName = shopName;
         this.location = location;
+        this.area = area;
 
      
     }
@@ -182,6 +185,20 @@ public class Shop implements Serializable {
      */
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    /**
+     * @return the area
+     */
+    public String getArea() {
+        return area;
+    }
+
+    /**
+     * @param area the area to set
+     */
+    public void setArea(String area) {
+        this.area = area;
     }
 
 }
