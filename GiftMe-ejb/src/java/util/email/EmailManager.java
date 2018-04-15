@@ -55,6 +55,8 @@ public class EmailManager
       
         BigDecimal discount = delivery.getTransaction().getDiscount();
         BigDecimal amt = amount.add(discount);
+        BigDecimal delFee = delivery.getTransaction().getDeliveryFee();
+        amt = amt.subtract(delFee);
         
           String promotionDiscount = delivery.getTransaction().getDiscount().toString();
         String subTotal = amt.toString();
@@ -65,8 +67,10 @@ public class EmailManager
         System.out.println("HERE LA");
         
         String deliveryFee = delivery.getTransaction().getDeliveryFee().toString();
-        if(deliveryFee.equals("0"))
+        if(deliveryFee.equals("0.00"))
             deliveryFee = "FREE";
+        else
+            deliveryFee = "S$"+deliveryFee;
         
         
         System.out.println("UM HERE");
@@ -266,7 +270,7 @@ public class EmailManager
 "                          </p>\n" +
 "                        </td>\n" +
 "                        <td class=\"m_4953874785919959836two m_4953874785919959836sub-column\" style=\"vertical-align:top;min-width:0px;padding:0px 0px 10px;padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px;text-align:left;padding-right:10px;width:16.666666%\">\n" +
-"                          <p class=\"m_4953874785919959836amount\" style=\"margin:0 0 5px 0;text-align:right;white-space:nowrap\">S$"+deliveryFee+"</p>\n" +
+"                          <p class=\"m_4953874785919959836amount\" style=\"margin:0 0 5px 0;text-align:right;white-space:nowrap\">"+deliveryFee+"</p>\n" +
 "                        </td>\n" +
 "                        <td class=\"m_4953874785919959836expander\" style=\"vertical-align:top;width:0px;padding:0px 0px 10px;padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px;text-align:left;padding:0!important\"></td>\n" +
 "                      </tr>\n" +
