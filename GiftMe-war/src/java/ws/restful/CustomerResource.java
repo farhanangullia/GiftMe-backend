@@ -68,6 +68,7 @@ public class CustomerResource {
             customer.setPassword(null);       //for security purposes on client side
             customer.setSalt(null);
             
+            customer.getTransactions().clear();
            
             
             return Response.status(Status.OK).entity(new GetCustomerRsp(customer)).build();
@@ -129,6 +130,7 @@ public class CustomerResource {
                 UpdateCustomerReq updateCustomerReq = jaxbUpdateCustomerReq.getValue();
                 
                 customerControllerLocal.updateCustomer(updateCustomerReq.getCustomer());
+                
                 
                 return Response.status(Response.Status.OK).build();
             } catch (UpdateCustomerException ex) {

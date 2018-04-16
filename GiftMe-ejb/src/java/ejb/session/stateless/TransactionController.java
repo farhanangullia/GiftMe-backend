@@ -307,7 +307,7 @@ public class TransactionController implements TransactionControllerLocal {
         //    String encryptedPassword 
         System.out.println("HERE");
        String receipientEmail = delivery.getTransaction().getCustomer().getEmail();
-        EmailManager emailManager = new EmailManager("e0032247", "<MY PASSWORD>");    //replace e0032247 with ur SOC unix acc and <MY PASSWORD> with ur UNIX acc password
+        EmailManager emailManager = new EmailManager("e0032247", "giftmepassword");    //replace e0032247 with ur SOC unix acc and <MY PASSWORD> with ur UNIX acc password OR leave it (this acc is Farhan's)
         Boolean result = emailManager.emailDelivery("mail.giftme@gmail.com", receipientEmail, delivery); //replace <EMAIL TO> with the email of the receipient
 
         if (result) {

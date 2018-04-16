@@ -53,6 +53,9 @@ public class Product implements Serializable {
     
     @Column(unique = true, nullable = false)
     private String imgPath;
+    
+    @Column(nullable = true)
+    private String colour;
 
 
     @ManyToOne
@@ -217,6 +220,20 @@ public class Product implements Serializable {
      */
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+
+    /**
+     * @return the colour
+     */
+    public String getColour() {
+        return colour;
+    }
+
+    /**
+     * @param colour the colour to set
+     */
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
 }

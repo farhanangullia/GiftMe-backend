@@ -42,12 +42,12 @@ public class Customer implements Serializable {
     @Column(columnDefinition = "CHAR(32)")
     private String salt;
 
-   /*@OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer")
     private List<Transaction> transactions;
-   */
+
     public Customer() {
         //  this.salt = CryptographicHelper.getInstance().generateRandomString(32);
-         // transactions = new ArrayList<>();
+        transactions = new ArrayList<>();
     }
 
     public Customer(String firstName, String lastName, String email, String password, String mobileNumber) {
@@ -156,19 +156,17 @@ public class Customer implements Serializable {
     /**
      * @return the transactions
      */
- /* public List<Transaction> getTransactions() {
+    public List<Transaction> getTransactions() {
         return transactions;
     }
-  */
+
     /**
      * @param transactions the transactions to set
      */
-   
-  /*   public void setTransactions(List<Transaction> transactions) {
+    public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
-*/
-     
+
     /**
      * @return the password
      */

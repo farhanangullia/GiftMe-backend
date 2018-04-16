@@ -88,6 +88,7 @@ System.out.println("TIME IS " + arrivalTime);
             product.setQuantityOnHand(50);
             product.setSkuCode("PROD005");
             product.setImgPath("../assets/img/products/PROD005.png");
+            product.setColour("Red");
 
             Shop shop1 = shopControllerLocal.createShop(new Shop("Kent Ridge Flora", "Kent Ridge MRT", "South West"));
             
