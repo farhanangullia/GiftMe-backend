@@ -39,7 +39,7 @@ public class Product implements Serializable {
     @Column(nullable = false)
     private String productName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String description;
 
     @Column(nullable = false)
@@ -74,6 +74,20 @@ public class Product implements Serializable {
         this.skuCode = skuCode;
         this.imgPath = imgPath;
         this.shop = shop;
+    }
+    
+    //for flowers
+    public Product(Integer quantityOnHand, String productName, String description, String category, BigDecimal price, String skuCode, String imgPath, Shop shop, String colour) {
+
+        this.quantityOnHand = quantityOnHand;
+        this.productName = productName;
+        this.description = description;
+        this.category = category;
+        this.price = price;
+        this.skuCode = skuCode;
+        this.imgPath = imgPath;
+        this.shop = shop;
+        this.colour = colour;
     }
 
     public Long getProductId() {

@@ -89,6 +89,8 @@ Transaction transaction = transactionControllerLocal.createNewTransactionFromRem
          //      Transaction newTransaction = new Transaction();
           //     Transaction transaction = transactionControllerLocal.createNewTransaction(newTransaction);
                 transaction.getDelivery().setTransaction(null);
+                
+               
 
                 /* for(TransactionLineItem transactionLineItem: transaction.getDelivery().getTransaction().getTransactionLineItems()){
            transactionLineItem.getProduct().getShop().getProducts().clear();
@@ -113,6 +115,8 @@ Transaction transaction = transactionControllerLocal.createNewTransactionFromRem
                 transaction.getCustomer().setPassword(null);
                 transaction.getCustomer().setSalt(null);
                 RemoteCheckoutRsp remoteCheckoutRsp = new RemoteCheckoutRsp(transaction);
+                
+                 transaction.getCustomer().getTransactions().clear();
 
                 return Response.status(Response.Status.OK).entity(remoteCheckoutRsp).build();
             } catch (  Exception ex) {
@@ -145,6 +149,7 @@ Transaction transaction = transactionControllerLocal.createNewTransactionFromRem
             transaction.getCustomer().setPassword(null);
             transaction.getCustomer().setSalt(null);
 
+            transaction.getCustomer().getTransactions().clear();
             RetrieveTransactionRsp retrieveTransactionRsp = new RetrieveTransactionRsp(transaction);
 
             return Response.status(Response.Status.OK).entity(retrieveTransactionRsp).build();
