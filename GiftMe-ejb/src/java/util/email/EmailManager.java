@@ -110,7 +110,7 @@ public class EmailManager
 "                    <table class=\"m_4953874785919959836twelve m_4953874785919959836columns\" style=\"border-collapse:collapse;margin:0 auto;width:580px;border-spacing:0!important\">\n" +
 "                      <tbody><tr>\n" +
 "                        <td style=\"vertical-align:top;padding:0px 0px 10px\">\n" +
-"                          <img alt=\"giftme\" class=\"m_4953874785919959836center CToWUd\" src=\"http://i68.tinypic.com/2hs13rr.jpg\" style=\"margin:0 auto;margin-top:15px;margin-bottom:4px;width:34%;max-width:250px;height:auto;float:none;clear:none;display:inline-block\">\n" +
+"                          <img alt=\"giftme\" class=\"m_4953874785919959836center CToWUd\" src=\"http://i67.tinypic.com/107kgtx.png\" style=\"margin:0 auto;margin-top:15px;margin-bottom:4px;width:34%;max-width:250px;height:auto;float:none;clear:none;display:inline-block\">\n" +
 "                        </td>\n" +
 "                        <td class=\"m_4953874785919959836expander\" style=\"vertical-align:top;width:0px;padding:0px 0px 10px;padding:0!important\"></td>\n" +
 "                      </tr>\n" +

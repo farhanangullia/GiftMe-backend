@@ -126,6 +126,7 @@ public class TransactionController implements TransactionControllerLocal {
                 System.out.println("HEREEE ADASDAS");
                 Promotion promotion = new Promotion();
                if(promoCode != null)
+                   if(!promoCode.isEmpty())
                    promotion = promotionControllerLocal.retrievePromotionByPromoCode(promoCode);
                 
                
@@ -184,7 +185,7 @@ public class TransactionController implements TransactionControllerLocal {
                 Delivery delivery = deliveryControllerLocal.createDelivery(new Delivery( deliveryCode ,"PROCESSING", toAddress , arrivalTime, distanceAway, fromAddress));
                 totalAmount = totalAmount.add(deliveryFee); //Total amount = Total Amt + Delivery Fee
 
-                if(promoCode==null)
+                if(promoCode==null || promoCode.isEmpty())
                 { //without promo discount
                    Transaction transaction = createNewTransaction(new Transaction(totalLineItem, totalQuantity, totalAmount, new Date(), transactionLineItems, customer, new BigDecimal("0"), deliveryFee,delivery));
                    

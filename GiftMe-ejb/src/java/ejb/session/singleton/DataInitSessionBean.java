@@ -122,4 +122,21 @@ System.out.println("TIME IS " + arrivalTime);
 
     }
 
+    
+    
+    public void initializeShops() {
+        
+        
+    }
+    
+    
+       
+    public void initializeProducts() {
+        
+        
+    }
+    
+    
+    
+    
 }

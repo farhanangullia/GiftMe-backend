@@ -48,6 +48,7 @@ public class Promotion implements Serializable {
     */
     public Promotion() {
        // transactions = new ArrayList<Transaction>();
+       promoCode = "";
     }
 
     public Promotion(String promoCode, BigDecimal discount, Boolean enabled) {
