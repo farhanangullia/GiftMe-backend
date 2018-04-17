@@ -67,7 +67,8 @@ public class DataInitSessionBean {
         }
 
     }
-
+    
+    
     public void initializeData() {
         try {
 
@@ -76,6 +77,8 @@ public class DataInitSessionBean {
 
             String arrivalTime = DeliveryDistanceTimeCalculator.getArrivalTime("Tuas", "701 changi coast road");
 
+              promotionControllerLocal.createPromotion(new Promotion("5OFF", new BigDecimal("5"), true));
+            
             customerControllerLocal.createNewCustomer(new Customer("admin", "admin", "mail.giftme@gmail.com", "password", "82222034"));
             initializeConfectionary();
             initializeFlowers();
@@ -111,7 +114,7 @@ public class DataInitSessionBean {
             shop.getProducts().add(product2);
             em.merge(shop);
              */
-            promotionControllerLocal.createPromotion(new Promotion("5OFF", new BigDecimal("5"), true));
+          
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());

@@ -68,6 +68,7 @@ public class PromotionController implements PromotionControllerLocal {
 
         em.persist(promotion);
         em.flush();
+        em.refresh(promotion);
         
         return promotion;
 

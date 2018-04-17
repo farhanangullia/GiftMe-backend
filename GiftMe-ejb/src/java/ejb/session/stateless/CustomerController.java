@@ -6,6 +6,8 @@
 package ejb.session.stateless;
 
 import entity.Customer;
+import entity.Promotion;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -13,6 +15,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.email.EmailManager;
 import util.exception.CreateCustomerException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
@@ -28,6 +31,9 @@ public class CustomerController implements CustomerControllerLocal {
 
     @PersistenceContext(unitName = "GiftMe-ejbPU")
     private EntityManager em;
+    
+    @EJB
+    PromotionControllerLocal promotionControllerLocal;
 
     @Override
     public Long createNewCustomer(Customer newCustomer) throws CreateCustomerException {
@@ -36,10 +42,15 @@ public class CustomerController implements CustomerControllerLocal {
             //  newCustomer.setSalt(CryptographicHelper.getInstance().generateRandomString(32));
             System.out.println("Password before setting is : " + newCustomer.getPassword());
             //   newCustomer.setPassword(newCustomer.getPassword());
-          newCustomer = encryptCustomerPassword(newCustomer);
+            newCustomer = encryptCustomerPassword(newCustomer);
             em.persist(newCustomer);
             em.flush();
             em.refresh(newCustomer);
+            if (!newCustomer.getEmail().equals("mail.giftme@gmail.com")) {
+                
+                Promotion defaultPromotion = promotionControllerLocal.retrievePromotionByPromoCode("5OFF");
+                sendNewCustomerEmail(newCustomer, defaultPromotion);
+            }
 
             return newCustomer.getCustomerId();
         } catch (PersistenceException ex) {
@@ -63,12 +74,11 @@ public class CustomerController implements CustomerControllerLocal {
         //this.salt = CryptographicHelper.getInstance().generateRandomString(32);
 
         customer.setPassword(CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(customer.getPassword() + customer.getSalt())));
-        
 
         return customer;
     }
 
-  /*  @Override
+    /*  @Override
     public Long createCustomerFromBackend(Customer newCustomer) throws CreateCustomerException {
         try {
             System.out.println("Creating customer from backend");
@@ -89,7 +99,7 @@ public class CustomerController implements CustomerControllerLocal {
         }
 
     }
-*/
+     */
     @Override
     public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException {
         Query query = em.createQuery("SELECT c FROM Customer c WHERE c.email = :inEmail");
@@ -126,41 +136,48 @@ public class CustomerController implements CustomerControllerLocal {
                 customerToUpdate.setFirstName(customer.getFirstName());
                 customerToUpdate.setLastName(customer.getLastName());
                 customerToUpdate.setMobileNumber(customer.getMobileNumber());
-            }
-            else
-            {
+            } else {
                 throw new UpdateCustomerException("Email of customer does not match the email given");
             }
-            
+
         } else {
             throw new CustomerNotFoundException("Customer email not provided for customer to be updated");
         }
     }
 
-
-    
-     @Override
+    @Override
     public void updateCustomerPassword(Customer customer) throws CustomerNotFoundException, UpdateCustomerException {
         if (customer.getCustomerId() != null) {
             Customer customerToUpdate = retrieveCustomerByEmail(customer.getEmail());  //if error then change to ID
             if (customerToUpdate.getEmail().equals(customer.getEmail())) {
-           
+
                 customerToUpdate.setEncryptedPassword(customer.getPassword());
-            }
-            else
-            {
+            } else {
                 throw new UpdateCustomerException("Email of customer does not match the email given");
             }
-            
+
         } else {
             throw new CustomerNotFoundException("Customer email not provided for customer to be updated");
         }
     }
-    
-    
-    
-    
-    
-    
-    
+
+    public void sendNewCustomerEmail(Customer customer,Promotion defaultPromotion) {
+
+        //    String encryptedPassword 
+        System.out.println("HERE");
+        String receipientEmail = customer.getEmail();
+        EmailManager emailManager = new EmailManager("e0032247", "giftmepassword");    //replace e0032247 with ur SOC unix acc and <MY PASSWORD> with ur UNIX acc password OR leave it (this acc is Farhan's)
+        Boolean result = emailManager.emailNewCustomer("mail.giftme@gmail.com", receipientEmail, customer,defaultPromotion); //replace <EMAIL TO> with the email of the receipient
+
+        if (result) {
+            // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Email sent successfully", null));
+            System.out.println("Email sent successfully");
+        } else {
+
+            System.out.println("An error has occured while sending email");
+
+            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while sending email", null));
+        }
+    }
+
 }
