@@ -124,11 +124,11 @@ public class DataInitSessionBean {
 
     public void initializeConfectionary() {
 
-        Shop starbucks = shopControllerLocal.createShop(new Shop("Starbucks ION Mall", "238 Orchard Blvd, ION Orchard", "Central"));
-        Shop biscuitBaskets = shopControllerLocal.createShop(new Shop("Biscuit Baskets", "4 Tampines Central 5, Tampines Mall", "East"));
-        Shop naturallySuperb = shopControllerLocal.createShop(new Shop("Naturally Superb", "282 Bishan Street 22, Bishan North Shopping Mall", "North"));
-        Shop chocoNotLate = shopControllerLocal.createShop(new Shop("ChocoNotLate", "50 Jurong Gateway Rd, Jem", "West"));
-        Shop birthdayTreats = shopControllerLocal.createShop(new Shop("Birthday Treats", "1 Harbourfront Walk,, VivoCity", "South"));
+        Shop starbucks = shopControllerLocal.createShop(new Shop("Starbucks ION Mall", "238 Orchard Blvd, ION Orchard", "Central","../assets/img/shops/starbucks.jpg"));
+        Shop biscuitBaskets = shopControllerLocal.createShop(new Shop("Biscuit Baskets", "4 Tampines Central 5, Tampines Mall", "East","../assets/img/shops/biscuitbaskets.jpg"));
+        Shop naturallySuperb = shopControllerLocal.createShop(new Shop("Naturally Superb", "282 Bishan Street 22, Bishan North Shopping Mall", "North","../assets/img/shops/naturallysuperb.jpg"));
+        Shop chocoNotLate = shopControllerLocal.createShop(new Shop("ChocoNotLate", "50 Jurong Gateway Rd, Jem", "West","../assets/img/shops/choconotlate.jpg"));
+        Shop birthdayTreats = shopControllerLocal.createShop(new Shop("Birthday Treats", "1 Harbourfront Walk,, VivoCity", "South","../assets/img/shops/birthdaytreats.jpg"));
 
         Product confect1 = productControllerLocal.createProduct(new Product(40, "Cookie Paradise Basket", "Fox Chunkie Dark Chocolate Cookie, L’Q Danish Butter Cookies 150g, Caffarel Latte 100g, Butlers Mint Crunch 100g, Redondo Wafers Box 100g, Café Direct Hot Chocolate", "Confectionary", new BigDecimal("35"), "CON001", "../assets/img/products/CON001.jpg", biscuitBaskets));
         Product confect2 = productControllerLocal.createProduct(new Product(40, "Sweet Toothie Basket", "Caffarel Latte Milk 150g, Butterfingers Petticoat 150g, St Dalfour Wild Blueberry 284g, Basilur Bouquet Assorted Green Tea 30g, K. Harrodson Butter Cookie 180g, Arataki Honey 250g", "Confectionary", new BigDecimal("42"), "CON002", "../assets/img/products/CON002.jpg", biscuitBaskets));
@@ -174,9 +174,9 @@ public class DataInitSessionBean {
 
     public void initializeFlowers() {
 
-        Shop angelFlorist = shopControllerLocal.createShop(new Shop("Angel Florist", "8 Admiralty Street, Admirax", "North"));
-        Shop floralGarage = shopControllerLocal.createShop(new Shop("Floral Garage", "756 Upper Serangoon Road", "East"));
-        Shop fionaTreadwell = shopControllerLocal.createShop(new Shop("Fiona Treadwell", "34 Telok Ayer St", "Central"));
+        Shop angelFlorist = shopControllerLocal.createShop(new Shop("Angel Florist", "8 Admiralty Street, Admirax", "North","../assets/img/shops/angelflorist.jpg"));
+        Shop flowerGarage = shopControllerLocal.createShop(new Shop("The Flower Garage", "756 Upper Serangoon Road", "East","../assets/img/shops/flowergarage.jpg"));
+        Shop fionaTreadwell = shopControllerLocal.createShop(new Shop("Fiona Treadwell", "34 Telok Ayer St", "Central","../assets/img/shops/fionatreadwell.jpg"));
 
         Product flowers1 = productControllerLocal.createProduct(new Product(40, "Red Roses Round Flower Box", "An alternative to purely roses only collection, we have added a natural touch to achieve the feel of wild nobility for these bright red roses. Accompanied with our green foliages, one will always remember the other personality of roses - thorny beauty.", "Flowers", new BigDecimal("58"), "FLR001", "../assets/img/products/FLR001.jpg", angelFlorist, "Red"));
         Product flowers2 = productControllerLocal.createProduct(new Product(40, "White Roses & Purple Eustoma Bouquet ", "White and purple are a classic colour combination, fit for any occasion from a birthday to a romantic anniversary. White roses represent respect and appreciation, whereas the purple eustoma is regal and majestic as a backdrop. The splash of colour makes for a fantastic backdrop. This bouquet looks fantastic on display at home or in the office.", "Flowers", new BigDecimal("75"), "FLR002", "../assets/img/products/FLR002.jpg", angelFlorist, "White"));
@@ -184,10 +184,10 @@ public class DataInitSessionBean {
         Product flowers4 = productControllerLocal.createProduct(new Product(40, "99 Roses Bouquet", "When romance calls, it sometimes calls hard. Sometimes, this passion calls for 99 roses, and our 99 Roses Bouquet is the best way to handle that. Our long-stemmed roses are beyond impressive, allowing you to show just how passionately you love that special someone in your life. Send your significant other this giant bouquet to show your abundance of love for Valentine’s Day, an anniversary or a special birthday.", "Flowers", new BigDecimal("300"), "FLR004", "../assets/img/products/FLR004.jpg", angelFlorist, "Red"));
         Product flowers5 = productControllerLocal.createProduct(new Product(40, "Sunflowers with Vase", "Sunflowers are the flower of cheer, and an arrangement of these delightful flowers can brighten someone’s day. Send a beautiful ray of sunshine with our Sunflowers with Vase, an arrangement that includes 10 lovely stems of bold blooms. Flowers arrive in a clear glass vase, perfect for Father’s Day, Mother’s Day or just to wish somebody a good day.", "Flowers", new BigDecimal("35"), "FLR005", "../assets/img/products/FLR005.jpg", fionaTreadwell, "Yellow"));
         Product flowers6 = productControllerLocal.createProduct(new Product(40, "Sunflowers Bouquet", "It is no wonder why sunflowers have been given such a cheery name. The flowers are gorgeous and reminiscent of warm weather and sunshine. Our Sunflowers Bouquet provides a gorgeous splash of color fit to brighten anybody’s day. Roses and seasonal foliage adorn the arrangement, which symbolizes love and devotion. Send this gorgeous gift to commemorate any special occasion.", "Flowers", new BigDecimal("45"), "FLR006", "../assets/img/products/FLR006.jpg", fionaTreadwell, "Yellow"));
-        Product flowers7 = productControllerLocal.createProduct(new Product(40, "Fiery Love", "Red is the colour commonly associated with passion, and that’s where this bouquet comes in. With 12 stems of gorgeous roses in tow, this bouquet sends a strong message. The deep red meshes with the alstroemeria to create a seasonal look that is ideal for the Christmas holidays or Valentine’s Day. Of course, it is also romantic enough to present any time of the year.", "Flowers", new BigDecimal("100"), "FLR007", "../assets/img/products/FLR007.jpg", floralGarage, "Red"));
-        Product flowers8 = productControllerLocal.createProduct(new Product(40, "Pink Lady", "Want to send roses without the backdrop of foliage? This simple bouquet allows you to do just that. This bouquet offers 36 stems of pink and white roses, each one luscious and eye-popping. Let somebody special know that you love them with this fantastic bouquet, which is ready for display when it arrives. It is ideal for a romantic celebration, including an anniversary or Valentine’s Day.", "Flowers", new BigDecimal("100"), "FLR008", "../assets/img/products/FLR008.jpg", floralGarage, "Pink"));
-        Product flowers9 = productControllerLocal.createProduct(new Product(40, "Champagne Roses Bouquet", "Although not a striking colour, champagne roses carry strong meanings of fascination, desire, passion and enthusiasm. On the other hand, it also represents love and tenderness. Got someone you admire and determined to make them yours? This subtle yet beautiful bouquet with 12 stalks of roses is wonderful way to say, “Let’s get together.”", "Flowers", new BigDecimal("70"), "FLR009", "../assets/img/products/FLR009.jpg", floralGarage, "Champagne"));
-        Product flowers10 = productControllerLocal.createProduct(new Product(40, "Mini Hydragnea Bouquet", "The hydrangea is an ornate flower with unique, woody stems. The lacy nature of the flower means that the blooms are a special delight for the special person who receives them. Hydrangeas in every color, ranging from purple to pink are enchanting. Sending this bouquet of hydrangeas to somebody special sends the message of gratefulness and understanding in many cases, creating a heartfelt message. This flower is also commonly given as a fourth wedding anniversary gift, making it a romantic choice.", "Flowers", new BigDecimal("65"), "FLR010", "../assets/img/products/FLR010.jpg", floralGarage, "Purple"));
+        Product flowers7 = productControllerLocal.createProduct(new Product(40, "Fiery Love", "Red is the colour commonly associated with passion, and that’s where this bouquet comes in. With 12 stems of gorgeous roses in tow, this bouquet sends a strong message. The deep red meshes with the alstroemeria to create a seasonal look that is ideal for the Christmas holidays or Valentine’s Day. Of course, it is also romantic enough to present any time of the year.", "Flowers", new BigDecimal("100"), "FLR007", "../assets/img/products/FLR007.jpg", flowerGarage, "Red"));
+        Product flowers8 = productControllerLocal.createProduct(new Product(40, "Pink Lady", "Want to send roses without the backdrop of foliage? This simple bouquet allows you to do just that. This bouquet offers 36 stems of pink and white roses, each one luscious and eye-popping. Let somebody special know that you love them with this fantastic bouquet, which is ready for display when it arrives. It is ideal for a romantic celebration, including an anniversary or Valentine’s Day.", "Flowers", new BigDecimal("100"), "FLR008", "../assets/img/products/FLR008.jpg", flowerGarage, "Pink"));
+        Product flowers9 = productControllerLocal.createProduct(new Product(40, "Champagne Roses Bouquet", "Although not a striking colour, champagne roses carry strong meanings of fascination, desire, passion and enthusiasm. On the other hand, it also represents love and tenderness. Got someone you admire and determined to make them yours? This subtle yet beautiful bouquet with 12 stalks of roses is wonderful way to say, “Let’s get together.”", "Flowers", new BigDecimal("70"), "FLR009", "../assets/img/products/FLR009.jpg", flowerGarage, "Champagne"));
+        Product flowers10 = productControllerLocal.createProduct(new Product(40, "Mini Hydragnea Bouquet", "The hydrangea is an ornate flower with unique, woody stems. The lacy nature of the flower means that the blooms are a special delight for the special person who receives them. Hydrangeas in every color, ranging from purple to pink are enchanting. Sending this bouquet of hydrangeas to somebody special sends the message of gratefulness and understanding in many cases, creating a heartfelt message. This flower is also commonly given as a fourth wedding anniversary gift, making it a romantic choice.", "Flowers", new BigDecimal("65"), "FLR010", "../assets/img/products/FLR010.jpg", flowerGarage, "Purple"));
 
         angelFlorist.getProducts().add(flowers1);
         angelFlorist.getProducts().add(flowers2);
@@ -199,18 +199,18 @@ public class DataInitSessionBean {
         fionaTreadwell.getProducts().add(flowers6);
         em.merge(fionaTreadwell);
 
-        floralGarage.getProducts().add(flowers7);
-        floralGarage.getProducts().add(flowers8);
-        floralGarage.getProducts().add(flowers9);
-        floralGarage.getProducts().add(flowers10);
-        em.merge(floralGarage);
+        flowerGarage.getProducts().add(flowers7);
+        flowerGarage.getProducts().add(flowers8);
+        flowerGarage.getProducts().add(flowers9);
+        flowerGarage.getProducts().add(flowers10);
+        em.merge(flowerGarage);
 
     }
 
     public void initializePlushies() {
 
-        Shop plushRUs = shopControllerLocal.createShop(new Shop("Plush R Us", "3155 Commonwealth Ave W, The Clementi Mall", "West"));
-        Shop teddyLodge = shopControllerLocal.createShop(new Shop("Teddy Lodge", "1 Wallich Street, Guoco Tower", "Central"));
+        Shop plushRUs = shopControllerLocal.createShop(new Shop("Plush R Us", "3155 Commonwealth Ave W, The Clementi Mall", "West","../assets/img/shops/plushrus.jpg"));
+        Shop teddyLodge = shopControllerLocal.createShop(new Shop("Teddy Lodge", "1 Wallich Street, Guoco Tower", "Central","../assets/img/shops/teddylodge.jpg"));
 
         Product plushies1 = productControllerLocal.createProduct(new Product(40, "Delightful Teddy", "Let one and all delight on this one cuddly bear that is surprisingly appealing whatever day!", "Plushies", new BigDecimal("20"), "PSH001", "../assets/img/products/PSH001.jpg", plushRUs));
         Product plushies2 = productControllerLocal.createProduct(new Product(40, "Cheery Teddy", "Compel your darling’s day to be extra cheerful by giving her Christie, this enthusiastic bear!", "Plushies", new BigDecimal("25"), "PSH002", "../assets/img/products/PSH002.jpg", plushRUs));

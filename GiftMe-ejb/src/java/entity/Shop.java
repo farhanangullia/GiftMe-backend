@@ -46,6 +46,9 @@ public class Shop implements Serializable {
     @Column(nullable = false)
     private String area;
     
+        @Column(unique = true, nullable = false)
+    private String imgPath;
+    
  /*   @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ShopType shopType;
@@ -71,11 +74,12 @@ public class Shop implements Serializable {
     }*/
     
     
-    public Shop(String shopName, String location, String area) {
+    public Shop(String shopName, String location, String area, String imgPath) {
        
         this.shopName = shopName;
         this.location = location;
         this.area = area;
+        this.imgPath = imgPath;
 
      
     }
@@ -199,6 +203,20 @@ public class Shop implements Serializable {
      */
     public void setArea(String area) {
         this.area = area;
+    }
+
+    /**
+     * @return the imgPath
+     */
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    /**
+     * @param imgPath the imgPath to set
+     */
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
 }
