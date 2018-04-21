@@ -173,7 +173,6 @@ public class TransactionResource {
     public Response retrieveTransactionByDeliveryCode(@QueryParam("deliveryCode") String deliveryCode) {
         try {
 
-            // List<Transaction> transactions = transactionControllerLocal.retrieveTransactionsByCustomerEmail(email);
             Transaction transaction = transactionControllerLocal.retrieveTransactionByDeliveryCode(deliveryCode);
             transaction.getDelivery().setTransaction(null);
 
@@ -185,6 +184,8 @@ public class TransactionResource {
             transaction.getCustomer().setMobileNumber(null);
             transaction.getCustomer().setPassword(null);
             transaction.getCustomer().setSalt(null);
+
+            transaction.getCustomer().getTransactions().clear();
 
             RetrieveTransactionByDeliveryCodeRsp retrieveTransactionByDeliveryCodeRsp = new RetrieveTransactionByDeliveryCodeRsp(transaction);
 

@@ -223,11 +223,16 @@ public class TransactionController implements TransactionControllerLocal {
 
     @Override
     public Transaction retrieveTransactionByDeliveryCode(String deliveryCode) throws DeliveryNotFoundException {
+        System.out.println(deliveryCode);
         Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.delivery.deliveryCode = :inDeliveryCode");
         query.setParameter("inDeliveryCode", deliveryCode);
 
         try {
-            return (Transaction) query.getSingleResult();
+            Transaction transaction = (Transaction) query.getSingleResult();
+            transaction.getTransactionLineItems().size();
+            
+
+            return transaction;
         } catch (NoResultException | NonUniqueResultException ex) {
             throw new DeliveryNotFoundException("Transaction with delivery code: " + deliveryCode + " does not exist!");
         }
