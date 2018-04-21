@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,26 +52,15 @@ public class Shop implements Serializable {
     @Enumerated(EnumType.STRING)
     private ShopType shopType;
      */
-    @OneToMany(mappedBy = "shop")
+    @OneToMany(mappedBy = "shop", fetch = FetchType.EAGER)
     private List<Product> products = new ArrayList<Product>();
 
-    @OneToMany(mappedBy = "shop")
+    @OneToMany(mappedBy = "shop", fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<Review>();
 
-    /*  
-    @OneToOne
-    private Address address;
-     */
     public Shop() {
     }
 
-    /* public Shop(String shopName, String location, ShopType shopType) {
-       
-        this.shopName = shopName;
-        this.location = location;
-        this.shopType = shopType;
-     
-    }*/
     public Shop(String shopName, String location, String area, String imgPath) {
 
         this.shopName = shopName;
@@ -141,20 +131,6 @@ public class Shop implements Serializable {
         this.location = location;
     }
 
-    /**
-     * @return the shopType
-     */
-    /*  public ShopType getShopType() {
-        return shopType;
-    }
-     */
-    /**
-     * @param shopType the shopType to set
-     */
-    /*    public void setShopType(ShopType shopType) {
-        this.shopType = shopType;
-    }
-     */
     /**
      * @return the products
      */

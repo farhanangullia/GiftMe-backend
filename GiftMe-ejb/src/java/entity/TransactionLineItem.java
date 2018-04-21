@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +33,7 @@ public class TransactionLineItem implements Serializable {
     private Long transactionLineItemId;
 
     private Integer serialNumber;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
 
     private Integer quantity;

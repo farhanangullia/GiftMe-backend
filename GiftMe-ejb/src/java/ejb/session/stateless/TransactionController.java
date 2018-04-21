@@ -230,7 +230,6 @@ public class TransactionController implements TransactionControllerLocal {
         try {
             Transaction transaction = (Transaction) query.getSingleResult();
             transaction.getTransactionLineItems().size();
-            
 
             return transaction;
         } catch (NoResultException | NonUniqueResultException ex) {

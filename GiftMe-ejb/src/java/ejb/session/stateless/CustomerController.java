@@ -15,6 +15,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.common.RandomGenerator;
 import util.email.EmailManager;
 import util.exception.CreateCustomerException;
 import util.exception.CustomerNotFoundException;
@@ -78,7 +79,10 @@ public class CustomerController implements CustomerControllerLocal {
         query.setParameter("inEmail", email);
 
         try {
-            return (Customer) query.getSingleResult();
+            Customer customer = (Customer) query.getSingleResult();
+            customer.getTransactions().size();
+
+            return customer;
         } catch (NoResultException | NonUniqueResultException ex) {
             throw new CustomerNotFoundException("Customer email " + email + " does not exist!");
         }
@@ -91,6 +95,9 @@ public class CustomerController implements CustomerControllerLocal {
             String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + customer.getSalt()));
 
             if (customer.getPassword().equals(passwordHash)) {
+
+                customer.getTransactions().size();
+
                 return customer;
             } else {
                 throw new InvalidLoginCredentialException("Email does not exist or invalid password!");
@@ -145,33 +152,32 @@ public class CustomerController implements CustomerControllerLocal {
             System.out.println("An error has occured while sending email");
         }
     }
-    
-    
+
     @Override
-        public void sendForgotPasswordEmail(String email) throws CustomerNotFoundException{
-   
-            try{
+    public void sendForgotPasswordEmail(String email) throws CustomerNotFoundException {
+
+        try {
             Customer customer = retrieveCustomerByEmail(email);
-            
-            String password = "defaultPassword";
+
+            String password = RandomGenerator.RandomPasswordReset();
             customer.setEncryptedPassword(password);
-            
+
             em.merge(customer);
-            
-        EmailManager emailManager = new EmailManager("e0032247", "giftmepassword");    //replace e0032247 with ur SOC unix acc and <MY PASSWORD> with ur UNIX acc password OR leave it (this acc is Farhan's)
-        Boolean result = emailManager.emailForgotPassword("mail.giftme@gmail.com", customer.getEmail(), customer, password); //replace <EMAIL TO> with the email of the receipient
 
-        if (result) {
-            System.out.println("Email sent successfully");
-        } else {
+            EmailManager emailManager = new EmailManager("e0032247", "giftmepassword");    //replace e0032247 with ur SOC unix acc and <MY PASSWORD> with ur UNIX acc password OR leave it (this acc is Farhan's)
+            Boolean result = emailManager.emailForgotPassword("mail.giftme@gmail.com", customer.getEmail(), customer, password); //replace <EMAIL TO> with the email of the receipient
 
-            System.out.println("An error has occured while sending email");
-        }
-    }
-        catch(CustomerNotFoundException ex)
-        {
+            if (result) {
+                System.out.println("Email sent successfully");
+            } else {
+
+                System.out.println("An error has occured while sending email");
+            }
+        } catch (CustomerNotFoundException ex) {
             throw new CustomerNotFoundException(ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
 
-}
+    }
 }

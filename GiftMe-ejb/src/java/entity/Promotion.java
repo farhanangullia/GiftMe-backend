@@ -42,11 +42,7 @@ public class Promotion implements Serializable {
     @Column(nullable = false)
     private Boolean enabled;
 
-    /* @OneToMany(mappedBy = "promotion")
-    private List<Transaction> transactions;
-     */
     public Promotion() {
-        // transactions = new ArrayList<Transaction>();
         promoCode = "";
     }
 
@@ -134,21 +130,4 @@ public class Promotion implements Serializable {
         this.enabled = enabled;
     }
 
-    /**
-     * @return the transactions
-     */
-    /*  public List<Transaction> getTransactions() {
-        return transactions;
-    }
-     */
-    /**
-     * @param transactions the transactions to set
-     */
-    /*  public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
-     */
-    /**
-     * @return the transactions
-     */
 }

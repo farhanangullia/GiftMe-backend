@@ -169,16 +169,14 @@ public class CustomerResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
-    
-        @Path("forgotPassword")
+
+    @Path("forgotPassword")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response forgotPassword(@QueryParam("email") String email) {
         try {
-    
-            
+
             customerControllerLocal.sendForgotPasswordEmail(email);
 
             return Response.status(Status.OK).build();
@@ -192,15 +190,6 @@ public class CustomerResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     private CustomerControllerLocal lookupCustomerControllerLocal() {
         try {

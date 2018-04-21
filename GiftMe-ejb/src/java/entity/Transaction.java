@@ -61,9 +61,6 @@ public class Transaction implements Serializable {
     @OneToOne
     private Delivery delivery;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Promotion promotion;
-
     public Transaction() {
 
         transactionLineItems = new ArrayList<>();
@@ -224,20 +221,6 @@ public class Transaction implements Serializable {
      */
     public void setDelivery(Delivery delivery) {
         this.delivery = delivery;
-    }
-
-    /**
-     * @return the promotion
-     */
-    public Promotion getPromotion() {
-        return promotion;
-    }
-
-    /**
-     * @param promotion the promotion to set
-     */
-    public void setPromotion(Promotion promotion) {
-        this.promotion = promotion;
     }
 
     /**
