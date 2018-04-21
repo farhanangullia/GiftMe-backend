@@ -9,7 +9,7 @@ package util.exception;
  *
  * @author Farhan Angullia
  */
-public class TransactionNotFoundException extends Exception{
+public class TransactionNotFoundException extends Exception {
 
     public TransactionNotFoundException() {
     }
@@ -17,8 +17,5 @@ public class TransactionNotFoundException extends Exception{
     public TransactionNotFoundException(String message) {
         super(message);
     }
-    
-    
-    
-    
+
 }

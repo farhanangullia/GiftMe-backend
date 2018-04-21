@@ -1,17 +1,11 @@
 package util.exception;
 
+public class InvalidLoginCredentialException extends Exception {
 
-
-public class InvalidLoginCredentialException extends Exception
-{
-    public InvalidLoginCredentialException()
-    {
+    public InvalidLoginCredentialException() {
     }
-    
-    
-    
-    public InvalidLoginCredentialException(String msg)
-    {
+
+    public InvalidLoginCredentialException(String msg) {
         super(msg);
     }
 }

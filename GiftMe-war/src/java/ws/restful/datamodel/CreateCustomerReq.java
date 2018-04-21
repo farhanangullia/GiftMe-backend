@@ -13,13 +13,12 @@ import javax.xml.bind.annotation.XmlType;
  *
  * @author Farhan Angullia
  */
-
 @XmlRootElement
 @XmlType(name = "createCustomerReq", propOrder = {
     "customer"
 })
 public class CreateCustomerReq {
-    
+
     private Customer customer;
 
     public CreateCustomerReq() {
@@ -42,7 +41,5 @@ public class CreateCustomerReq {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
-    
-    
-    
+
 }

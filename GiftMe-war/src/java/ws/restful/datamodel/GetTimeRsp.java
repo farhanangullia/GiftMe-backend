@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
  *
  * @author Farhan Angullia
  */
-
 @XmlType(name = "getTimeRsp", propOrder = {
-		"currentTime"
-	})
+    "currentTime"
+})
 public class GetTimeRsp {
+
     private String currentTime;
 
     public GetTimeRsp() {
@@ -32,6 +32,5 @@ public class GetTimeRsp {
     public void setCurrentTime(String currentTime) {
         this.currentTime = currentTime;
     }
-    
-    
+
 }

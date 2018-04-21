@@ -9,7 +9,7 @@ package util.exception;
  *
  * @author Farhan Angullia
  */
-public class DeliveryNotFoundException extends Exception{
+public class DeliveryNotFoundException extends Exception {
 
     public DeliveryNotFoundException() {
     }
@@ -18,5 +18,4 @@ public class DeliveryNotFoundException extends Exception{
         super(message);
     }
 
-    
 }

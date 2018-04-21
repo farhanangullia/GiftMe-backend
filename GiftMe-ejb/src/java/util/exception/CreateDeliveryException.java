@@ -9,7 +9,7 @@ package util.exception;
  *
  * @author Farhan Angullia
  */
-public class CreateDeliveryException extends Exception{
+public class CreateDeliveryException extends Exception {
 
     public CreateDeliveryException() {
     }
@@ -17,7 +17,5 @@ public class CreateDeliveryException extends Exception{
     public CreateDeliveryException(String message) {
         super(message);
     }
-    
-    
-    
+
 }

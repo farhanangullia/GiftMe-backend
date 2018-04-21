@@ -27,5 +27,5 @@ public interface ShopControllerLocal {
     public void updateShop(Shop shop) throws ShopNotFoundException;
 
     public void deleteShop(Long shopId) throws ShopNotFoundException, DeleteShopException;
-    
+
 }

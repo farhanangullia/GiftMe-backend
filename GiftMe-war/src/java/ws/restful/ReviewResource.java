@@ -71,7 +71,6 @@ public class ReviewResource {
         } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
-            System.out.println("ERROR: " + ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
@@ -82,24 +81,20 @@ public class ReviewResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllReviewsByShop(@PathParam("shopId") Long shopId) {
         try {
-System.out.println("HERE shop rev");
+
             List<Review> reviews = reviewControllerLocal.retrieveAllReviewsByShopId(shopId);
 
-      System.out.println("HERE shop rev 2");
-           for (Review review : reviews) {
+            for (Review review : reviews) {
                 review.getShop().getReviews().clear();
                 review.getShop().getProducts().clear();
-                
 
             }
-           
-           RetrieveAllReviewsByShopRsp retrieveAllReviewsRsp = new RetrieveAllReviewsByShopRsp(reviews);
+
+            RetrieveAllReviewsByShopRsp retrieveAllReviewsRsp = new RetrieveAllReviewsByShopRsp(reviews);
 
             return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
         } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-
-            System.out.println("ERROR: " + ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
@@ -114,11 +109,9 @@ System.out.println("HERE shop rev");
 
                 CreateReviewReq createReviewReq = jaxbCreateReviewReq.getValue();
 
-                System.out.println("HEREEE");
-                 Long shopId = createReviewReq.getShopId();
-                 System.out.println(shopId);
-                 System.out.println("HEREEE");
-     Review review = reviewControllerLocal.createShopReview(createReviewReq.getReview(), shopId);
+                Long shopId = createReviewReq.getShopId();
+
+                Review review = reviewControllerLocal.createShopReview(createReviewReq.getReview(), shopId);
 //Review review = reviewControllerLocal.createReview(createReviewReq.getReview());
                 CreateReviewRsp createReviewRsp = new CreateReviewRsp(review.getReviewId());
 
@@ -138,41 +131,26 @@ System.out.println("HERE shop rev");
             return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
-    
-    
-     @Path("retrieveReview/{reviewId}")
+
+    @Path("retrieveReview/{reviewId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveReview(
-                                        @PathParam("reviewId") Long reviewId)
-    {
-        try
-        {
-            
+            @PathParam("reviewId") Long reviewId) {
+        try {
+
             Review review = reviewControllerLocal.retrieveReviewById(reviewId);
-           review.getShop().getProducts().clear();
+            review.getShop().getProducts().clear();
             review.getShop().getReviews().clear();
-           
+
             return Response.status(Status.OK).entity(new RetrieveReviewRsp(review)).build();
-        }
-       
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
+
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     private ReviewControllerLocal lookupReviewControllerLocal() {
         try {

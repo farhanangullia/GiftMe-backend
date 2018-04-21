@@ -50,13 +50,12 @@ public class Product implements Serializable {
 
     @Column(unique = true, nullable = false)
     private String skuCode;
-    
+
     @Column(unique = true, nullable = false)
     private String imgPath;
-    
+
     @Column(nullable = true)
     private String colour;
-
 
     @ManyToOne
     private Shop shop;
@@ -75,7 +74,7 @@ public class Product implements Serializable {
         this.imgPath = imgPath;
         this.shop = shop;
     }
-    
+
     //for flowers
     public Product(Integer quantityOnHand, String productName, String description, String category, BigDecimal price, String skuCode, String imgPath, Shop shop, String colour) {
 
@@ -151,7 +150,6 @@ public class Product implements Serializable {
         this.skuCode = skuCode;
     }
 
- 
     /**
      * @return the shop
      */

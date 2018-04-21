@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
     "customer"
 })
 public class UpdateCustomerPasswordReq {
-    
+
     private Customer customer;
 
     public UpdateCustomerPasswordReq() {
@@ -41,7 +41,5 @@ public class UpdateCustomerPasswordReq {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
-    
-    
-    
+
 }

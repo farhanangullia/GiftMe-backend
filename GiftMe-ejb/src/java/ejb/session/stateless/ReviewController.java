@@ -26,72 +26,55 @@ public class ReviewController implements ReviewControllerLocal {
 
     @PersistenceContext(unitName = "GiftMe-ejbPU")
     private EntityManager em;
-    
+
     @EJB
     private ShopControllerLocal shopControllerLocal;
 
-     @Override
+    @Override
     public Review createReview(Review review) throws CreateReviewException {
 
-        
         try {
-        em.persist(review);
-        em.flush();
-        
+            em.persist(review);
+            em.flush();
+
+        } catch (Exception ex) {
+            throw new CreateReviewException(ex.getMessage());
         }
-        catch(Exception ex) {
-        throw new CreateReviewException(ex.getMessage());
-        }
-        
+
         return review;
 
     }
-    
-    
-    
+
     @Override
-    public Review createShopReview(Review review,Long shopId) throws CreateReviewException {
+    public Review createShopReview(Review review, Long shopId) throws CreateReviewException {
 
-        
         try {
-            
- ;
-         Shop shop = shopControllerLocal.retrieveShopById(shopId);
-         review.setShop(shop);
+            ;
+            Shop shop = shopControllerLocal.retrieveShopById(shopId);
+            review.setShop(shop);
 
-        em.persist(review);
-        
-        shop.getReviews().add(review);
-        
-        em.merge(shop);
+            em.persist(review);
 
-        em.flush();
-        
+            shop.getReviews().add(review);
+
+            em.merge(shop);
+
+            em.flush();
+
+        } catch (Exception ex) {
+            throw new CreateReviewException(ex.getMessage());
         }
-        catch(Exception ex) {
-        throw new CreateReviewException(ex.getMessage());
-        }
-        
+
         return review;
 
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     @Override
     public void updateReview(Review review) {
         em.merge(review);
-        
+
     }
-    
-    
+
     @Override
     public List<Review> retrieveAllReviews() {
 
@@ -102,9 +85,9 @@ public class ReviewController implements ReviewControllerLocal {
     @Override
     public List<Review> retrieveAllReviewsByShopId(Long id) throws ShopNotFoundException {
 
-       Query query = em.createQuery("SELECT r FROM Review r WHERE r.shop.shopId = :inShopId");
-       query.setParameter("inShopId", id);
-       /* List<Review> reviews;
+        Query query = em.createQuery("SELECT r FROM Review r WHERE r.shop.shopId = :inShopId");
+        query.setParameter("inShopId", id);
+        /* List<Review> reviews;
        try{
        Shop shop = shopControllerLocal.retrieveShopById(id);
       reviews = shop.getReviews();
@@ -112,11 +95,11 @@ public class ReviewController implements ReviewControllerLocal {
        catch(Exception e){
            throw new ShopNotFoundException(e.getMessage());
        }*/
-    //   return reviews;
+        //   return reviews;
         return query.getResultList();
     }
-    
-     @Override
+
+    @Override
     public Review retrieveReviewById(Long id) throws ReviewNotFoundException {
 
         Review review = em.find(Review.class, id);

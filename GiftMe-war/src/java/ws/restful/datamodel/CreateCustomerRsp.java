@@ -11,13 +11,12 @@ import javax.xml.bind.annotation.XmlType;
  *
  * @author Farhan Angullia
  */
-
 @XmlType(name = "createCustomerRsp", propOrder = {
     "customerId"
 })
 
 public class CreateCustomerRsp {
-    
+
     private Long customerId;
 
     public CreateCustomerRsp() {
@@ -31,13 +30,8 @@ public class CreateCustomerRsp {
         return customerId;
     }
 
-
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
-
-    
-    
-    
 }

@@ -28,7 +28,6 @@ import javax.persistence.PersistenceContext;
 import util.common.DeliveryDistanceTimeCalculator;
 import util.common.RandomGenerator;
 import util.email.EmailManager;
-import util.enumeration.ShopType;
 import util.exception.CustomerNotFoundException;
 
 /**
@@ -51,13 +50,10 @@ public class DataInitSessionBean {
     private ShopControllerLocal shopControllerLocal;
     @EJB
     private PromotionControllerLocal promotionControllerLocal;
-    @EJB
-    private ReviewControllerLocal reviewControllerLocal;
 
     @PostConstruct
     public void postConstruct() {
         try {
-            //  sendEmail();
             customerControllerLocal.retrieveCustomerByEmail("mail.giftme@gmail.com");
 
         } catch (CustomerNotFoundException ex) {
@@ -67,54 +63,15 @@ public class DataInitSessionBean {
         }
 
     }
-    
-    
+
     public void initializeData() {
         try {
+            promotionControllerLocal.createPromotion(new Promotion("5OFF", new BigDecimal("5"), true));
 
-            long dist = DeliveryDistanceTimeCalculator.getDriveDist("kent ridge hall", "clementi mall");
-            int distance = (int) dist;
-
-            String arrivalTime = DeliveryDistanceTimeCalculator.getArrivalTime("Tuas", "701 changi coast road");
-
-              promotionControllerLocal.createPromotion(new Promotion("5OFF", new BigDecimal("5"), true));
-            
             customerControllerLocal.createNewCustomer(new Customer("admin", "admin", "mail.giftme@gmail.com", "password", "82222034"));
             initializeConfectionary();
             initializeFlowers();
             initializePlushies();
-
-            System.out.println("DIST IS " + distance);
-            System.out.println("TIME IS " + arrivalTime);
-
-            /* 
-            Product product = new Product();
-            product.setProductName("Roses");
-            product.setCategory("Flowers");
-            product.setDescription("Red roses for your loved ones");
-            product.setPrice(new BigDecimal("20"));
-            product.setQuantityOnHand(50);
-            product.setSkuCode("PROD005");
-            product.setImgPath("../assets/img/products/PROD005.png");
-            product.setColour("Red");
-
-            Shop shop1 = shopControllerLocal.createShop(new Shop("Kent Ridge Flora", "Kent Ridge MRT", "South West"));
-
-            product.setShop(shop1);
-            em.persist(product);
-            em.flush();
-            shop1.getProducts().add(product);
-            em.merge(shop1);
-
-            Shop shop = shopControllerLocal.createShop(new Shop("PlushRUs Store", "Star Vista Mall", "South West"));
-
-            customerControllerLocal.createNewCustomer(new Customer("admin", "admin", "mail.giftme@gmail.com", "password", "82222034"));
-            Product product2 = productControllerLocal.createProduct(new Product(40, "Teddy Bear", "Soft and cute teddy bear", "Plushies", new BigDecimal("6"), "PROD006", "../assets/img/products/PROD006.png", shop));
-
-            shop.getProducts().add(product2);
-            em.merge(shop);
-             */
-          
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -124,11 +81,11 @@ public class DataInitSessionBean {
 
     public void initializeConfectionary() {
 
-        Shop starbucks = shopControllerLocal.createShop(new Shop("Starbucks ION Mall", "238 Orchard Blvd, ION Orchard", "Central","../assets/img/shops/starbucks.jpg"));
-        Shop biscuitBaskets = shopControllerLocal.createShop(new Shop("Biscuit Baskets", "4 Tampines Central 5, Tampines Mall", "East","../assets/img/shops/biscuitbaskets.jpg"));
-        Shop naturallySuperb = shopControllerLocal.createShop(new Shop("Naturally Superb", "282 Bishan Street 22, Bishan North Shopping Mall", "North","../assets/img/shops/naturallysuperb.jpg"));
-        Shop chocoNotLate = shopControllerLocal.createShop(new Shop("ChocoNotLate", "50 Jurong Gateway Rd, Jem", "West","../assets/img/shops/choconotlate.jpg"));
-        Shop birthdayTreats = shopControllerLocal.createShop(new Shop("Birthday Treats", "1 Harbourfront Walk,, VivoCity", "South","../assets/img/shops/birthdaytreats.jpg"));
+        Shop starbucks = shopControllerLocal.createShop(new Shop("Starbucks ION Mall", "238 Orchard Blvd, ION Orchard", "Central", "../assets/img/shops/starbucks.jpg"));
+        Shop biscuitBaskets = shopControllerLocal.createShop(new Shop("Biscuit Baskets", "4 Tampines Central 5, Tampines Mall", "East", "../assets/img/shops/biscuitbaskets.jpg"));
+        Shop naturallySuperb = shopControllerLocal.createShop(new Shop("Naturally Superb", "282 Bishan Street 22, Bishan North Shopping Mall", "North", "../assets/img/shops/naturallysuperb.jpg"));
+        Shop chocoNotLate = shopControllerLocal.createShop(new Shop("ChocoNotLate", "50 Jurong Gateway Rd, Jem", "West", "../assets/img/shops/choconotlate.jpg"));
+        Shop birthdayTreats = shopControllerLocal.createShop(new Shop("Birthday Treats", "1 Harbourfront Walk,, VivoCity", "South", "../assets/img/shops/birthdaytreats.jpg"));
 
         Product confect1 = productControllerLocal.createProduct(new Product(40, "Cookie Paradise Basket", "Fox Chunkie Dark Chocolate Cookie, L’Q Danish Butter Cookies 150g, Caffarel Latte 100g, Butlers Mint Crunch 100g, Redondo Wafers Box 100g, Café Direct Hot Chocolate", "Confectionary", new BigDecimal("35"), "CON001", "../assets/img/products/CON001.jpg", biscuitBaskets));
         Product confect2 = productControllerLocal.createProduct(new Product(40, "Sweet Toothie Basket", "Caffarel Latte Milk 150g, Butterfingers Petticoat 150g, St Dalfour Wild Blueberry 284g, Basilur Bouquet Assorted Green Tea 30g, K. Harrodson Butter Cookie 180g, Arataki Honey 250g", "Confectionary", new BigDecimal("42"), "CON002", "../assets/img/products/CON002.jpg", biscuitBaskets));
@@ -160,23 +117,15 @@ public class DataInitSessionBean {
 
         birthdayTreats.getProducts().add(confect9);
         em.merge(birthdayTreats);
-
-        Review reviewTest = new Review(5, "Testing review", "Admin", "Good value");
-        reviewTest.setShop(chocoNotLate);
-        em.persist(reviewTest);
-
-        chocoNotLate.getReviews().add(reviewTest);
-        em.merge(chocoNotLate);
-
         em.flush();
 
     }
 
     public void initializeFlowers() {
 
-        Shop angelFlorist = shopControllerLocal.createShop(new Shop("Angel Florist", "8 Admiralty Street, Admirax", "North","../assets/img/shops/angelflorist.jpg"));
-        Shop flowerGarage = shopControllerLocal.createShop(new Shop("The Flower Garage", "756 Upper Serangoon Road", "East","../assets/img/shops/flowergarage.jpg"));
-        Shop fionaTreadwell = shopControllerLocal.createShop(new Shop("Fiona Treadwell", "34 Telok Ayer St", "Central","../assets/img/shops/fionatreadwell.jpg"));
+        Shop angelFlorist = shopControllerLocal.createShop(new Shop("Angel Florist", "8 Admiralty Street, Admirax", "North", "../assets/img/shops/angelflorist.jpg"));
+        Shop flowerGarage = shopControllerLocal.createShop(new Shop("The Flower Garage", "756 Upper Serangoon Road", "East", "../assets/img/shops/flowergarage.jpg"));
+        Shop fionaTreadwell = shopControllerLocal.createShop(new Shop("Fiona Treadwell", "34 Telok Ayer St", "Central", "../assets/img/shops/fionatreadwell.jpg"));
 
         Product flowers1 = productControllerLocal.createProduct(new Product(40, "Red Roses Round Flower Box", "An alternative to purely roses only collection, we have added a natural touch to achieve the feel of wild nobility for these bright red roses. Accompanied with our green foliages, one will always remember the other personality of roses - thorny beauty.", "Flowers", new BigDecimal("58"), "FLR001", "../assets/img/products/FLR001.jpg", angelFlorist, "Red"));
         Product flowers2 = productControllerLocal.createProduct(new Product(40, "White Roses & Purple Eustoma Bouquet ", "White and purple are a classic colour combination, fit for any occasion from a birthday to a romantic anniversary. White roses represent respect and appreciation, whereas the purple eustoma is regal and majestic as a backdrop. The splash of colour makes for a fantastic backdrop. This bouquet looks fantastic on display at home or in the office.", "Flowers", new BigDecimal("75"), "FLR002", "../assets/img/products/FLR002.jpg", angelFlorist, "White"));
@@ -209,8 +158,8 @@ public class DataInitSessionBean {
 
     public void initializePlushies() {
 
-        Shop plushRUs = shopControllerLocal.createShop(new Shop("Plush R Us", "3155 Commonwealth Ave W, The Clementi Mall", "West","../assets/img/shops/plushrus.jpg"));
-        Shop teddyLodge = shopControllerLocal.createShop(new Shop("Teddy Lodge", "1 Wallich Street, Guoco Tower", "Central","../assets/img/shops/teddylodge.jpg"));
+        Shop plushRUs = shopControllerLocal.createShop(new Shop("Plush R Us", "3155 Commonwealth Ave W, The Clementi Mall", "West", "../assets/img/shops/plushrus.jpg"));
+        Shop teddyLodge = shopControllerLocal.createShop(new Shop("Teddy Lodge", "1 Wallich Street, Guoco Tower", "Central", "../assets/img/shops/teddylodge.jpg"));
 
         Product plushies1 = productControllerLocal.createProduct(new Product(40, "Delightful Teddy", "Let one and all delight on this one cuddly bear that is surprisingly appealing whatever day!", "Plushies", new BigDecimal("20"), "PSH001", "../assets/img/products/PSH001.jpg", plushRUs));
         Product plushies2 = productControllerLocal.createProduct(new Product(40, "Cheery Teddy", "Compel your darling’s day to be extra cheerful by giving her Christie, this enthusiastic bear!", "Plushies", new BigDecimal("25"), "PSH002", "../assets/img/products/PSH002.jpg", plushRUs));

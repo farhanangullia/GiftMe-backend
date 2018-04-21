@@ -36,25 +36,21 @@ public class TimeResource {
 
     /**
      * Retrieves representation of an instance of ws.restful.TimeResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTime() {
-       try
-	{
-		GetTimeRsp getTimeRsp = new GetTimeRsp(new Date().toString());
+        try {
+            GetTimeRsp getTimeRsp = new GetTimeRsp(new Date().toString());
 
-		return Response.status(Status.OK).entity(getTimeRsp).build();
-	}
-	catch(Exception ex)
-	{
-		ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-		
-		return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-	}
+            return Response.status(Status.OK).entity(getTimeRsp).build();
+        } catch (Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
     }
 
-
-   
 }

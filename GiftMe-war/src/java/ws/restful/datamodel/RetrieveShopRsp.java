@@ -13,9 +13,10 @@ import javax.xml.bind.annotation.XmlType;
  * @author Farhan Angullia
  */
 @XmlType(name = "retrieveShopRsp", propOrder = {
-		"shop"
-	})
+    "shop"
+})
 public class RetrieveShopRsp {
+
     private Shop shop;
 
     public RetrieveShopRsp() {
@@ -38,8 +39,5 @@ public class RetrieveShopRsp {
     public void setShop(Shop shop) {
         this.shop = shop;
     }
-    
-    
-    
-    
+
 }

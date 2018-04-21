@@ -9,7 +9,7 @@ package util.exception;
  *
  * @author Farhan Angullia
  */
-public class CreateReviewException extends Exception{
+public class CreateReviewException extends Exception {
 
     public CreateReviewException() {
     }
@@ -17,7 +17,5 @@ public class CreateReviewException extends Exception{
     public CreateReviewException(String message) {
         super(message);
     }
-    
-    
-    
+
 }

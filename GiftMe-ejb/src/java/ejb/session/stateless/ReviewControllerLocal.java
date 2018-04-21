@@ -29,8 +29,6 @@ public interface ReviewControllerLocal {
 
     public void updateReview(Review review);
 
-  
-
     public Review createShopReview(Review review, Long shopid) throws CreateReviewException;
-    
+
 }

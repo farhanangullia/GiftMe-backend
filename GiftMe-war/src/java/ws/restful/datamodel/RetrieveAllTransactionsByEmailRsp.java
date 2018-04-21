@@ -19,8 +19,8 @@ import javax.xml.bind.annotation.XmlType;
     "transactions"
 })
 public class RetrieveAllTransactionsByEmailRsp {
-    
-   private List<Transaction> transactions;
+
+    private List<Transaction> transactions;
 
     public RetrieveAllTransactionsByEmailRsp() {
     }
@@ -29,7 +29,6 @@ public class RetrieveAllTransactionsByEmailRsp {
         this.transactions = transactions;
     }
 
-   
     /**
      * @return the transactions
      */
@@ -43,7 +42,5 @@ public class RetrieveAllTransactionsByEmailRsp {
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
-   
-   
-    
+
 }

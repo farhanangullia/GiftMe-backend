@@ -13,10 +13,10 @@ import javax.xml.bind.annotation.XmlType;
  * @author Farhan Angullia
  */
 @XmlType(name = "retrieveTransactionRsp", propOrder = {
-		"transaction"
-	})
+    "transaction"
+})
 public class RetrieveTransactionRsp {
-    
+
     private Transaction transaction;
 
     public RetrieveTransactionRsp() {
@@ -40,7 +40,4 @@ public class RetrieveTransactionRsp {
         this.transaction = transaction;
     }
 
-   
-    
-    
 }

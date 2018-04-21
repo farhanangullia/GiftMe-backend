@@ -5,7 +5,6 @@
  */
 package entity;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import util.enumeration.ShopType;
 
 /**
  *
@@ -45,23 +43,24 @@ public class Shop implements Serializable {
 
     @Column(nullable = false)
     private String area;
-    
-        @Column(unique = true, nullable = false)
+
+    @Column(unique = true, nullable = false)
     private String imgPath;
-    
- /*   @Column(nullable = false)
+
+    /*   @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ShopType shopType;
-*/
+     */
     @OneToMany(mappedBy = "shop")
-    private List<Product> products= new ArrayList<Product>();
-    
+    private List<Product> products = new ArrayList<Product>();
+
     @OneToMany(mappedBy = "shop")
     private List<Review> reviews = new ArrayList<Review>();
-  /*  
+
+    /*  
     @OneToOne
     private Address address;
-*/
+     */
     public Shop() {
     }
 
@@ -72,16 +71,13 @@ public class Shop implements Serializable {
         this.shopType = shopType;
      
     }*/
-    
-    
     public Shop(String shopName, String location, String area, String imgPath) {
-       
+
         this.shopName = shopName;
         this.location = location;
         this.area = area;
         this.imgPath = imgPath;
 
-     
     }
 
     public Long getShopId() {
@@ -148,21 +144,17 @@ public class Shop implements Serializable {
     /**
      * @return the shopType
      */
-  /*  public ShopType getShopType() {
+    /*  public ShopType getShopType() {
         return shopType;
     }
-*/
+     */
     /**
      * @param shopType the shopType to set
      */
-/*    public void setShopType(ShopType shopType) {
+    /*    public void setShopType(ShopType shopType) {
         this.shopType = shopType;
     }
-*/
-
-
-
-
+     */
     /**
      * @return the products
      */

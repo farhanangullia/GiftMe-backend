@@ -36,7 +36,5 @@ public interface ProductControllerLocal {
     public List<Product> retrieveAllProductsByShopId(Long id) throws ShopNotFoundException;
 
     public Product retrieveProductBySkuCode(String skuCode) throws ProductNotFoundException;
-    
-    
-    
+
 }

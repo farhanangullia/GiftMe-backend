@@ -13,10 +13,10 @@ import javax.xml.bind.annotation.XmlType;
  * @author Farhan Angullia
  */
 @XmlType(name = "retrievePromotionRsp", propOrder = {
-		"promotion"
-	})
+    "promotion"
+})
 public class RetrievePromotionRsp {
-    
+
     private Promotion promotion;
 
     public RetrievePromotionRsp() {
@@ -39,7 +39,5 @@ public class RetrievePromotionRsp {
     public void setPromotion(Promotion promotion) {
         this.promotion = promotion;
     }
-    
-    
-    
+
 }

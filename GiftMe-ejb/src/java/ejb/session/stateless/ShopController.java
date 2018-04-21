@@ -28,14 +28,13 @@ public class ShopController implements ShopControllerLocal {
 
     @EJB
     private ProductControllerLocal productControllerLocal;
-    
+
     @Override
     public List<Shop> retrieveAllShops() {
 
         Query query = em.createNamedQuery("selectAllShops");
         return query.getResultList();
     }
-
 
     @Override
     public Shop retrieveShopById(Long id) throws ShopNotFoundException {
@@ -55,51 +54,38 @@ public class ShopController implements ShopControllerLocal {
 
         em.persist(shop);
         em.flush();
-        
+
         return shop;
 
     }
-    
-    
-     @Override
+
+    @Override
     public void updateShop(Shop shop) throws ShopNotFoundException {
-        
-        
-         if(shop.getShopId()!= null)
-        {
-            Shop shopToUpdate = retrieveShopById(shop.getShopId());           
+
+        if (shop.getShopId() != null) {
+            Shop shopToUpdate = retrieveShopById(shop.getShopId());
             shopToUpdate.setLocation(shop.getLocation());
             shopToUpdate.setShopName(shop.getShopName());
-         //   shopToUpdate.setShopType(shop.getShopType());
- 
-        }
-        else
-        {
+            //   shopToUpdate.setShopType(shop.getShopType());
+
+        } else {
             throw new ShopNotFoundException("ID not provided for shop to be updated");
         }
-        
-        
+
     }
-    
-    
-      @Override
-    public void deleteShop(Long shopId) throws ShopNotFoundException, DeleteShopException
-    {
+
+    @Override
+    public void deleteShop(Long shopId) throws ShopNotFoundException, DeleteShopException {
         Shop shopToRemove = retrieveShopById(shopId);
-        
-       // List<Review> reviews = saleTransactionEntityControllerLocal.retrieveSaleTransactionsByStaffId(staffId);
+
+        // List<Review> reviews = saleTransactionEntityControllerLocal.retrieveSaleTransactionsByStaffId(staffId);
         List<Product> products = productControllerLocal.retrieveAllProductsByShopId(shopId);
-        
-        
-        if(products.isEmpty())
-        {
+
+        if (products.isEmpty()) {
             em.remove(shopToRemove);
-        }
-        else
-        {
+        } else {
             throw new DeleteShopException("There are product(s) or review(s) associated with the staff");
         }
     }
-    
 
 }

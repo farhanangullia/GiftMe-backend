@@ -27,10 +27,11 @@ public interface CustomerControllerLocal {
 
     public void updateCustomer(Customer customer) throws CustomerNotFoundException, UpdateCustomerException;
 
-   // public Long createCustomerFromBackend(Customer newCustomer) throws CreateCustomerException;
-
+    // public Long createCustomerFromBackend(Customer newCustomer) throws CreateCustomerException;
     public Customer encryptCustomerPassword(Customer customer);
 
     public void updateCustomerPassword(Customer customer) throws CustomerNotFoundException, UpdateCustomerException;
-    
+
+    public void sendForgotPasswordEmail(String email) throws CustomerNotFoundException;
+
 }

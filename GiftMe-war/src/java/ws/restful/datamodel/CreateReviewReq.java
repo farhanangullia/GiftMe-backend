@@ -18,8 +18,8 @@ import javax.xml.bind.annotation.XmlType;
     "review"
 })
 public class CreateReviewReq {
-    
- private Long shopId;
+
+    private Long shopId;
     private Review review;
 
     public CreateReviewReq() {
@@ -29,8 +29,6 @@ public class CreateReviewReq {
         this.shopId = shopId;
         this.review = review;
     }
-
-
 
     /**
      * @return the review
@@ -59,8 +57,5 @@ public class CreateReviewReq {
     public void setShopId(Long shopId) {
         this.shopId = shopId;
     }
-    
-    
-    
-    
+
 }

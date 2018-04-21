@@ -31,25 +31,20 @@ public class PromotionController implements PromotionControllerLocal {
         Query query = em.createNamedQuery("selectAllPromotions");
         return query.getResultList();
     }
-    
-      
-       @Override
-    public Promotion retrievePromotionByPromoCode(String promoCode) throws PromotionNotFoundException
-    {
+
+    @Override
+    public Promotion retrievePromotionByPromoCode(String promoCode) throws PromotionNotFoundException {
         Query query = em.createQuery("SELECT p FROM Promotion p WHERE p.promoCode = :inPromoCode AND p.enabled = true");
         query.setParameter("inPromoCode", promoCode);
-        
-        try
-        {
-            return (Promotion)query.getSingleResult();
-        }
-        catch(NoResultException | NonUniqueResultException ex)
-        {
+
+        try {
+            return (Promotion) query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
             throw new PromotionNotFoundException("Promotion: " + promoCode + " does not exist!");
         }
     }
-    
-     @Override
+
+    @Override
     public Promotion retrievePromotionById(Long id) throws PromotionNotFoundException {
 
         Promotion promotion = em.find(Promotion.class, id);
@@ -62,23 +57,22 @@ public class PromotionController implements PromotionControllerLocal {
 
     }
 
-    
-      @Override
+    @Override
     public Promotion createPromotion(Promotion promotion) {
 
         em.persist(promotion);
         em.flush();
         em.refresh(promotion);
-        
+
         return promotion;
 
     }
-    
-     @Override
+
+    @Override
     public void togglePromotionStatus(Promotion promotion, Boolean enabled) {
 
-      promotion.setEnabled(enabled);
-      em.merge(promotion);
+        promotion.setEnabled(enabled);
+        em.merge(promotion);
     }
-    
+
 }

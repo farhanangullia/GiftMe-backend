@@ -26,5 +26,5 @@ public interface PromotionControllerLocal {
     public void togglePromotionStatus(Promotion promotion, Boolean enabled);
 
     public Promotion retrievePromotionById(Long id) throws PromotionNotFoundException;
-    
+
 }

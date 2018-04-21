@@ -25,7 +25,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import util.enumeration.TransactionType;
 
 /**
  *
@@ -41,71 +40,32 @@ public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
-    
-    
-     private Integer totalLineItem;    
+
+    private Integer totalLineItem;
     private Integer totalQuantity;
     @Column(precision = 11, scale = 2)
     private BigDecimal totalAmount;
     @Temporal(TemporalType.TIMESTAMP)
-    private Date transactionDateTime;    
+    private Date transactionDateTime;
     @OneToMany
     private List<TransactionLineItem> transactionLineItems;
     @ManyToOne
     private Customer customer;
-    
-        @Column(precision = 11, scale = 2)
+
+    @Column(precision = 11, scale = 2)
     private BigDecimal deliveryFee;
-    
-    
-        @Column(precision = 11, scale = 2)
+
+    @Column(precision = 11, scale = 2)
     private BigDecimal discount;
-    
-  /*      @Column
-    @Enumerated(EnumType.STRING)
-    private TransactionType transactionType;
-*/
-        
-     
-    
-        @OneToOne
+
+    @OneToOne
     private Delivery delivery;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Promotion promotion;
-    
-    
-    
-    
-/*
-    @Column(length = 16, nullable = false)
-    private Integer creditCardNumber;
-
-    @Column(length = 3, nullable = false)
-    private Integer cvcNumber;
-
-    @Column(precision = 11, scale = 2)
-    private BigDecimal totalAmount;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date transactionDateTime;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private TransactionType transactionType;
-
-    @ManyToOne
-    private Customer customer;
-    
-    @ManyToOne
-    private Promotion promotion;
-
-    @OneToOne
-    private Cart cart;
-    */
 
     public Transaction() {
-        
+
         transactionLineItems = new ArrayList<>();
     }
 
@@ -121,9 +81,6 @@ public class Transaction implements Serializable {
         this.delivery = delivery;
     }
 
-
-    
-    
     public Long getTransactionId() {
         return transactionId;
     }
@@ -255,7 +212,6 @@ public class Transaction implements Serializable {
         this.discount = discount;
     }
 
-
     /**
      * @return the delivery
      */
@@ -297,6 +253,5 @@ public class Transaction implements Serializable {
     public void setDeliveryFee(BigDecimal deliveryFee) {
         this.deliveryFee = deliveryFee;
     }
-
 
 }

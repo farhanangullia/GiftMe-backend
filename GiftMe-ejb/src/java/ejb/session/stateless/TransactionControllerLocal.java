@@ -30,14 +30,12 @@ public interface TransactionControllerLocal {
 
     public Transaction retrieveTransactionByTransactionId(Long transactionId) throws TransactionNotFoundException;
 
-
-
     public List<Transaction> retrieveAllTransactions();
 
     public List<Transaction> retrieveTransactionsByCustomerEmail(String email);
-    
-public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException, InterruptedException,ApiException, IOException;
+
+    public Transaction createNewTransactionFromRemoteCheckoutRequest(String promoCode, List<RemoteCheckoutLineItem> remoteCheckoutLineItems, String email, String customerAddress, String shopAddress) throws CreateNewTransactionException, CustomerNotFoundException, PromotionNotFoundException, NoSuchAlgorithmException, CreateDeliveryException, InterruptedException, ApiException, IOException;
 
     public Transaction retrieveTransactionByDeliveryCode(String deliveryCode) throws DeliveryNotFoundException;
-    
+
 }

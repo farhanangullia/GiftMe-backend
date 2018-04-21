@@ -19,7 +19,8 @@ import javax.xml.bind.annotation.XmlType;
 })
 
 public class RemoteCheckoutLineItem {
-        private String skuCode;
+
+    private String skuCode;
     private Integer quantity;
 
     public RemoteCheckoutLineItem() {
@@ -58,8 +59,4 @@ public class RemoteCheckoutLineItem {
         this.quantity = quantity;
     }
 
-    
-    
-    
-    
 }

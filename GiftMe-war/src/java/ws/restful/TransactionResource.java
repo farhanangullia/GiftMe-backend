@@ -70,61 +70,30 @@ public class TransactionResource {
                 String promoCode = remoteCheckoutReq.getPromoCode();
                 String customerAddress = remoteCheckoutReq.getCustomerAddress();
                 String shopAddress = remoteCheckoutReq.getShopAddress();
-                System.out.println("PROMO ID" + promoCode);
                 String email = remoteCheckoutReq.getEmail();
 
-                if (remoteCheckoutReq.getRemoteCheckoutLineItems().isEmpty()) {
-                    System.out.println("EMPTY");
-                }
+                Transaction transaction = transactionControllerLocal.createNewTransactionFromRemoteCheckoutRequest(promoCode, remoteCheckoutReq.getRemoteCheckoutLineItems(), email, customerAddress, shopAddress);
 
-                if (remoteCheckoutReq.getRemoteCheckoutLineItems() == null) {
-                    System.out.println("NULLLLL");
-                }
-
-                System.out.println(email);
-                
-
-               // Transaction transaction = transactionControllerLocal.createNewTransactionFromRemoteCheckoutRequest(promoCode, remoteCheckoutReq.getRemoteCheckoutLineItems(), email, customerAddress, shopAddress);
-Transaction transaction = transactionControllerLocal.createNewTransactionFromRemoteCheckoutRequest(promoCode, remoteCheckoutReq.getRemoteCheckoutLineItems(), email, customerAddress, shopAddress);
-         //      Transaction newTransaction = new Transaction();
-          //     Transaction transaction = transactionControllerLocal.createNewTransaction(newTransaction);
                 transaction.getDelivery().setTransaction(null);
-                
-               
 
-                /* for(TransactionLineItem transactionLineItem: transaction.getDelivery().getTransaction().getTransactionLineItems()){
-           transactionLineItem.getProduct().getShop().getProducts().clear();
-                    transactionLineItem.getProduct().getShop().getReviews().clear();
-                   
-                        }
-                 */
                 for (TransactionLineItem transactionLineItem : transaction.getTransactionLineItems()) {
                     transactionLineItem.getProduct().getShop().getProducts().clear();
                     transactionLineItem.getProduct().getShop().getReviews().clear();
 
                 }
-                /*  transaction.getTransactionLineItems().get(0).getProduct().getShop().getProducts().clear();
-       transaction.getTransactionLineItems().get(0).getProduct().getShop().getReviews().clear();
-       
-        transaction.getTransactionLineItems().get(1).getProduct().getShop().getProducts().clear();
-       transaction.getTransactionLineItems().get(1).getProduct().getShop().getReviews().clear();
-                 */
-                //  transaction.getTransactionLineItems().get(1).setProduct(null);
 
                 transaction.getCustomer().setMobileNumber(null);
                 transaction.getCustomer().setPassword(null);
                 transaction.getCustomer().setSalt(null);
                 RemoteCheckoutRsp remoteCheckoutRsp = new RemoteCheckoutRsp(transaction);
-                
-                 transaction.getCustomer().getTransactions().clear();
+
+                transaction.getCustomer().getTransactions().clear();
 
                 return Response.status(Response.Status.OK).entity(remoteCheckoutRsp).build();
-            } catch (  Exception ex) {
-                System.out.println(ex.getMessage());
+            } catch (Exception ex) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
             }
-            
-         
+
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid remote checkout request").build();
         }
@@ -196,7 +165,7 @@ Transaction transaction = transactionControllerLocal.createNewTransactionFromRem
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
+
     @Path("retrieveTransactionByDeliveryCode")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
@@ -204,11 +173,8 @@ Transaction transaction = transactionControllerLocal.createNewTransactionFromRem
     public Response retrieveTransactionByDeliveryCode(@QueryParam("deliveryCode") String deliveryCode) {
         try {
 
-           // List<Transaction> transactions = transactionControllerLocal.retrieveTransactionsByCustomerEmail(email);
-
-           
-           
-           Transaction transaction = transactionControllerLocal.retrieveTransactionByDeliveryCode(deliveryCode);
+            // List<Transaction> transactions = transactionControllerLocal.retrieveTransactionsByCustomerEmail(email);
+            Transaction transaction = transactionControllerLocal.retrieveTransactionByDeliveryCode(deliveryCode);
             transaction.getDelivery().setTransaction(null);
 
             for (TransactionLineItem transactionLineItem : transaction.getTransactionLineItems()) {
@@ -221,10 +187,7 @@ Transaction transaction = transactionControllerLocal.createNewTransactionFromRem
             transaction.getCustomer().setSalt(null);
 
             RetrieveTransactionByDeliveryCodeRsp retrieveTransactionByDeliveryCodeRsp = new RetrieveTransactionByDeliveryCodeRsp(transaction);
-           
-           
-           
-     
+
             return Response.status(Response.Status.OK).entity(retrieveTransactionByDeliveryCodeRsp).build();
 
         } catch (Exception ex) {
@@ -233,13 +196,6 @@ Transaction transaction = transactionControllerLocal.createNewTransactionFromRem
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-
-    
-    
-    
-    
-    
-    
 
     private TransactionControllerLocal lookupTransactionControllerLocal() {
         try {

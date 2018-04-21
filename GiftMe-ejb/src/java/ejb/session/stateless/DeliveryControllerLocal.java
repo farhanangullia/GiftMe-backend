@@ -20,5 +20,5 @@ public interface DeliveryControllerLocal {
     public Delivery createDelivery(Delivery delivery) throws CreateDeliveryException;
 
     public Delivery retrieveDeliveryByDeliveryCode(String deliveryCode) throws DeliveryNotFoundException;
-    
+
 }

@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlType;
     "shops"
 })
 public class RetrieveAllShopsRsp {
+
     private List<Shop> shops;
 
     public RetrieveAllShopsRsp() {
@@ -41,8 +42,5 @@ public class RetrieveAllShopsRsp {
     public void setShops(List<Shop> shops) {
         this.shops = shops;
     }
-    
-    
-    
-    
+
 }

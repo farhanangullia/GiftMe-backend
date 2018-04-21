@@ -13,10 +13,10 @@ import javax.xml.bind.annotation.XmlType;
  * @author Farhan Angullia
  */
 @XmlType(name = "retrieveReviewRsp", propOrder = {
-		"review"
-	})
+    "review"
+})
 public class RetrieveReviewRsp {
-    
+
     private Review review;
 
     public RetrieveReviewRsp() {
@@ -39,7 +39,5 @@ public class RetrieveReviewRsp {
     public void setReview(Review review) {
         this.review = review;
     }
-    
-    
-    
+
 }

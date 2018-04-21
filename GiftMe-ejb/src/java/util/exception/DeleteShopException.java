@@ -9,7 +9,7 @@ package util.exception;
  *
  * @author Farhan Angullia
  */
-public class DeleteShopException extends Exception{
+public class DeleteShopException extends Exception {
 
     public DeleteShopException() {
     }
@@ -17,7 +17,5 @@ public class DeleteShopException extends Exception{
     public DeleteShopException(String message) {
         super(message);
     }
-    
-    
-    
+
 }

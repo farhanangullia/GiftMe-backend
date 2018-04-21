@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
     "promotions"
 })
 public class RetrieveAllPromotionsRsp {
-    
+
     private List<Promotion> promotions;
 
     public RetrieveAllPromotionsRsp() {
@@ -42,7 +42,5 @@ public class RetrieveAllPromotionsRsp {
     public void setPromotions(List<Promotion> promotions) {
         this.promotions = promotions;
     }
-    
-    
-    
+
 }

@@ -55,20 +55,17 @@ public class ProductResource {
     public Response retrieveAllProducts() {
         try {
             List<Product> products = productControllerLocal.retrieveAllProducts();
-            
-            for(Product product:products)
-            {
+
+            for (Product product : products) {
                 product.getShop().getProducts().clear();
-                  product.getShop().getReviews().clear();
+                product.getShop().getReviews().clear();
             }
-                
+
             RetrieveAllProductsRsp retrieveAllProductsRsp = new RetrieveAllProductsRsp(products);
 
             return Response.status(Response.Status.OK).entity(retrieveAllProductsRsp).build();
         } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-
-            System.out.println("ERROR: " + ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
@@ -79,13 +76,11 @@ public class ProductResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveProduct(@PathParam("productId") Long productId) {
         try {
-            
-            
+
             Product product = productControllerLocal.retrieveProductById(productId);
-      //  product.setShop(null);                     //to fix internal server unmarshalling error
+            //  product.setShop(null);                     //to fix internal server unmarshalling error
             product.getShop().getProducts().clear();
             product.getShop().getReviews().clear();
-                  
 
             RetrieveProductRsp retrieveProductRsp = new RetrieveProductRsp(product);
 
@@ -110,14 +105,12 @@ public class ProductResource {
         try {
 
             List<Product> products = productControllerLocal.retrieveAllProductsByShopId(shopId);
-            
-            for(Product product:products)
-            {
+
+            for (Product product : products) {
                 product.getShop().getProducts().clear();
                 product.getShop().getReviews().clear();
             }
-            
-            
+
             RetrieveAllProductsByShopRsp retrieveAllProductsByShopRsp = new RetrieveAllProductsByShopRsp(products);
 
             return Response.status(Response.Status.OK).entity(retrieveAllProductsByShopRsp).build();

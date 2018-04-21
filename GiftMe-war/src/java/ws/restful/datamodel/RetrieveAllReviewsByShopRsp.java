@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
     "reviews"
 })
 public class RetrieveAllReviewsByShopRsp {
-    
+
     private List<Review> reviews;
 
     public RetrieveAllReviewsByShopRsp() {
@@ -42,7 +42,5 @@ public class RetrieveAllReviewsByShopRsp {
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
-    
-     
-    
+
 }

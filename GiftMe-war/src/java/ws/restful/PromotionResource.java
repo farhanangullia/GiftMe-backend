@@ -66,9 +66,8 @@ public class PromotionResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
-    
-     @Path("retrieveAllPromotions")
+
+    @Path("retrieveAllPromotions")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllPromotions() {
@@ -79,11 +78,9 @@ public class PromotionResource {
         } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
 
-            System.out.println("ERROR: " + ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
 
     private PromotionControllerLocal lookupPromotionControllerLocal() {
         try {

@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
     "reviewId"
 })
 public class CreateReviewRsp {
-    
+
     private Long reviewId;
 
     public CreateReviewRsp() {
@@ -40,7 +40,5 @@ public class CreateReviewRsp {
     public void setReviewId(Long reviewId) {
         this.reviewId = reviewId;
     }
-    
-    
-    
+
 }

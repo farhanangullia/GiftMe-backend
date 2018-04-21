@@ -20,7 +20,6 @@ import javax.persistence.NamedQuery;
  *
  * @author Farhan Angullia
  */
-
 @Entity
 @NamedQueries({
     @NamedQuery(name = "selectAllTransactionLineItemsByProductId", query = "SELECT stli FROM TransactionLineItem stli WHERE stli.product.productId = :inProductId")
@@ -31,13 +30,13 @@ public class TransactionLineItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionLineItemId;
-    
+
     private Integer serialNumber;
     @ManyToOne
     private Product product;
-    
+
     private Integer quantity;
-    
+
     @Column(precision = 11, scale = 2)
     private BigDecimal unitPrice;
     @Column(precision = 11, scale = 2)
@@ -46,23 +45,13 @@ public class TransactionLineItem implements Serializable {
     public TransactionLineItem() {
     }
 
-    
-    
-    
     public TransactionLineItem(Integer serialNumber, Product product, Integer quantity, BigDecimal unitPrice, BigDecimal subTotal) {
-             this.serialNumber = serialNumber;
+        this.serialNumber = serialNumber;
         this.product = product;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.subTotal = subTotal;
     }
-
-    
-    
-    
-    
-    
-    
 
     public Long getTransactionLineItemId() {
         return transactionLineItemId;
@@ -166,5 +155,5 @@ public class TransactionLineItem implements Serializable {
     public void setSubTotal(BigDecimal subTotal) {
         this.subTotal = subTotal;
     }
-    
+
 }

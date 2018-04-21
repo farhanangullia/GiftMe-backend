@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlType;
     "transaction"
 })
 public class RemoteCheckoutRsp {
+
     private Transaction transaction;
 
     public RemoteCheckoutRsp() {
@@ -40,6 +41,5 @@ public class RemoteCheckoutRsp {
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
     }
-    
-    
+
 }

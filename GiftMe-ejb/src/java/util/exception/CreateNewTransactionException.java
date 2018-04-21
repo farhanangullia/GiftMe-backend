@@ -17,7 +17,5 @@ public class CreateNewTransactionException extends Exception {
     public CreateNewTransactionException(String message) {
         super(message);
     }
-    
-    
-    
+
 }

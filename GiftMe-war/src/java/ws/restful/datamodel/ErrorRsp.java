@@ -11,12 +11,12 @@ import javax.xml.bind.annotation.XmlType;
  *
  * @author Farhan Angullia
  */
-
 @XmlType(name = "errorRsp", propOrder = {
-		"message"
-	})
+    "message"
+})
 
 public class ErrorRsp {
+
     private String message;
 
     public ErrorRsp() {
@@ -26,7 +26,6 @@ public class ErrorRsp {
         this.message = message;
     }
 
-
     public String getMessage() {
         return message;
     }
@@ -34,6 +33,5 @@ public class ErrorRsp {
     public void setMessage(String message) {
         this.message = message;
     }
-    
-    
+
 }

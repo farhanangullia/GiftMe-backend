@@ -19,21 +19,19 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType(name = "remoteCheckoutReq", propOrder = {
-    "promoCode","email", "customerAddress", "shopAddress",
-  
+    "promoCode", "email", "customerAddress", "shopAddress",
     "remoteCheckoutLineItems"
 })
 public class RemoteCheckoutReq {
-    
+
     private String promoCode;
     private String email;
     private String customerAddress;
     private String shopAddress;
-      private List<RemoteCheckoutLineItem> remoteCheckoutLineItems;
-
+    private List<RemoteCheckoutLineItem> remoteCheckoutLineItems;
 
     public RemoteCheckoutReq() {
-             this.remoteCheckoutLineItems = new ArrayList<>();
+        this.remoteCheckoutLineItems = new ArrayList<>();
     }
 
     public RemoteCheckoutReq(String promoCode, String email, String customerAddress, String shopAddress, List<RemoteCheckoutLineItem> remoteCheckoutLineItems) {
@@ -44,9 +42,7 @@ public class RemoteCheckoutReq {
         this.remoteCheckoutLineItems = remoteCheckoutLineItems;
     }
 
-  
-    
-        /**
+    /**
      * @return the promoCode
      */
     public String getPromoCode() {
@@ -60,7 +56,6 @@ public class RemoteCheckoutReq {
         this.promoCode = promoCode;
     }
 
-    
     /**
      * @return the email
      */
@@ -75,12 +70,8 @@ public class RemoteCheckoutReq {
         this.email = email;
     }
 
-    
-    
-    
-  
-      @XmlElements({
-        @XmlElement(name="remoteCheckoutLineItem", type=RemoteCheckoutLineItem.class)
+    @XmlElements({
+        @XmlElement(name = "remoteCheckoutLineItem", type = RemoteCheckoutLineItem.class)
     })
     @XmlElementWrapper(name = "remoteCheckoutLineItems")
     public List<RemoteCheckoutLineItem> getRemoteCheckoutLineItems() {
@@ -119,6 +110,4 @@ public class RemoteCheckoutReq {
         this.shopAddress = shopAddress;
     }
 
-
-    
 }

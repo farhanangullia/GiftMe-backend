@@ -23,9 +23,8 @@ import java.util.List;
 //Uses Google DistanceMatrix API
 public class DeliveryDistanceTimeCalculator {
 
-    private static final String API_KEY = ***REMOVED***;
+    private static final String API_KEY = ***REMOVED***;      //API KEY FOR mail.giftme@gmail.com
 
-    //private static long[][] matrix;
     public static long getDriveDist(String addrOne, String addrTwo) throws ApiException, InterruptedException, IOException {
 
         //set up key
@@ -61,17 +60,12 @@ public class DeliveryDistanceTimeCalculator {
                 .language("en-US")
                 .await();
 
-        //long distApart = result.rows[0].elements[0].distance.inMeters;
         String time = result.rows[0].elements[0].duration.humanReadable;
-       System.out.println(result.destinationAddresses[0]);
-   System.out.println(result.originAddresses[0]);
+
         return time;
     }
 
-    
-    
-    
-     public static List<String> getExactAddresses(String addrOne, String addrTwo) throws ApiException, InterruptedException, IOException {
+    public static List<String> getExactAddresses(String addrOne, String addrTwo) throws ApiException, InterruptedException, IOException {
 
         //set up key
         GeoApiContext distCalcer = new GeoApiContext.Builder()
@@ -87,14 +81,11 @@ public class DeliveryDistanceTimeCalculator {
                 .await();
 
         List<String> addresses = new ArrayList<>();
-           addresses.add(result.originAddresses[0]);
+        addresses.add(result.originAddresses[0]);
         addresses.add(result.destinationAddresses[0]);
         addresses.add(result.originAddresses[0]);
 
         return addresses;
     }
-    
-    
-    
-    
+
 }

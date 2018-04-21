@@ -31,23 +31,19 @@ public class CustomerController implements CustomerControllerLocal {
 
     @PersistenceContext(unitName = "GiftMe-ejbPU")
     private EntityManager em;
-    
+
     @EJB
     PromotionControllerLocal promotionControllerLocal;
 
     @Override
     public Long createNewCustomer(Customer newCustomer) throws CreateCustomerException {
         try {
-            System.out.println("Creating customer");
-            //  newCustomer.setSalt(CryptographicHelper.getInstance().generateRandomString(32));
-            System.out.println("Password before setting is : " + newCustomer.getPassword());
-            //   newCustomer.setPassword(newCustomer.getPassword());
             newCustomer = encryptCustomerPassword(newCustomer);
             em.persist(newCustomer);
             em.flush();
             em.refresh(newCustomer);
             if (!newCustomer.getEmail().equals("mail.giftme@gmail.com")) {
-                
+
                 Promotion defaultPromotion = promotionControllerLocal.retrievePromotionByPromoCode("5OFF");
                 sendNewCustomerEmail(newCustomer, defaultPromotion);
             }
@@ -71,35 +67,11 @@ public class CustomerController implements CustomerControllerLocal {
     public Customer encryptCustomerPassword(Customer customer) {
 
         customer.setSalt(CryptographicHelper.getInstance().generateRandomString(32));
-        //this.salt = CryptographicHelper.getInstance().generateRandomString(32);
-
         customer.setPassword(CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(customer.getPassword() + customer.getSalt())));
 
         return customer;
     }
 
-    /*  @Override
-    public Long createCustomerFromBackend(Customer newCustomer) throws CreateCustomerException {
-        try {
-            System.out.println("Creating customer from backend");
-            em.persist(newCustomer);
-            em.flush();
-
-            return newCustomer.getCustomerId();
-        } catch (PersistenceException ex) {
-            if (ex.getCause() != null
-                    && ex.getCause().getCause() != null
-                    && ex.getCause().getCause().getClass().getSimpleName().equals("MySQLIntegrityConstraintViolationException")) {
-                throw new CreateCustomerException("Customer with same email already exist");
-            } else {
-                throw new CreateCustomerException("An unexpected error has occurred: " + ex.getMessage());
-            }
-        } catch (Exception ex) {
-            throw new CreateCustomerException("An unexpected error has occurred: " + ex.getMessage());
-        }
-
-    }
-     */
     @Override
     public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException {
         Query query = em.createQuery("SELECT c FROM Customer c WHERE c.email = :inEmail");
@@ -161,23 +133,45 @@ public class CustomerController implements CustomerControllerLocal {
         }
     }
 
-    public void sendNewCustomerEmail(Customer customer,Promotion defaultPromotion) {
-
-        //    String encryptedPassword 
-        System.out.println("HERE");
+    public void sendNewCustomerEmail(Customer customer, Promotion defaultPromotion) {
         String receipientEmail = customer.getEmail();
         EmailManager emailManager = new EmailManager("e0032247", "giftmepassword");    //replace e0032247 with ur SOC unix acc and <MY PASSWORD> with ur UNIX acc password OR leave it (this acc is Farhan's)
-        Boolean result = emailManager.emailNewCustomer("mail.giftme@gmail.com", receipientEmail, customer,defaultPromotion); //replace <EMAIL TO> with the email of the receipient
+        Boolean result = emailManager.emailNewCustomer("mail.giftme@gmail.com", receipientEmail, customer, defaultPromotion); //replace <EMAIL TO> with the email of the receipient
 
         if (result) {
-            // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Email sent successfully", null));
             System.out.println("Email sent successfully");
         } else {
 
             System.out.println("An error has occured while sending email");
-
-            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while sending email", null));
         }
     }
+    
+    
+    @Override
+        public void sendForgotPasswordEmail(String email) throws CustomerNotFoundException{
+   
+            try{
+            Customer customer = retrieveCustomerByEmail(email);
+            
+            String password = "defaultPassword";
+            customer.setEncryptedPassword(password);
+            
+            em.merge(customer);
+            
+        EmailManager emailManager = new EmailManager("e0032247", "giftmepassword");    //replace e0032247 with ur SOC unix acc and <MY PASSWORD> with ur UNIX acc password OR leave it (this acc is Farhan's)
+        Boolean result = emailManager.emailForgotPassword("mail.giftme@gmail.com", customer.getEmail(), customer, password); //replace <EMAIL TO> with the email of the receipient
 
+        if (result) {
+            System.out.println("Email sent successfully");
+        } else {
+
+            System.out.println("An error has occured while sending email");
+        }
+    }
+        catch(CustomerNotFoundException ex)
+        {
+            throw new CustomerNotFoundException(ex.getMessage());
+        }
+
+}
 }
